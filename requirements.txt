@@ -1,0 +1,6 @@
+sqlmodel
+pydantic-settings
+py-clob-client
+asyncpg
+requests
+web3
