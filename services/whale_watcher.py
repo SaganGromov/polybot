@@ -16,6 +16,11 @@ class WhaleMonitor:
         self.api_url = "https://data-api.polymarket.com/activity" # Base URL based on usage snippets
         self._running = False
 
+    def update_targets(self, new_targets: List[WalletTarget]):
+        """Updates the list of monitored wallets dynamically."""
+        self.targets = new_targets
+        logger.info(f"🔄 WhaleMonitor updated: Now watching {len(self.targets)} wallets.")
+
     async def start(self):
         self._running = True
         logger.info(f"🐳 Whale Monitor started. Watching {len(self.targets)} wallets.")
@@ -54,7 +59,7 @@ class WhaleMonitor:
             if not new_ts: 
                 return
 
-            last_ts = self.last_timestamps.get(target.address)
+            last_ts = self.last_timestamps.get(target.address, 0)
 
             # Initialize timestamp if first run
             if last_ts == 0:

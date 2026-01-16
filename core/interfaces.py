@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
-from .models import Position, Order, MarketDepth
+from .models import Position, Order, MarketDepth, MarketMetadata
 
 class ExchangeProvider(ABC):
     
@@ -30,4 +30,9 @@ class ExchangeProvider(ABC):
     @abstractmethod
     async def get_order_book(self, token_id: str) -> MarketDepth:
         """Returns the current market depth (bids/asks) for a token."""
+        pass
+
+    @abstractmethod
+    async def get_market_metadata(self, token_id: str) -> 'MarketMetadata': # Forward ref or use string
+        """Returns human-readable metadata for a market."""
         pass

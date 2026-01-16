@@ -6,8 +6,8 @@ from py_clob_client.clob_types import OrderArgs, OrderType
 from py_clob_client.exceptions import PolyApiException
 
 from polybot.core.interfaces import ExchangeProvider
-from polybot.core.models import Position, Order, MarketDepth, MarketDepthLevel, Side
-from polybot.core.errors import ExchangeError, APIError, AuthError, OrderError
+from polybot.core.models import Position, Order, OrderStatus, Side, MarketDepth, MarketDepthLevel, MarketMetadata
+from polybot.core.errors import APIError, AuthError, OrderError, InsufficientFundsError
 from polybot.config.settings import settings
 
 class PolymarketAdapter(ExchangeProvider):
@@ -138,12 +138,16 @@ class PolymarketAdapter(ExchangeProvider):
             
             # Blocking calls in async
             signed_order = self.client.create_order(order_args)
-            resp = self.client.post_order(signed_order, OrderType.FOK) # Using FOK as per sniper_bot default often
+            resp = self.client.post_order(signed_order, OrderType.FOK)
             
             if resp and resp.get("success"):
+                target = order.market_name or order.token_id
+                # Using print as we might not have initialized logger in adapters, but print goes to docker logs
+                print(f"✅ [REAL BUY] Placed Order for {target}: {resp.get('orderID')}")
                 return resp.get("orderID")
             elif resp and resp.get("orderID"):
-                 # Sometimes it returns success: True/False or just orderID
+                 target = order.market_name or order.token_id
+                 print(f"✅ [REAL BUY] Placed Order for {target}: {resp.get('orderID')}")
                  return resp.get("orderID")
             else:
                 raise OrderError(f"Order placement failed: {resp}")
@@ -155,16 +159,48 @@ class PolymarketAdapter(ExchangeProvider):
 
     async def get_order_book(self, token_id: str) -> MarketDepth:
         try:
-            # Blocking call
-            ob = self.client.get_order_book(token_id)
-            # Adapt to domain model
-            # ob.bids/asks are likely lists of some object or dicts, depending on py-clob-client version
-            # Usually py-clob-client returns objects with .price and .size
+            # We use a raw request here to ensure we get 'min_order_size' which might 
+            # not be exposed by the py-clob-client wrapper depending on version.
+            url = f"{self.client.host.rstrip('/')}/book"
+            params = {"token_id": token_id}
             
-            bids = [MarketDepthLevel(price=float(b.price), size=float(b.size)) for b in ob.bids]
-            asks = [MarketDepthLevel(price=float(a.price), size=float(a.size)) for a in ob.asks]
+            # Use requests (blocking) - wrapped in async def
+            resp = requests.get(url, params=params, timeout=10)
+            resp.raise_for_status()
+            data = resp.json()
             
-            return MarketDepth(bids=bids, asks=asks)
+            bids_data = data.get("bids", [])
+            asks_data = data.get("asks", [])
+            min_size = float(data.get("min_order_size", 0.0))
+            
+            bids = [MarketDepthLevel(price=float(b.get("price")), size=float(b.get("size"))) for b in bids_data]
+            asks = [MarketDepthLevel(price=float(a.get("price")), size=float(a.get("size"))) for a in asks_data]
+            
+            return MarketDepth(bids=bids, asks=asks, min_order_size=min_size)
             
         except Exception as e:
             raise APIError(f"Failed to fetch order book: {e}")
+
+    async def get_market_metadata(self, token_id: str) -> MarketMetadata:
+        try:
+            # Polymarket Gamma API to get market details by CLOB Token ID
+            url = "https://gamma-api.polymarket.com/markets"
+            params = {"clob_token_ids[]": token_id}
+            
+            resp = requests.get(url, params=params, timeout=10)
+            resp.raise_for_status()
+            data = resp.json()
+            
+            if not data or not isinstance(data, list):
+                return MarketMetadata(title="Unknown", question="Unknown")
+                
+            market = data[0]
+            
+            return MarketMetadata(
+                title=market.get("title", "Unknown"),
+                question=market.get("question", "Unknown"),
+                group_name=market.get("groupItemTitle", None)
+            )
+        except Exception as e:
+            # Fallback so we don't crash logging
+            return MarketMetadata(title="Error Fetching Metadata", question=str(e))

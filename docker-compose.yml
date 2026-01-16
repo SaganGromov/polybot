@@ -12,6 +12,7 @@ services:
       - CLOB_API=${CLOB_API:-https://clob.polymarket.com}
       - CHAIN_ID=${CHAIN_ID:-137}
       - PROXY_ADDRESS=${PROXY_ADDRESS}
+      - TZ=America/Sao_Paulo
     depends_on:
       db:
         condition: service_healthy

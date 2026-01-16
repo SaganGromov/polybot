@@ -29,6 +29,7 @@ class Position(BaseModel):
 
 class Order(BaseModel):
     token_id: str
+    market_name: str | None = None
     side: Side
     size: float
     price_limit: float
@@ -48,3 +49,9 @@ class MarketDepthLevel(BaseModel):
 class MarketDepth(BaseModel):
     bids: list[MarketDepthLevel]
     asks: list[MarketDepthLevel]
+    min_order_size: float = 0.0
+
+class MarketMetadata(BaseModel):
+    title: str
+    question: str
+    group_name: str | None = None
