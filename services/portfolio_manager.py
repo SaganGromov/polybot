@@ -3,8 +3,8 @@ import logging
 import math
 import json
 import os
-from typing import List
-from polybot.core.interfaces import ExchangeProvider
+from typing import List, Set
+from polybot.core.interfaces import ExchangeProvider, MarketMetadata
 from polybot.core.models import Position, Side, Order, OrderStatus
 from polybot.core.events import TradeEvent
 from polybot.services.execution import SmartExecutor
@@ -26,6 +26,7 @@ class PortfolioManager:
         # Persistent Bot State
         self.state_file = "polybot/config/bot_state.json"
         self.cumulative_spend = 0.0
+        self.managed_tokens: Set[str] = set()
         self._load_state()
 
     def _load_state(self):
@@ -34,13 +35,17 @@ class PortfolioManager:
                 with open(self.state_file, 'r') as f:
                     data = json.load(f)
                     self.cumulative_spend = data.get("cumulative_spend", 0.0)
-                logger.info(f"💾 Loaded Bot State: Cumulative Spend=${self.cumulative_spend:.2f}")
+                    self.managed_tokens = set(data.get("managed_tokens", []))
+                logger.info(f"💾 Loaded Bot State: Cumulative Spend=${self.cumulative_spend:.2f}, Managed Tokens={len(self.managed_tokens)}")
             except Exception as e:
                 logger.error(f"Failed to load bot state: {e}")
 
     def _save_state(self):
         try:
-            data = {"cumulative_spend": self.cumulative_spend}
+            data = {
+                "cumulative_spend": self.cumulative_spend,
+                "managed_tokens": list(self.managed_tokens)
+            }
             os.makedirs(os.path.dirname(self.state_file), exist_ok=True)
             with open(self.state_file, 'w') as f:
                 json.dump(data, f, indent=2)
@@ -121,36 +126,28 @@ class PortfolioManager:
             
             # --- MIN PRICE FILTER ---
             if best_ask < self.min_share_price:
-                logger.warning(f"  🛑 Price {best_ask:.2f} < Min {self.min_share_price}. Skipping mirror.")
+                logger.warning(f"  🛑 Price {best_ask:.2f} < Min {self.min_share_price:.2f}. Skipping mirror.")
                 return
             # ------------------------
 
-            limit_price = min(best_ask + 0.05, 0.99) # 5 cent slippage tolerance
+            from decimal import Decimal, ROUND_DOWN
 
-            # Calculate Minimum Size
-            # Strategy: Use the greater of (Orderbook Min Size) or ($1.00 USD worth of shares)
-            # This ensures we don't buy dust (below min size) and satisfied API min cost requirements ($1 typically)
+            # Calculate limit price (slightly above best ask to ensure fill)
+            limit_price_dec = Decimal(str(best_ask)).quantize(Decimal("0.01"), rounding=ROUND_DOWN)
             
-            min_size_shares = depth.min_order_size
-            shares_for_one_dollar = 1.0 / limit_price if limit_price > 0 else 0
+            # Fixed minimum order amount in USD
+            min_order_usd = Decimal("2.00")
             
-            # Target size is the larger of the two constraints
-            target_size = max(min_size_shares, shares_for_one_dollar)
+            # Calculate size based on minimum order, rounded to 2 decimals
+            size_dec = (min_order_usd / limit_price_dec).quantize(Decimal("0.01"), rounding=ROUND_DOWN)
             
-            # Round UP slightly to be safe? No, floor to 2 decimals is safe for API, 
-            # but we must ensure we aren't flooring BELOW the min_size.
-            # So we add a tiny buffer (0.01) then floor, or just use 2 decimal rounding carefully.
+            # Calculate cost estimate
+            cost_rounded = (size_dec * limit_price_dec).quantize(Decimal("0.01"), rounding=ROUND_DOWN)
             
-            import math
-            # Example: target is 2.123 -> 2.12. If min is 2.123, 2.12 is invalid. 
-            # So actually we should ceil to 2 decimals if it's strictly a minimum?
-            # Polymarket API usually truncates. Let's try 1.01 * min to be safe.
-            
-            raw_target = target_size * 1.01
-            size = math.floor(raw_target * 100) / 100.0
-            
-            # Limit logic
-            cost_estimate = size * limit_price
+            # Convert to float for Order model
+            limit_price = float(limit_price_dec)
+            size = float(size_dec)
+            cost_estimate = float(cost_rounded)
             
             # --- MAX BUDGET CHECK (Cumulative Spend) ---
             if self.cumulative_spend + cost_estimate > self.max_budget:
@@ -165,14 +162,16 @@ class PortfolioManager:
             order = Order(
                 token_id=event.token_id,
                 side=Side.BUY,
-                size=size,
-                limit_price=limit_price,
+                size=float(size_dec),               # keep Decimal result
+                price_limit=float(limit_price_dec), # keep Decimal result
                 market_name=market_label
             )
+
             await self.exchange.place_order(order)
             
-            # Update Spend
+            # Update Spend & Managed Tokens
             self.cumulative_spend += (size * limit_price)
+            self.managed_tokens.add(event.token_id)
             self._save_state()
             logger.info(f"  💰 Spend Updated: Total ${self.cumulative_spend:.2f} / ${self.max_budget:.2f}")
             
@@ -189,6 +188,12 @@ class PortfolioManager:
                     continue
 
                 for pos in positions:
+                    # Only manage positions we entered
+                    if pos.token_id not in self.managed_tokens:
+                        continue
+
+                    if pos.size <= 0:
+                        continue
                     # ROI Calculation
                     # Note: pos.current_price should be refreshed from market if model isn't live updating
                     # Assuming exchange.get_positions returns fresh data or we fetch book here.
@@ -244,6 +249,12 @@ class PortfolioManager:
                     total_value = 0.0
                     
                     for pos in positions:
+                        # Only manage positions we entered
+                        if pos.token_id not in self.managed_tokens:
+                            continue
+
+                        if pos.size <= 0:
+                            continue
                         try:
                             # Fetch metadata for readability.
                             meta = await self.exchange.get_market_metadata(pos.token_id)

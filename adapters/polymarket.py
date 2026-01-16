@@ -1,6 +1,71 @@
 import os
+import logging
 import requests
 from typing import List
+from decimal import Decimal, getcontext, ROUND_DOWN as D_ROUND_DOWN, ROUND_HALF_UP, ROUND_UP as D_ROUND_UP
+from math import floor, ceil
+
+getcontext().prec = 18
+
+logger = logging.getLogger(__name__)
+
+# =============================================================================
+# CRITICAL FIX: Monkey-patch py-clob-client helper functions with Decimal-based
+# implementations BEFORE importing ClobClient. This must happen first because
+# Python imports cache module state at load time.
+# =============================================================================
+
+# First, import only the modules we need to patch (not ClobClient yet!)
+import py_clob_client.order_builder.helpers as clob_helpers
+import py_clob_client.order_builder.builder as clob_builder
+
+def _patched_round_down(x: float, sig_digits: int) -> float:
+    """Decimal-based round_down to avoid float precision issues."""
+    d = Decimal(str(x))
+    q = Decimal(10) ** -sig_digits
+    result = float(d.quantize(q, rounding=D_ROUND_DOWN))
+    print(f"🔧 PATCHED round_down({x}, {sig_digits}) = {result}")
+    return result
+
+def _patched_round_normal(x: float, sig_digits: int) -> float:
+    """Decimal-based round_normal to avoid float precision issues."""
+    d = Decimal(str(x))
+    q = Decimal(10) ** -sig_digits
+    result = float(d.quantize(q, rounding=ROUND_HALF_UP))
+    print(f"🔧 PATCHED round_normal({x}, {sig_digits}) = {result}")
+    return result
+
+def _patched_round_up(x: float, sig_digits: int) -> float:
+    """Decimal-based round_up to avoid float precision issues."""
+    d = Decimal(str(x))
+    q = Decimal(10) ** -sig_digits
+    result = float(d.quantize(q, rounding=D_ROUND_UP))
+    print(f"🔧 PATCHED round_up({x}, {sig_digits}) = {result}")
+    return result
+
+def _patched_decimal_places(x: float) -> int:
+    """Accurate decimal places calculation."""
+    d = Decimal(str(x))
+    result = max(0, -d.as_tuple().exponent)
+    print(f"🔧 PATCHED decimal_places({x}) = {result}")
+    return result
+
+# Apply monkey patches to helpers module
+clob_helpers.round_down = _patched_round_down
+clob_helpers.round_normal = _patched_round_normal
+clob_helpers.round_up = _patched_round_up
+clob_helpers.decimal_places = _patched_decimal_places
+
+# CRITICAL: Also patch the builder module's cached references!
+clob_builder.round_down = _patched_round_down
+clob_builder.round_normal = _patched_round_normal
+clob_builder.round_up = _patched_round_up
+clob_builder.decimal_places = _patched_decimal_places
+
+logger.info("🔧 Applied Decimal-based monkey patches to py-clob-client")
+# =============================================================================
+
+# NOW import ClobClient - it will use our patched functions
 from py_clob_client.client import ClobClient
 from py_clob_client.clob_types import OrderArgs, OrderType
 from py_clob_client.exceptions import PolyApiException
@@ -9,6 +74,7 @@ from polybot.core.interfaces import ExchangeProvider
 from polybot.core.models import Position, Order, OrderStatus, Side, MarketDepth, MarketDepthLevel, MarketMetadata
 from polybot.core.errors import APIError, AuthError, OrderError, InsufficientFundsError
 from polybot.config.settings import settings
+
 
 class PolymarketAdapter(ExchangeProvider):
     def __init__(self):
@@ -129,16 +195,66 @@ class PolymarketAdapter(ExchangeProvider):
             # Convert domain Side to CLOB side
             side_str = "BUY" if order.side == Side.BUY else "SELL"
             
+            from decimal import Decimal, ROUND_DOWN
+            
+            # Convert to Decimal for exact arithmetic
+            price_dec = Decimal(str(order.price_limit)).quantize(Decimal("0.01"), rounding=ROUND_DOWN)
+            size_dec = Decimal(str(order.size)).quantize(Decimal("0.01"), rounding=ROUND_DOWN)
+            
+            # For SELL orders: Use the actual size we want to sell (shares)
+            # For BUY orders: Back-calculate size to ensure maker_amount has ≤2 decimals
+            if order.side == Side.SELL:
+                # SELL: size is shares to sell, use directly (just ensure it's >= minimum)
+                final_size = float(size_dec)
+                final_price = float(price_dec)
+                final_cost_float = final_size * final_price
+                cost_decimals = 2  # Not critical for sells
+                
+                logger.info(f"  Order Values (SELL): price={final_price:.2f}, size={final_size:.2f}, cost={final_cost_float:.2f}")
+            else:
+                # BUY: maker_amount = size * price (USDC paid)
+                # API requires maker_amount ≤ 2 decimals.
+                raw_cost = size_dec * price_dec
+                
+                # Round cost to 2 decimals (API requirement for maker_amount)
+                cost_rounded = raw_cost.quantize(Decimal("0.01"), rounding=ROUND_DOWN)
+                
+                # CRITICAL: Back-calculate size to ensure size * price = cost_rounded exactly
+                adjusted_size_dec = (cost_rounded / price_dec).quantize(Decimal("0.01"), rounding=ROUND_DOWN)
+                
+                # Verify the product is clean
+                final_cost = adjusted_size_dec * price_dec
+                cost_decimals = abs(Decimal(str(final_cost)).as_tuple().exponent)
+                
+                # If still > 2 decimals, try adjusting size down by 0.01 until it works
+                attempts = 0
+                while cost_decimals > 2 and attempts < 10:
+                    adjusted_size_dec -= Decimal("0.01")
+                    final_cost = adjusted_size_dec * price_dec
+                    cost_decimals = abs(Decimal(str(final_cost)).as_tuple().exponent)
+                    attempts += 1
+                
+                final_price = float(price_dec)
+                final_size = float(adjusted_size_dec)
+                final_cost_float = float(final_cost)
+                
+                logger.info(f"  Order Values (BUY): price={final_price:.2f}, size={final_size:.2f}, cost={final_cost_float:.2f}, cost_decimals={cost_decimals}")
+            
+            if final_size < 0.01:
+                raise OrderError(f"Calculated size too small: {final_size}")
+
             order_args = OrderArgs(
-                price=order.price_limit,
-                size=order.size,
+                price=final_price,
+                size=final_size,
                 side=side_str,
                 token_id=order.token_id
             )
             
             # Blocking calls in async
             signed_order = self.client.create_order(order_args)
-            resp = self.client.post_order(signed_order, OrderType.FOK)
+            # Use GTC for buys (marketable limit), FOK for sells (immediate exit)
+            order_type = OrderType.GTC if order.side == Side.BUY else OrderType.FOK
+            resp = self.client.post_order(signed_order, order_type)
             
             if resp and resp.get("success"):
                 target = order.market_name or order.token_id
