@@ -74,6 +74,7 @@ from polybot.core.interfaces import ExchangeProvider
 from polybot.core.models import Position, Order, OrderStatus, Side, MarketDepth, MarketDepthLevel, MarketMetadata
 from polybot.core.errors import APIError, AuthError, OrderError, InsufficientFundsError
 from polybot.config.settings import settings
+from polybot.adapters.websocket_client import PolymarketWebsocketClient
 
 
 class PolymarketAdapter(ExchangeProvider):
@@ -108,6 +109,13 @@ class PolymarketAdapter(ExchangeProvider):
 
         self.positions_api_url = os.getenv("POLY_POSITIONS_API", "https://data-api.polymarket.com/positions")
         self.user_address = os.getenv("PROXY_ADDRESS") or os.getenv("USER_ADDRESS")
+        self.ws_client = PolymarketWebsocketClient()
+
+    async def start(self):
+        await self.ws_client.start()
+
+    async def stop(self):
+        await self.ws_client.stop()
 
     async def get_balance(self) -> float:
         # NOTE: Polymarket ClobClient usually has get_balance or similar?
@@ -278,6 +286,21 @@ class PolymarketAdapter(ExchangeProvider):
             raise OrderError(f"Unexpected error placing order: {e}")
 
     async def get_order_book(self, token_id: str) -> MarketDepth:
+        # Try Websocket Cache first
+        cached_depth = await self.ws_client.get_order_book(token_id)
+        if cached_depth:
+            # If we have data, return it.
+            # Note: WS might not have 'min_order_size' accurately if not in stream?
+            # Our WS client defaults to 0.0. The REST API gives it.
+            # If critical, we might need one REST call to get metadata or min_size.
+            # For now, we assume user accepts 0.0 or we default to global min (2.0 USD is min order value typically).
+            return cached_depth
+
+        # If not in cache, subscribe and fallback to REST
+        await self.ws_client.subscribe([token_id])
+        return await self._get_order_book_rest(token_id)
+
+    async def _get_order_book_rest(self, token_id: str) -> MarketDepth:
         try:
             # We use a raw request here to ensure we get 'min_order_size' which might 
             # not be exposed by the py-clob-client wrapper depending on version.

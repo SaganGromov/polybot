@@ -149,6 +149,7 @@ async def main():
         # Start background config watcher
         asyncio.create_task(watch_config(whale_watcher, manager))
         
+        await exchange.start()
         await manager.start()
         await whale_watcher.start() # This blocks in its loop if awaited directly, need gather
         
@@ -166,6 +167,7 @@ async def main():
     finally:
         whale_watcher.stop()
         manager.stop()
+        await exchange.stop()
         logger.info("👋 Goodnight.")
 
 if __name__ == "__main__":

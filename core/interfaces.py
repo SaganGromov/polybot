@@ -36,3 +36,11 @@ class ExchangeProvider(ABC):
     async def get_market_metadata(self, token_id: str) -> 'MarketMetadata': # Forward ref or use string
         """Returns human-readable metadata for a market."""
         pass
+
+    async def start(self):
+        """Optional lifecycle hook to start background tasks (e.g. websockets)."""
+        pass
+
+    async def stop(self):
+        """Optional lifecycle hook to stop background tasks."""
+        pass
