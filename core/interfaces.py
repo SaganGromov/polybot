@@ -10,8 +10,8 @@ class ExchangeProvider(ABC):
         pass
 
     @abstractmethod
-    async def get_positions(self) -> List[Position]:
-        """Returns a list of currently open positions."""
+    async def get_positions(self, min_value: float = 0.0) -> List[Position]:
+        """Returns a list of currently open positions with value >= min_value."""
         pass
 
     @abstractmethod

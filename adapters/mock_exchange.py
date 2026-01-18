@@ -50,8 +50,9 @@ class MockExchangeAdapter(ExchangeProvider):
     async def get_balance(self) -> float:
         return self.balance
 
-    async def get_positions(self) -> List[Position]:
-        return list(self._positions.values())
+    async def get_positions(self, min_value: float = 0.0) -> List[Position]:
+        # Filter positions by min value (position value = size * current_price)
+        return [p for p in self._positions.values() if (p.size * p.current_price) >= min_value]
 
     async def place_order(self, order: Order) -> str:
         cost = order.size * order.price_limit

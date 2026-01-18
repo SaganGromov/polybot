@@ -13,7 +13,7 @@ from polybot.config.settings import settings
 logger = logging.getLogger(__name__)
 
 class PortfolioManager:
-    def __init__(self, exchange: ExchangeProvider, executor: SmartExecutor, stop_loss_pct: float = 0.20, take_profit_pct: float = 0.9, min_share_price: float = 0.19, log_interval_minutes: int = 60, max_budget: float = 100.0):
+    def __init__(self, exchange: ExchangeProvider, executor: SmartExecutor, stop_loss_pct: float = 0.20, take_profit_pct: float = 0.9, min_share_price: float = 0.19, log_interval_minutes: int = 60, max_budget: float = 100.0, min_position_value: float = 0.03):
         self.exchange = exchange
         self.executor = executor
         self.stop_loss_pct = stop_loss_pct
@@ -21,6 +21,7 @@ class PortfolioManager:
         self.min_share_price = min_share_price
         self.log_interval_minutes = log_interval_minutes
         self.max_budget = max_budget
+        self.min_position_value = min_position_value
         self._running = False
         
         # Persistent Bot State
@@ -52,14 +53,15 @@ class PortfolioManager:
         except Exception as e:
             logger.error(f"Failed to save bot state: {e}")
 
-    def update_strategies(self, stop_loss: float, take_profit: float, min_price: float, log_interval: int, max_budget: float):
+    def update_strategies(self, stop_loss: float, take_profit: float, min_price: float, log_interval: int, max_budget: float, min_position_value: float = 0.03):
         """Updates strategy parameters dynamically."""
         self.stop_loss_pct = stop_loss
         self.take_profit_pct = take_profit
         self.min_share_price = min_price
         self.log_interval_minutes = log_interval
         self.max_budget = max_budget
-        logger.info(f"🔄 PortfolioManager updated: SL={stop_loss*100:.1f}%, TP={take_profit*100:.1f}%, MinPrice={min_price}, LogInt={log_interval}min, Budget=${max_budget}")
+        self.min_position_value = min_position_value
+        logger.info(f"🔄 PortfolioManager updated: SL={stop_loss*100:.1f}%, TP={take_profit*100:.1f}%, MinPrice={min_price}, MinPosVal=${min_position_value}, LogInt={log_interval}min, Budget=${max_budget}")
 
     async def start(self):
         self._running = True
@@ -182,24 +184,22 @@ class PortfolioManager:
         """Background loop to check Stop Loss / Take Profit"""
         while self._running:
             try:
-                positions = await self.exchange.get_positions()
+                positions = await self.exchange.get_positions(min_value=self.min_position_value)
                 if not positions:
                     await asyncio.sleep(60)
                     continue
 
                 for pos in positions:
-                    # Only manage positions we entered
-                    if pos.token_id not in self.managed_tokens:
-                        continue
-
+                    # Apply TP/SL to ALL positions (including pre-existing trades)
                     if pos.size <= 0:
                         continue
-                    # ROI Calculation
-                    # Note: pos.current_price should be refreshed from market if model isn't live updating
-                    # Assuming exchange.get_positions returns fresh data or we fetch book here.
-                    # For safety, let's fetch fresh book price.
                     
                     try:
+                        # Fetch rich metadata for human-readable logging
+                        meta = await self.exchange.get_market_metadata(pos.token_id)
+                        market_label = f"{meta.question}"
+                        market_context = f"[{meta.category or 'Uncategorized'} | {meta.status or 'Unknown'}]"
+                        
                         depth = await self.exchange.get_order_book(pos.token_id)
                         # Mark to market using best bid (exit price)
                         market_price = max(b.price for b in depth.bids) if depth.bids else 0.0
@@ -208,25 +208,49 @@ class PortfolioManager:
 
                         roi = (market_price - pos.average_entry_price) / pos.average_entry_price
                         
-                        logger.debug(f"  Risk Check: {pos.token_id} ROI: {roi*100:.1f}%")
+                        logger.debug(f"  Risk Check: {market_label} ROI: {roi*100:.1f}%")
 
                         # STOP LOSS
                         if roi < -self.stop_loss_pct:
-                            logger.warning(f"  🛑 STOP LOSS TRIGGERED: {pos.token_id} down {roi*100:.1f}%")
+                            pnl_emoji = "📉"
+                            managed_tag = "🤖" if pos.token_id in self.managed_tokens else "📌"
+                            logger.warning(f"{'='*60}")
+                            logger.warning(f"🛑 STOP LOSS TRIGGERED")
+                            logger.warning(f"   Q: {market_label}")
+                            logger.warning(f"   {market_context}")
+                            if meta.volume:
+                                logger.warning(f"   Volume: ${meta.volume:,.2f} | Ends: {meta.end_date or 'N/A'}")
+                            logger.warning(f"   {managed_tag} Position: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
+                            logger.warning(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: -{self.stop_loss_pct*100:.1f}%)")
+                            logger.warning(f"{'='*60}")
+                            
                             await self.executor.exit_position(
                                 pos.token_id, 
                                 pos.size, 
-                                min_price=0.01 # Dump it
+                                min_price=0.01,  # Dump it
+                                market_name=market_label
                             )
                         
                         # TAKE PROFIT
                         elif roi > self.take_profit_pct:
-                            logger.info(f"  💰 TAKE PROFIT TRIGGERED: {pos.token_id} up {roi*100:.1f}%")
+                            pnl_emoji = "📈"
+                            managed_tag = "🤖" if pos.token_id in self.managed_tokens else "📌"
+                            logger.info(f"{'='*60}")
+                            logger.info(f"💰 TAKE PROFIT TRIGGERED")
+                            logger.info(f"   Q: {market_label}")
+                            logger.info(f"   {market_context}")
+                            if meta.volume:
+                                logger.info(f"   Volume: ${meta.volume:,.2f} | Ends: {meta.end_date or 'N/A'}")
+                            logger.info(f"   {managed_tag} Position: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
+                            logger.info(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: +{self.take_profit_pct*100:.1f}%)")
+                            logger.info(f"{'='*60}")
+                            
                             # Trailing stop logic could go here, but for now hard exit
                             await self.executor.exit_position(
                                 pos.token_id, 
-                                pos.size / 2, # Sell half? Or all. Code implies 'liquidate everything' in prompt
-                                min_price=market_price * 0.9
+                                pos.size / 2,  # Sell half? Or all
+                                min_price=market_price * 0.9,
+                                market_name=market_label
                             )
                             
                     except Exception as e:
@@ -241,26 +265,24 @@ class PortfolioManager:
         """Periodically logs the portfolio summary."""
         while self._running:
             try:
-                positions = await self.exchange.get_positions()
+                positions = await self.exchange.get_positions(min_value=self.min_position_value)
                 if not positions:
                     logger.info("📊 Portfolio Report: No open positions.")
                 else:
-                    logger.info("=== 📊 Portfolio Report 📊 ===")
+                    logger.info("=" * 60)
+                    logger.info("📊 PORTFOLIO REPORT 📊")
+                    logger.info("=" * 60)
                     total_value = 0.0
                     
                     for pos in positions:
-                        # Only manage positions we entered
-                        if pos.token_id not in self.managed_tokens:
-                            continue
-
+                        # Log ALL positions (including pre-existing trades)
                         if pos.size <= 0:
                             continue
                         try:
-                            # Fetch metadata for readability.
+                            # Fetch rich metadata for readability (like play.ipynb)
                             meta = await self.exchange.get_market_metadata(pos.token_id)
-                            title = f"{meta.title} - {meta.group_name}"[:50] 
                             
-                            # Let's fetch book to show profitability as requested.
+                            # Fetch current market price
                             depth = await self.exchange.get_order_book(pos.token_id)
                             curr_price = max(b.price for b in depth.bids) if depth.bids else 0.0
                             
@@ -269,13 +291,35 @@ class PortfolioManager:
                             
                             pnl_pct = ((curr_price - pos.average_entry_price) / pos.average_entry_price) * 100 if pos.average_entry_price > 0 else 0
                             
-                            logger.info(f"  🔹 {title} | Size: {pos.size:.2f} | Entry: {pos.average_entry_price:.2f} | Curr: {curr_price:.2f} | PnL: {pnl_pct:+.1f}% | Val: ${val:.2f}")
+                            # --- Rich Human-Readable Format (like play.ipynb) ---
+                            logger.info(f"Q: {meta.question}")
+                            logger.info(f"   [{meta.category or 'Uncategorized'} | {meta.status or 'Unknown'}]")
+                            
+                            # Show score for sports markets
+                            if meta.score:
+                                logger.info(f"   Score: {meta.score}")
+                            
+                            # Show volume and end date
+                            vol_str = f"${meta.volume:,.2f}" if meta.volume else "N/A"
+                            logger.info(f"   Volume: {vol_str} | Ends: {meta.end_date or 'N/A'}")
+                            
+                            # Show current outcome prices
+                            if meta.outcomes:
+                                logger.info("   Market Prices:")
+                                for outcome, price in meta.outcomes.items():
+                                    logger.info(f"     - {outcome}: {price:.3f}")
+                            
+                            # Show position details with PnL
+                            pnl_emoji = "📈" if pnl_pct >= 0 else "📉"
+                            managed_tag = "🤖" if pos.token_id in self.managed_tokens else "📌"
+                            logger.info(f"   {managed_tag} YOUR POSITION: {pos.size:.2f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {curr_price:.3f} | {pnl_emoji} PnL: {pnl_pct:+.1f}% | Value: ${val:.2f}")
+                            logger.info("-" * 60)
                             
                         except Exception as e:
                             logger.error(f"Error reporting on pos {pos.token_id}: {e}")
                     
-                    logger.info(f"  💰 Total Portfolio Value: ${total_value:.2f}")
-                    logger.info("================================")
+                    logger.info(f"💰 TOTAL PORTFOLIO VALUE: ${total_value:.2f}")
+                    logger.info("=" * 60)
                 
                 # Sleep interval
                 await asyncio.sleep(self.log_interval_minutes * 60)

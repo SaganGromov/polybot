@@ -1,21 +1,22 @@
 {
-    "max_budget": 111,
-    "min_share_price": 0.19,
+    "max_budget": 0,
+    "min_share_price": 0.37,
+    "min_position_value": 0.03,
     "portfolio_log_interval_minutes": 66,
-    "stop_loss_pct": 0.77,
-    "take_profit_pct": 0.55,
+    "stop_loss_pct": 0.55,
+    "take_profit_pct": 0.66,
     "watched_wallets": [
         {
             "address": "0xdd225a03cd7ed89e3931906c67c75ab31cf89ef1",
             "name": "euan"
         },
         {
-            "address": "0xd218e474776403a330142299f7796e8ba32eb5c9",
-            "name": "cigar"
-        },
-        {
             "address": "0x7744bfd749a70020d16a1fcbac1d064761c9999e",
             "name": "chungus"
+        },
+        {
+            "address": "0x96489abcb9f583d6835c8ef95ffc923d05a86825",
+            "name": "anoin123"
         }
     ]
 }

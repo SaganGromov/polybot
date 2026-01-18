@@ -5,15 +5,17 @@ from typing import List, Dict, Optional, Callable, Awaitable
 from datetime import datetime
 from polybot.core.models import WalletTarget, Side
 from polybot.core.events import TradeEvent
+from polybot.core.interfaces import ExchangeProvider
 
 logger = logging.getLogger(__name__)
 
 class WhaleMonitor:
-    def __init__(self, targets: List[WalletTarget], on_event: Callable[[TradeEvent], Awaitable[None]]):
+    def __init__(self, targets: List[WalletTarget], on_event: Callable[[TradeEvent], Awaitable[None]], exchange: Optional[ExchangeProvider] = None):
         self.targets = targets
         self.on_event = on_event
+        self.exchange = exchange  # Optional exchange for fetching market metadata
         self.last_timestamps: Dict[str, int] = {t.address: 0 for t in self.targets}
-        self.api_url = "https://data-api.polymarket.com/activity" # Base URL based on usage snippets
+        self.api_url = "https://data-api.polymarket.com/activity"
         self._running = False
 
     def update_targets(self, new_targets: List[WalletTarget]):
@@ -42,17 +44,11 @@ class WhaleMonitor:
 
     async def _check_wallet(self, target: WalletTarget):
         try:
-            # We wrap the synchronous requests call in a thread if needed, 
-            # but for simplicity/prototype we might call it directly or use run_in_executor.
-            # Ideally use aiohttp, but adhering to existing 'requests' usage pattern 
-            # while making it async-friendly via to_thread is robust.
             activities = await asyncio.to_thread(self._fetch_activity, target.address)
             
             if not activities:
                 return
 
-            # Process from oldest to newest if multiple, but we usually look at the latest
-            # The API usually returns newest first.
             newest = activities[0]
             new_ts = newest.get('timestamp')
             
@@ -74,11 +70,6 @@ class WhaleMonitor:
             logger.warning(f"Failed to check wallet {target.name}: {e}")
 
     def _fetch_activity(self, address: str) -> List[Dict]:
-        # Logic adapted from sniper_bot.py
-        # URL: {POLY_DATA_API}?user={address}&limit=3&sortBy=timestamp&sortDirection=desc
-        # Assuming POLY_DATA_API root is https://data-api.polymarket.com/activity or similar
-        # Actually sniper_bot uses: f"{POLY_DATA_API}?user={address}..." where POLY_DATA_API is likely the /activity endpoint
-        
         url = "https://data-api.polymarket.com/activity"
         params = {
             "user": address,
@@ -110,19 +101,51 @@ class WhaleMonitor:
 
         # Extract details
         usd_size = float(activity.get('usdcSize', 0))
-        # Basic filter could be here or in the event handler. 
-        # For a "Monitor", we generally report everything and let the strategy filter.
-        
         raw_asset = activity.get('asset', '')
         slug = activity.get('slug', activity.get('marketSlug', 'Unknown'))
         outcome = activity.get('outcome', '')
+        price = float(activity.get('price', 0))
+        
         if not outcome: 
             outcome = str(raw_asset)
+
+        # Fetch rich market metadata if exchange is available
+        market_question = "Unknown"
+        market_category = ""
+        market_status = ""
+        market_volume = None
+        market_end_date = None
+        
+        token_id = str(raw_asset) if str(raw_asset).isdigit() else ""
+        
+        if self.exchange and token_id:
+            try:
+                meta = await self.exchange.get_market_metadata(token_id)
+                market_question = meta.question or "Unknown"
+                market_category = meta.category or ""
+                market_status = meta.status or ""
+                market_volume = meta.volume
+                market_end_date = meta.end_date
+            except Exception as e:
+                logger.debug(f"Failed to fetch metadata for {token_id}: {e}")
+        
+        # Rich logging with all relevant info
+        side_emoji = "📈" if side == Side.BUY else "📉"
+        logger.info(f"{'='*60}")
+        logger.info(f"{side_emoji} WHALE {side.value} DETECTED")
+        logger.info(f"   Trader: {target.name}")
+        logger.info(f"   Q: {market_question}")
+        if market_category or market_status:
+            logger.info(f"   [{market_category or 'Uncategorized'} | {market_status or 'Unknown'}]")
+        if market_volume:
+            logger.info(f"   Volume: ${market_volume:,.2f} | Ends: {market_end_date or 'N/A'}")
+        logger.info(f"   💰 Amount: ${usd_size:.2f} | Outcome: {outcome} @ {price:.3f}")
+        logger.info(f"{'='*60}")
 
         event = TradeEvent(
             source_wallet_name=target.name,
             source_wallet_address=target.address,
-            token_id=str(raw_asset) if str(raw_asset).isdigit() else "", # Logic to ensure it is token ID
+            token_id=token_id,
             market_slug=slug,
             outcome=outcome,
             side=side,
@@ -130,5 +153,4 @@ class WhaleMonitor:
             timestamp=datetime.utcfromtimestamp(activity.get('timestamp', 0)) if isinstance(activity.get('timestamp'), (int, float)) else datetime.utcnow()
         )
         
-        logger.info(f"🔔 Detected {side.value} by {target.name} (${usd_size:.2f})")
         await self.on_event(event)

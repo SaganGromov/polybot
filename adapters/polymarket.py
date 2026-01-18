@@ -125,9 +125,12 @@ class PolymarketAdapter(ExchangeProvider):
         except Exception as e:
             raise APIError(f"Failed to get balance: {e}")
 
-    async def get_positions(self) -> List[Position]:
+    async def get_positions(self, min_value: float = 0.0) -> List[Position]:
         """
         Adapted from main2.py _fetch_positions
+        
+        Args:
+            min_value: Minimum position value in USD to include (filters dust)
         """
         if not self.user_address:
             raise AuthError("User address (PROXY_ADDRESS or USER_ADDRESS) is not set.")
@@ -144,8 +147,6 @@ class PolymarketAdapter(ExchangeProvider):
                     "limit": str(limit), 
                     "offset": str(offset)
                 }
-                # Note: 'requests' is blocking, so strictly speaking generic blocking io in async def
-                # should be run in executor, but for now we follow the simple request.
                 r = requests.get(self.positions_api_url, params=params, timeout=10)
                 r.raise_for_status()
                 batch = r.json()
@@ -170,6 +171,12 @@ class PolymarketAdapter(ExchangeProvider):
             if size > 0 and (redeemable is False or redeemable is None):
                 try:
                     init_val = float(p.get("initialValue", 0))
+                    curr_val = float(p.get("currentValue", 0))
+                    
+                    # Skip dust positions below min_value threshold
+                    if curr_val < min_value:
+                        continue
+                    
                     # Calculate avg entry price approx
                     avg_entry = (init_val / size) if size else 0.0
                     
@@ -177,10 +184,7 @@ class PolymarketAdapter(ExchangeProvider):
                         token_id=str(p.get("asset")),
                         size=size,
                         average_entry_price=avg_entry,
-                        current_price=float(p.get("currentValue", 0)) # Note: currentValue might be total value, need price?
-                        # main2.py uses 'currentValue' as total value. 
-                        # To get price per token, we usually check orderbook or 'price' field if available.
-                        # For now, let's assume average current price = currentValue / size
+                        current_price=curr_val  # Total value of position
                     ))
                 except (ValueError, TypeError):
                     continue
@@ -301,7 +305,7 @@ class PolymarketAdapter(ExchangeProvider):
         try:
             # Polymarket Gamma API to get market details by CLOB Token ID
             url = "https://gamma-api.polymarket.com/markets"
-            params = {"clob_token_ids[]": token_id}
+            params = {"clob_token_ids": token_id}
             
             resp = requests.get(url, params=params, timeout=10)
             resp.raise_for_status()
@@ -312,10 +316,50 @@ class PolymarketAdapter(ExchangeProvider):
                 
             market = data[0]
             
+            # Extract category from series (like play.ipynb)
+            event = market.get('events', [{}])[0] if market.get('events') else {}
+            series = event.get('series', [{}])[0] if event.get('series') else {}
+            category = series.get('title', 'Uncategorized')
+            
+            # Parse outcomes and prices (like play.ipynb)
+            import json as json_module
+            outcomes_dict = None
+            try:
+                raw_outcomes = market.get('outcomes')
+                raw_prices = market.get('outcomePrices')
+                
+                outcomes = json_module.loads(raw_outcomes) if isinstance(raw_outcomes, str) else (raw_outcomes or [])
+                prices = json_module.loads(raw_prices) if isinstance(raw_prices, str) else (raw_prices or [])
+                
+                if outcomes and prices:
+                    outcomes_dict = {outcome: float(price) for outcome, price in zip(outcomes, prices)}
+            except (json_module.JSONDecodeError, TypeError, ValueError):
+                pass
+            
+            # Format end date
+            end_date = None
+            raw_end = market.get('endDate')
+            if raw_end:
+                try:
+                    from datetime import datetime
+                    dt = datetime.fromisoformat(raw_end.replace('Z', '+00:00'))
+                    end_date = dt.strftime('%Y-%m-%d %H:%M UTC')
+                except (ValueError, TypeError):
+                    end_date = raw_end
+            
+            # Extract score for sports markets
+            score = event.get('score') if event else None
+            
             return MarketMetadata(
                 title=market.get("title", "Unknown"),
                 question=market.get("question", "Unknown"),
-                group_name=market.get("groupItemTitle", None)
+                group_name=market.get("groupItemTitle", None),
+                category=category,
+                status="Closed" if market.get("closed") else "Active",
+                volume=float(market.get("volume", 0)) if market.get("volume") else None,
+                end_date=end_date,
+                outcomes=outcomes_dict,
+                score=score
             )
         except Exception as e:
             # Fallback so we don't crash logging

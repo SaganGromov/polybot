@@ -55,3 +55,9 @@ class MarketMetadata(BaseModel):
     title: str
     question: str
     group_name: str | None = None
+    category: str | None = None
+    status: str | None = None  # "Active" or "Closed"
+    volume: float | None = None
+    end_date: str | None = None
+    outcomes: dict[str, float] | None = None  # outcome_name -> price
+    score: str | None = None  # For sports markets
