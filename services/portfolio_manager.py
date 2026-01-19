@@ -13,7 +13,7 @@ from polybot.config.settings import settings
 logger = logging.getLogger(__name__)
 
 class PortfolioManager:
-    def __init__(self, exchange: ExchangeProvider, executor: SmartExecutor, stop_loss_pct: float = 0.20, take_profit_pct: float = 0.9, min_share_price: float = 0.19, log_interval_minutes: int = 60, max_budget: float = 100.0, min_position_value: float = 0.03):
+    def __init__(self, exchange: ExchangeProvider, executor: SmartExecutor, stop_loss_pct: float = 0.20, take_profit_pct: float = 0.9, min_share_price: float = 0.19, log_interval_minutes: int = 60, max_budget: float = 100.0, min_position_value: float = 0.03, blacklisted_token_ids: List[str] = None):
         self.exchange = exchange
         self.executor = executor
         self.stop_loss_pct = stop_loss_pct
@@ -22,6 +22,7 @@ class PortfolioManager:
         self.log_interval_minutes = log_interval_minutes
         self.max_budget = max_budget
         self.min_position_value = min_position_value
+        self.blacklisted_token_ids = set(blacklisted_token_ids or [])
         self._running = False
         
         # Persistent Bot State
@@ -53,7 +54,7 @@ class PortfolioManager:
         except Exception as e:
             logger.error(f"Failed to save bot state: {e}")
 
-    def update_strategies(self, stop_loss: float, take_profit: float, min_price: float, log_interval: int, max_budget: float, min_position_value: float = 0.03):
+    def update_strategies(self, stop_loss: float, take_profit: float, min_price: float, log_interval: int, max_budget: float, min_position_value: float = 0.03, blacklisted_token_ids: List[str] = None):
         """Updates strategy parameters dynamically."""
         self.stop_loss_pct = stop_loss
         self.take_profit_pct = take_profit
@@ -61,7 +62,9 @@ class PortfolioManager:
         self.log_interval_minutes = log_interval
         self.max_budget = max_budget
         self.min_position_value = min_position_value
-        logger.info(f"🔄 PortfolioManager updated: SL={stop_loss*100:.1f}%, TP={take_profit*100:.1f}%, MinPrice={min_price}, MinPosVal=${min_position_value}, LogInt={log_interval}min, Budget=${max_budget}")
+        if blacklisted_token_ids is not None:
+            self.blacklisted_token_ids = set(blacklisted_token_ids)
+        logger.info(f"🔄 PortfolioManager updated: SL={stop_loss*100:.1f}%, TP={take_profit*100:.1f}%, MinPrice={min_price}, MinPosVal=${min_position_value}, LogInt={log_interval}min, Budget=${max_budget}, BlacklistSize={len(self.blacklisted_token_ids)}")
 
     async def start(self):
         self._running = True
@@ -83,6 +86,11 @@ class PortfolioManager:
             
             logger.info(f"🧠 Analyzing Event: {event.source_wallet_name} {event.side} {market_label}")
             
+            # Check Blacklist
+            if event.token_id in self.blacklisted_token_ids:
+                logger.warning(f"  🛑 Token {event.token_id} ({market_label}) is blacklisted. Skipping trade.")
+                return
+
             # --- FETCH ORDER BOOK ---
             depth = await self.exchange.get_order_book(event.token_id)
         

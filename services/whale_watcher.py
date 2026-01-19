@@ -135,6 +135,7 @@ class WhaleMonitor:
         logger.info(f"{side_emoji} WHALE {side.value} DETECTED")
         logger.info(f"   Trader: {target.name}")
         logger.info(f"   Q: {market_question}")
+        logger.info(f" Token ID: {token_id}")
         if market_category or market_status:
             logger.info(f"   [{market_category or 'Uncategorized'} | {market_status or 'Unknown'}]")
         if market_volume:

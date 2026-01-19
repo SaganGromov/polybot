@@ -58,12 +58,13 @@ async def watch_config(whale_watcher: WhaleMonitor, manager: PortfolioManager):
                 log_int = data.get("portfolio_log_interval_minutes", 60)
                 max_b = data.get("max_budget", 100.0)
                 min_pos_val = data.get("min_position_value", 0.03)
+                blacklist = data.get("blacklisted_token_ids", [])
                 
                 if sl is not None and tp is not None and min_p is not None:
-                    manager.update_strategies(sl, tp, min_p, log_int, max_b, min_pos_val)
+                    manager.update_strategies(sl, tp, min_p, log_int, max_b, min_pos_val, blacklist)
                 elif sl is not None and tp is not None:
                      # Fallback
-                    manager.update_strategies(sl, tp, manager.min_share_price, log_int, manager.max_budget, min_pos_val)
+                    manager.update_strategies(sl, tp, manager.min_share_price, log_int, manager.max_budget, min_pos_val, blacklist)
 
         except Exception as e:
             logger.error(f"Error re-loading config: {e}")
@@ -80,8 +81,8 @@ async def main():
     start_tp = 0.90
     start_min_price = 0.19
     start_log_interval = 60
-    start_max_budget = 100.0
     start_min_pos_value = 0.03
+    start_blacklist = []
 
     if os.path.exists(CONFIG_PATH):
         try:
@@ -104,6 +105,8 @@ async def main():
                 start_max_budget = data["max_budget"]
             if "min_position_value" in data:
                 start_min_pos_value = data["min_position_value"]
+            if "blacklisted_token_ids" in data:
+                start_blacklist = data["blacklisted_token_ids"]
                 
         except Exception as e:
             logger.error(f"Failed to load initial strategies.json: {e}")
@@ -131,7 +134,8 @@ async def main():
         min_share_price=start_min_price,
         log_interval_minutes=start_log_interval,
         max_budget=start_max_budget,
-        min_position_value=start_min_pos_value
+        min_position_value=start_min_pos_value,
+        blacklisted_token_ids=start_blacklist
     )
 
     # 3. Setup Whale Watcher Targets
