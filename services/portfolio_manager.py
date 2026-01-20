@@ -325,9 +325,15 @@ class PortfolioManager:
             market_label = f"{meta.question}"
             market_context = f"[{meta.category or 'Uncategorized'} | {meta.status or 'Unknown'}]"
             
-            depth = await self.exchange.get_order_book(pos.token_id)
-            # Mark to market using best bid (exit price)
-            market_price = max(b.price for b in depth.bids) if depth.bids else 0.0
+            # Get current price from Gamma API (more accurate than order book)
+            # Falls back to order book if metadata is unavailable
+            market_price = 0.0
+            if meta.outcomes and meta.queried_outcome and meta.queried_outcome in meta.outcomes:
+                market_price = meta.outcomes[meta.queried_outcome]
+            else:
+                # Fallback to order book
+                depth = await self.exchange.get_order_book(pos.token_id)
+                market_price = max(b.price for b in depth.bids) if depth.bids else 0.0
             
             if market_price == 0:
                 return  # Illiquid, skip
@@ -340,13 +346,14 @@ class PortfolioManager:
             if roi < -self.stop_loss_pct:
                 pnl_emoji = "📉"
                 managed_tag = "🤖" if pos.token_id in self.managed_tokens else "📌"
+                outcome_label = f" ({meta.queried_outcome})" if meta.queried_outcome else ""
                 logger.warning(f"{'='*60}")
                 logger.warning(f"🛑 STOP LOSS TRIGGERED")
                 logger.warning(f"   Q: {market_label}")
                 logger.warning(f"   {market_context}")
                 if meta.volume:
                     logger.warning(f"   Volume: ${meta.volume:,.2f} | Ends: {meta.end_date or 'N/A'}")
-                logger.warning(f"   {managed_tag} Position: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
+                logger.warning(f"   {managed_tag} Position{outcome_label}: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
                 logger.warning(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: -{self.stop_loss_pct*100:.1f}%)")
                 logger.warning(f"{'='*60}")
                 
@@ -361,13 +368,14 @@ class PortfolioManager:
             elif roi > self.take_profit_pct:
                 pnl_emoji = "📈"
                 managed_tag = "🤖" if pos.token_id in self.managed_tokens else "📌"
+                outcome_label = f" ({meta.queried_outcome})" if meta.queried_outcome else ""
                 logger.info(f"{'='*60}")
                 logger.info(f"💰 TAKE PROFIT TRIGGERED")
                 logger.info(f"   Q: {market_label}")
                 logger.info(f"   {market_context}")
                 if meta.volume:
                     logger.info(f"   Volume: ${meta.volume:,.2f} | Ends: {meta.end_date or 'N/A'}")
-                logger.info(f"   {managed_tag} Position: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
+                logger.info(f"   {managed_tag} Position{outcome_label}: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
                 logger.info(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: +{self.take_profit_pct*100:.1f}%)")
                 logger.info(f"{'='*60}")
                 
@@ -403,9 +411,15 @@ class PortfolioManager:
                             # Fetch rich metadata for readability (like play.ipynb)
                             meta = await self.exchange.get_market_metadata(pos.token_id)
                             
-                            # Fetch current market price
-                            depth = await self.exchange.get_order_book(pos.token_id)
-                            curr_price = max(b.price for b in depth.bids) if depth.bids else 0.0
+                            # Get current price from Gamma API (more accurate than order book)
+                            # Falls back to order book if metadata is unavailable
+                            curr_price = 0.0
+                            if meta.outcomes and meta.queried_outcome and meta.queried_outcome in meta.outcomes:
+                                curr_price = meta.outcomes[meta.queried_outcome]
+                            else:
+                                # Fallback to order book
+                                depth = await self.exchange.get_order_book(pos.token_id)
+                                curr_price = max(b.price for b in depth.bids) if depth.bids else 0.0
                             
                             val = pos.size * curr_price
                             total_value += val
@@ -424,16 +438,18 @@ class PortfolioManager:
                             vol_str = f"${meta.volume:,.2f}" if meta.volume else "N/A"
                             logger.info(f"   Volume: {vol_str} | Ends: {meta.end_date or 'N/A'}")
                             
-                            # Show current outcome prices
+                            # Show current outcome prices (highlight user's position)
                             if meta.outcomes:
                                 logger.info("   Market Prices:")
                                 for outcome, price in meta.outcomes.items():
-                                    logger.info(f"     - {outcome}: {price:.3f}")
+                                    marker = " ← YOU" if outcome == meta.queried_outcome else ""
+                                    logger.info(f"     - {outcome}: {price:.3f}{marker}")
                             
-                            # Show position details with PnL
+                            # Show position details with PnL (include outcome name)
                             pnl_emoji = "📈" if pnl_pct >= 0 else "📉"
                             managed_tag = "🤖" if pos.token_id in self.managed_tokens else "📌"
-                            logger.info(f"   {managed_tag} YOUR POSITION: {pos.size:.2f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {curr_price:.3f} | {pnl_emoji} PnL: {pnl_pct:+.1f}% | Value: ${val:.2f}")
+                            outcome_label = f" ({meta.queried_outcome})" if meta.queried_outcome else ""
+                            logger.info(f"   {managed_tag} YOUR POSITION{outcome_label}: {pos.size:.2f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {curr_price:.3f} | {pnl_emoji} PnL: {pnl_pct:+.1f}% | Value: ${val:.2f}")
                             logger.info("-" * 60)
                             
                         except Exception as e:

@@ -360,6 +360,7 @@ class PolymarketAdapter(ExchangeProvider):
             # Parse outcomes and prices (like play.ipynb)
             import json as json_module
             outcomes_dict = None
+            outcomes = []
             try:
                 raw_outcomes = market.get('outcomes')
                 raw_prices = market.get('outcomePrices')
@@ -370,6 +371,20 @@ class PolymarketAdapter(ExchangeProvider):
                 if outcomes and prices:
                     outcomes_dict = {outcome: float(price) for outcome, price in zip(outcomes, prices)}
             except (json_module.JSONDecodeError, TypeError, ValueError):
+                pass
+            
+            # Determine which outcome this token ID represents
+            queried_outcome = None
+            try:
+                raw_token_ids = market.get('clobTokenIds')
+                token_ids = json_module.loads(raw_token_ids) if isinstance(raw_token_ids, str) else (raw_token_ids or [])
+                
+                if token_ids and outcomes:
+                    for idx, tid in enumerate(token_ids):
+                        if tid == token_id and idx < len(outcomes):
+                            queried_outcome = outcomes[idx]
+                            break
+            except (json_module.JSONDecodeError, TypeError, ValueError, IndexError):
                 pass
             
             # Format end date
@@ -395,7 +410,8 @@ class PolymarketAdapter(ExchangeProvider):
                 volume=float(market.get("volume", 0)) if market.get("volume") else None,
                 end_date=end_date,
                 outcomes=outcomes_dict,
-                score=score
+                score=score,
+                queried_outcome=queried_outcome
             )
         except Exception as e:
             # Fallback so we don't crash logging

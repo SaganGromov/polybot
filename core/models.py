@@ -61,6 +61,7 @@ class MarketMetadata(BaseModel):
     end_date: str | None = None
     outcomes: dict[str, float] | None = None  # outcome_name -> price
     score: str | None = None  # For sports markets
+    queried_outcome: str | None = None  # The outcome name for the queried token ID (e.g., "Yes" or "No")
 
 
 class TradeAnalysis(BaseModel):
