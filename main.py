@@ -60,12 +60,13 @@ async def watch_config(whale_watcher: WhaleMonitor, manager: PortfolioManager):
                 max_b = data.get("max_budget", 100.0)
                 min_pos_val = data.get("min_position_value", 0.03)
                 blacklist = data.get("blacklisted_token_ids", [])
+                risk_check = data.get("risk_check_interval_seconds")
                 
                 if sl is not None and tp is not None and min_p is not None:
-                    manager.update_strategies(sl, tp, min_p, log_int, max_b, min_pos_val, blacklist)
+                    manager.update_strategies(sl, tp, min_p, log_int, max_b, min_pos_val, blacklist, risk_check)
                 elif sl is not None and tp is not None:
                      # Fallback
-                    manager.update_strategies(sl, tp, manager.min_share_price, log_int, manager.max_budget, min_pos_val, blacklist)
+                    manager.update_strategies(sl, tp, manager.min_share_price, log_int, manager.max_budget, min_pos_val, blacklist, risk_check)
 
                 # Update AI Config
                 ai_config = data.get("ai_analysis", {})
@@ -96,6 +97,7 @@ async def main():
     start_log_interval = 60
     start_min_pos_value = 0.03
     start_blacklist = []
+    start_risk_check = 10  # Default: check every 10 seconds
 
     if os.path.exists(CONFIG_PATH):
         try:
@@ -120,6 +122,8 @@ async def main():
                 start_min_pos_value = data["min_position_value"]
             if "blacklisted_token_ids" in data:
                 start_blacklist = data["blacklisted_token_ids"]
+            if "risk_check_interval_seconds" in data:
+                start_risk_check = data["risk_check_interval_seconds"]
             
             # Load AI config
             ai_config = data.get("ai_analysis", {})
@@ -174,7 +178,8 @@ async def main():
         max_budget=start_max_budget,
         min_position_value=start_min_pos_value,
         blacklisted_token_ids=start_blacklist,
-        ai_service=ai_service
+        ai_service=ai_service,
+        risk_check_interval_seconds=start_risk_check
     )
     
     # Apply initial AI config

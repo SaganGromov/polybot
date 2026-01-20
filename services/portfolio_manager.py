@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 class PortfolioManager:
-    def __init__(self, exchange: ExchangeProvider, executor: SmartExecutor, stop_loss_pct: float = 0.20, take_profit_pct: float = 0.9, min_share_price: float = 0.19, log_interval_minutes: int = 60, max_budget: float = 100.0, min_position_value: float = 0.03, blacklisted_token_ids: List[str] = None, ai_service: Optional['AIAnalysisService'] = None):
+    def __init__(self, exchange: ExchangeProvider, executor: SmartExecutor, stop_loss_pct: float = 0.20, take_profit_pct: float = 0.9, min_share_price: float = 0.19, log_interval_minutes: int = 60, max_budget: float = 100.0, min_position_value: float = 0.03, blacklisted_token_ids: List[str] = None, ai_service: Optional['AIAnalysisService'] = None, risk_check_interval_seconds: int = 10):
         self.exchange = exchange
         self.executor = executor
         self.stop_loss_pct = stop_loss_pct
@@ -26,6 +26,7 @@ class PortfolioManager:
         self.max_budget = max_budget
         self.min_position_value = min_position_value
         self.blacklisted_token_ids = set(blacklisted_token_ids or [])
+        self.risk_check_interval_seconds = risk_check_interval_seconds
         self._running = False
         
         # AI Analysis Integration
@@ -63,7 +64,7 @@ class PortfolioManager:
         except Exception as e:
             logger.error(f"Failed to save bot state: {e}")
 
-    def update_strategies(self, stop_loss: float, take_profit: float, min_price: float, log_interval: int, max_budget: float, min_position_value: float = 0.03, blacklisted_token_ids: List[str] = None):
+    def update_strategies(self, stop_loss: float, take_profit: float, min_price: float, log_interval: int, max_budget: float, min_position_value: float = 0.03, blacklisted_token_ids: List[str] = None, risk_check_interval_seconds: int = None):
         """Updates strategy parameters dynamically."""
         self.stop_loss_pct = stop_loss
         self.take_profit_pct = take_profit
@@ -73,7 +74,9 @@ class PortfolioManager:
         self.min_position_value = min_position_value
         if blacklisted_token_ids is not None:
             self.blacklisted_token_ids = set(blacklisted_token_ids)
-        logger.info(f"🔄 PortfolioManager updated: SL={stop_loss*100:.1f}%, TP={take_profit*100:.1f}%, MinPrice={min_price}, MinPosVal=${min_position_value}, LogInt={log_interval}min, Budget=${max_budget}, BlacklistSize={len(self.blacklisted_token_ids)}")
+        if risk_check_interval_seconds is not None:
+            self.risk_check_interval_seconds = risk_check_interval_seconds
+        logger.info(f"🔄 PortfolioManager updated: SL={stop_loss*100:.1f}%, TP={take_profit*100:.1f}%, MinPrice={min_price}, MinPosVal=${min_position_value}, LogInt={log_interval}min, Budget=${max_budget}, BlacklistSize={len(self.blacklisted_token_ids)}, RiskCheck={self.risk_check_interval_seconds}s")
 
     def update_ai_config(self, enabled: bool, block_on_negative: bool, min_confidence: float):
         """Updates AI analysis configuration."""
@@ -243,8 +246,15 @@ class PortfolioManager:
             # Fixed minimum order amount in USD
             min_order_usd = Decimal("2.00")
             
+            # Polymarket minimum order size is 5 shares
+            min_size = Decimal("5.00")
+            
             # Calculate size based on minimum order, rounded to 2 decimals
             size_dec = (min_order_usd / limit_price_dec).quantize(Decimal("0.01"), rounding=ROUND_DOWN)
+            
+            # Ensure we never buy less than the minimum size required by Polymarket
+            if size_dec < min_size:
+                size_dec = min_size
             
             # Calculate cost estimate
             cost_rounded = (size_dec * limit_price_dec).quantize(Decimal("0.01"), rounding=ROUND_DOWN)
@@ -284,85 +294,93 @@ class PortfolioManager:
             logger.error(f"  Failed to mirror buy: {e}")
 
     async def monitor_risks(self):
-        """Background loop to check Stop Loss / Take Profit"""
+        """Background loop to check Stop Loss / Take Profit with parallel position checks."""
         while self._running:
             try:
                 positions = await self.exchange.get_positions(min_value=self.min_position_value)
                 if not positions:
-                    await asyncio.sleep(60)
+                    await asyncio.sleep(self.risk_check_interval_seconds)
                     continue
 
-                for pos in positions:
-                    # Apply TP/SL to ALL positions (including pre-existing trades)
-                    if pos.size <= 0:
-                        continue
-                    
-                    try:
-                        # Fetch rich metadata for human-readable logging
-                        meta = await self.exchange.get_market_metadata(pos.token_id)
-                        market_label = f"{meta.question}"
-                        market_context = f"[{meta.category or 'Uncategorized'} | {meta.status or 'Unknown'}]"
-                        
-                        depth = await self.exchange.get_order_book(pos.token_id)
-                        # Mark to market using best bid (exit price)
-                        market_price = max(b.price for b in depth.bids) if depth.bids else 0.0
-                        
-                        if market_price == 0: continue # Illiquid
-
-                        roi = (market_price - pos.average_entry_price) / pos.average_entry_price
-                        
-                        logger.debug(f"  Risk Check: {market_label} ROI: {roi*100:.1f}%")
-
-                        # STOP LOSS
-                        if roi < -self.stop_loss_pct:
-                            pnl_emoji = "📉"
-                            managed_tag = "🤖" if pos.token_id in self.managed_tokens else "📌"
-                            logger.warning(f"{'='*60}")
-                            logger.warning(f"🛑 STOP LOSS TRIGGERED")
-                            logger.warning(f"   Q: {market_label}")
-                            logger.warning(f"   {market_context}")
-                            if meta.volume:
-                                logger.warning(f"   Volume: ${meta.volume:,.2f} | Ends: {meta.end_date or 'N/A'}")
-                            logger.warning(f"   {managed_tag} Position: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
-                            logger.warning(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: -{self.stop_loss_pct*100:.1f}%)")
-                            logger.warning(f"{'='*60}")
-                            
-                            await self.executor.exit_position(
-                                pos.token_id, 
-                                pos.size, 
-                                min_price=0.01,  # Dump it
-                                market_name=market_label
-                            )
-                        
-                        # TAKE PROFIT
-                        elif roi > self.take_profit_pct:
-                            pnl_emoji = "📈"
-                            managed_tag = "🤖" if pos.token_id in self.managed_tokens else "📌"
-                            logger.info(f"{'='*60}")
-                            logger.info(f"💰 TAKE PROFIT TRIGGERED")
-                            logger.info(f"   Q: {market_label}")
-                            logger.info(f"   {market_context}")
-                            if meta.volume:
-                                logger.info(f"   Volume: ${meta.volume:,.2f} | Ends: {meta.end_date or 'N/A'}")
-                            logger.info(f"   {managed_tag} Position: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
-                            logger.info(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: +{self.take_profit_pct*100:.1f}%)")
-                            logger.info(f"{'='*60}")
-                            
-                            # Trailing stop logic could go here, but for now hard exit
-                            await self.executor.exit_position(
-                                pos.token_id, 
-                                pos.size / 2,  # Sell half? Or all
-                                min_price=market_price * 0.9,
-                                market_name=market_label
-                            )
-                            
-                    except Exception as e:
-                        logger.error(f"Error monitoring {pos.token_id}: {e}")
+                # Filter valid positions first
+                valid_positions = [pos for pos in positions if pos.size > 0]
+                
+                if valid_positions:
+                    # Check all positions in parallel for faster TP/SL detection
+                    await asyncio.gather(
+                        *[self._check_position_risk(pos) for pos in valid_positions],
+                        return_exceptions=True  # Don't fail all checks if one fails
+                    )
 
             except Exception as e:
                 logger.error(f"Error in risk monitor loop: {e}")
             
-            await asyncio.sleep(60) # Run every minute
+            await asyncio.sleep(self.risk_check_interval_seconds)
+    
+    async def _check_position_risk(self, pos: Position):
+        """Check a single position for stop loss or take profit triggers."""
+        try:
+            # Fetch rich metadata for human-readable logging
+            meta = await self.exchange.get_market_metadata(pos.token_id)
+            market_label = f"{meta.question}"
+            market_context = f"[{meta.category or 'Uncategorized'} | {meta.status or 'Unknown'}]"
+            
+            depth = await self.exchange.get_order_book(pos.token_id)
+            # Mark to market using best bid (exit price)
+            market_price = max(b.price for b in depth.bids) if depth.bids else 0.0
+            
+            if market_price == 0:
+                return  # Illiquid, skip
+
+            roi = (market_price - pos.average_entry_price) / pos.average_entry_price
+            
+            logger.debug(f"  Risk Check: {market_label} ROI: {roi*100:.1f}%")
+
+            # STOP LOSS
+            if roi < -self.stop_loss_pct:
+                pnl_emoji = "📉"
+                managed_tag = "🤖" if pos.token_id in self.managed_tokens else "📌"
+                logger.warning(f"{'='*60}")
+                logger.warning(f"🛑 STOP LOSS TRIGGERED")
+                logger.warning(f"   Q: {market_label}")
+                logger.warning(f"   {market_context}")
+                if meta.volume:
+                    logger.warning(f"   Volume: ${meta.volume:,.2f} | Ends: {meta.end_date or 'N/A'}")
+                logger.warning(f"   {managed_tag} Position: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
+                logger.warning(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: -{self.stop_loss_pct*100:.1f}%)")
+                logger.warning(f"{'='*60}")
+                
+                await self.executor.exit_position(
+                    pos.token_id, 
+                    pos.size, 
+                    min_price=0.01,  # Dump it
+                    market_name=market_label
+                )
+            
+            # TAKE PROFIT
+            elif roi > self.take_profit_pct:
+                pnl_emoji = "📈"
+                managed_tag = "🤖" if pos.token_id in self.managed_tokens else "📌"
+                logger.info(f"{'='*60}")
+                logger.info(f"💰 TAKE PROFIT TRIGGERED")
+                logger.info(f"   Q: {market_label}")
+                logger.info(f"   {market_context}")
+                if meta.volume:
+                    logger.info(f"   Volume: ${meta.volume:,.2f} | Ends: {meta.end_date or 'N/A'}")
+                logger.info(f"   {managed_tag} Position: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
+                logger.info(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: +{self.take_profit_pct*100:.1f}%)")
+                logger.info(f"{'='*60}")
+                
+                # Trailing stop logic could go here, but for now hard exit
+                await self.executor.exit_position(
+                    pos.token_id, 
+                    pos.size / 2,  # Sell half? Or all
+                    min_price=market_price * 0.9,
+                    market_name=market_label
+                )
+                
+        except Exception as e:
+            logger.error(f"Error monitoring {pos.token_id}: {e}")
 
     async def monitor_portfolio_logging(self):
         """Periodically logs the portfolio summary."""
