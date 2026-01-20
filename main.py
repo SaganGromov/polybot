@@ -8,6 +8,7 @@ from polybot.core.models import WalletTarget
 from polybot.services.whale_watcher import WhaleMonitor
 from polybot.services.execution import SmartExecutor
 from polybot.services.portfolio_manager import PortfolioManager
+from polybot.services.ai_analysis_service import AIAnalysisService
 
 # Configure logging
 logging.basicConfig(
@@ -66,6 +67,18 @@ async def watch_config(whale_watcher: WhaleMonitor, manager: PortfolioManager):
                      # Fallback
                     manager.update_strategies(sl, tp, manager.min_share_price, log_int, manager.max_budget, min_pos_val, blacklist)
 
+                # Update AI Config
+                ai_config = data.get("ai_analysis", {})
+                if ai_config:
+                    manager.update_ai_config(
+                        enabled=ai_config.get("enabled", False),
+                        block_on_negative=ai_config.get("block_on_negative", True),
+                        min_confidence=ai_config.get("min_confidence_threshold", 0.6)
+                    )
+                    # Update AI service max requests if service exists
+                    if manager.ai_service:
+                        manager.ai_service.update_max_requests(ai_config.get("max_requests", 100))
+
         except Exception as e:
             logger.error(f"Error re-loading config: {e}")
 
@@ -107,9 +120,20 @@ async def main():
                 start_min_pos_value = data["min_position_value"]
             if "blacklisted_token_ids" in data:
                 start_blacklist = data["blacklisted_token_ids"]
+            
+            # Load AI config
+            ai_config = data.get("ai_analysis", {})
+            start_ai_enabled = ai_config.get("enabled", False)
+            start_ai_block = ai_config.get("block_on_negative", True)
+            start_ai_confidence = ai_config.get("min_confidence_threshold", 0.6)
+            start_ai_max_requests = ai_config.get("max_requests", 100)
                 
         except Exception as e:
             logger.error(f"Failed to load initial strategies.json: {e}")
+            start_ai_enabled = False
+            start_ai_block = True
+            start_ai_confidence = 0.6
+            start_ai_max_requests = 100
 
 
     # 1. Dependency Injection: Exchange Provider
@@ -124,7 +148,21 @@ async def main():
             logger.critical(f"Failed to initialize Real Adapter: {e}")
             return
 
-    # 2. Initialize Services
+    # 2. Initialize AI Analysis Service
+    ai_service = None
+    if settings.GEMINI_API_KEY and settings.GEMINI_API_KEY.get_secret_value():
+        from polybot.adapters.ai_analyzer import GeminiAnalyzerAdapter
+        ai_analyzer = GeminiAnalyzerAdapter()
+        ai_service = AIAnalysisService(
+            analyzer=ai_analyzer, 
+            exchange=exchange,
+            max_requests=start_ai_max_requests
+        )
+        logger.info("   🤖 AI Analysis: ENABLED (Gemini)")
+    else:
+        logger.info("   🤖 AI Analysis: DISABLED (no API key)")
+
+    # 3. Initialize Services
     executor = SmartExecutor(exchange=exchange)
     manager = PortfolioManager(
         exchange=exchange,
@@ -135,10 +173,19 @@ async def main():
         log_interval_minutes=start_log_interval,
         max_budget=start_max_budget,
         min_position_value=start_min_pos_value,
-        blacklisted_token_ids=start_blacklist
+        blacklisted_token_ids=start_blacklist,
+        ai_service=ai_service
     )
+    
+    # Apply initial AI config
+    if ai_service:
+        manager.update_ai_config(
+            enabled=start_ai_enabled,
+            block_on_negative=start_ai_block,
+            min_confidence=start_ai_confidence
+        )
 
-    # 3. Setup Whale Watcher Targets
+    # 4. Setup Whale Watcher Targets
     # Loaded from settings
     
     # WhaleMonitor pushes events to Manager

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
-from .models import Position, Order, MarketDepth, MarketMetadata
+from .models import Position, Order, MarketDepth, MarketMetadata, TradeAnalysis
 
 class ExchangeProvider(ABC):
     
@@ -43,4 +43,30 @@ class ExchangeProvider(ABC):
 
     async def stop(self):
         """Optional lifecycle hook to stop background tasks."""
+        pass
+
+
+class AIAnalysisProvider(ABC):
+    """Abstract interface for AI-powered trade analysis."""
+    
+    @abstractmethod
+    async def analyze_trade(
+        self, 
+        token_id: str, 
+        market_metadata: MarketMetadata,
+        market_depth: MarketDepth,
+        context: dict
+    ) -> TradeAnalysis:
+        """
+        Analyze whether a trade should be executed.
+        
+        Args:
+            token_id: The Polymarket token ID
+            market_metadata: Market details (title, question, outcomes, volume, etc.)
+            market_depth: Current order book state
+            context: Additional context (whale info, portfolio state, etc.)
+            
+        Returns:
+            TradeAnalysis with recommendation and justification
+        """
         pass

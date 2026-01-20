@@ -3,17 +3,20 @@ import logging
 import math
 import json
 import os
-from typing import List, Set
+from typing import List, Set, Optional, TYPE_CHECKING
 from polybot.core.interfaces import ExchangeProvider, MarketMetadata
 from polybot.core.models import Position, Side, Order, OrderStatus
 from polybot.core.events import TradeEvent
 from polybot.services.execution import SmartExecutor
 from polybot.config.settings import settings
 
+if TYPE_CHECKING:
+    from polybot.services.ai_analysis_service import AIAnalysisService
+
 logger = logging.getLogger(__name__)
 
 class PortfolioManager:
-    def __init__(self, exchange: ExchangeProvider, executor: SmartExecutor, stop_loss_pct: float = 0.20, take_profit_pct: float = 0.9, min_share_price: float = 0.19, log_interval_minutes: int = 60, max_budget: float = 100.0, min_position_value: float = 0.03, blacklisted_token_ids: List[str] = None):
+    def __init__(self, exchange: ExchangeProvider, executor: SmartExecutor, stop_loss_pct: float = 0.20, take_profit_pct: float = 0.9, min_share_price: float = 0.19, log_interval_minutes: int = 60, max_budget: float = 100.0, min_position_value: float = 0.03, blacklisted_token_ids: List[str] = None, ai_service: Optional['AIAnalysisService'] = None):
         self.exchange = exchange
         self.executor = executor
         self.stop_loss_pct = stop_loss_pct
@@ -24,6 +27,12 @@ class PortfolioManager:
         self.min_position_value = min_position_value
         self.blacklisted_token_ids = set(blacklisted_token_ids or [])
         self._running = False
+        
+        # AI Analysis Integration
+        self.ai_service = ai_service
+        self.ai_enabled = False
+        self.ai_block_on_negative = True
+        self.ai_min_confidence = 0.6
         
         # Persistent Bot State
         self.state_file = "polybot/config/bot_state.json"
@@ -66,6 +75,14 @@ class PortfolioManager:
             self.blacklisted_token_ids = set(blacklisted_token_ids)
         logger.info(f"🔄 PortfolioManager updated: SL={stop_loss*100:.1f}%, TP={take_profit*100:.1f}%, MinPrice={min_price}, MinPosVal=${min_position_value}, LogInt={log_interval}min, Budget=${max_budget}, BlacklistSize={len(self.blacklisted_token_ids)}")
 
+    def update_ai_config(self, enabled: bool, block_on_negative: bool, min_confidence: float):
+        """Updates AI analysis configuration."""
+        self.ai_enabled = enabled
+        self.ai_block_on_negative = block_on_negative
+        self.ai_min_confidence = min_confidence
+        status = "ENABLED" if enabled else "DISABLED"
+        logger.info(f"🤖 AI Analysis: {status} (block_on_negative={block_on_negative}, min_confidence={min_confidence:.0%})")
+
     async def start(self):
         self._running = True
         logger.info("🧠 Portfolio Manager started.")
@@ -76,6 +93,59 @@ class PortfolioManager:
 
     def stop(self):
         self._running = False
+
+    async def _prompt_manual_override(self, market_label: str, analysis, token_id: str = "") -> bool:
+        """
+        Prompt for manual override when AI rejects a trade.
+        Returns True if user approves, False if timeout or rejection.
+        
+        Uses a file-based approach for Docker compatibility:
+        - Creates an override request file
+        - Waits 10 seconds for user to create approval file
+        - User runs: docker exec polybot-bot-1 touch /tmp/approve
+        """
+        import os
+        import sys
+        
+        # File paths for override mechanism
+        override_dir = "/tmp/polybot_override"
+        approve_file = os.path.join(override_dir, "approve")
+        
+        # Clean up any stale approval file
+        os.makedirs(override_dir, exist_ok=True)
+        if os.path.exists(approve_file):
+            os.remove(approve_file)
+        
+        # Log the override prompt
+        print("\n" + "=" * 60)
+        print("🚨 MANUAL OVERRIDE REQUIRED 🚨")
+        print(f"   Market: {market_label}")
+        print(f"   AI Confidence: {analysis.confidence:.0%}")
+        print(f"   Risks: {', '.join(analysis.risk_factors[:3]) if analysis.risk_factors else 'None identified'}")
+        print("=" * 60)
+        print("⏰ To APPROVE this trade within 10 seconds, run:")
+        print(f"   docker exec polybot-bot-1 touch {approve_file}")
+        print("   (Otherwise trade will be skipped automatically)")
+        print("=" * 60)
+        sys.stdout.flush()
+        
+        try:
+            # Poll for approval file for 10 seconds
+            for i in range(20):  # Check every 0.5 seconds for 10 seconds
+                await asyncio.sleep(0.5)
+                
+                if os.path.exists(approve_file):
+                    # Clean up and approve
+                    os.remove(approve_file)
+                    print("✅ Override approved! (approval file detected)")
+                    return True
+            
+            print("⏰ Timeout - no approval received, skipping trade")
+            return False
+                
+        except Exception as e:
+            logger.error(f"Error in manual override prompt: {e}")
+            return False
 
     async def on_trade_event(self, event: TradeEvent):
         """Callback for WhaleWatcher events"""
@@ -95,7 +165,7 @@ class PortfolioManager:
             depth = await self.exchange.get_order_book(event.token_id)
         
             if event.side == Side.BUY:
-                await self._handle_buy_signal(event, market_label, depth)
+                await self._handle_buy_signal(event, market_label, depth, metadata)
             
             # We generally don't mirror sells blindly; we use our own exit logic.
             # But complex strategies might mirror sells too.
@@ -103,13 +173,38 @@ class PortfolioManager:
             logger.error(f"Error processing trade event: {e}")
 
 
-    async def _handle_buy_signal(self, event: TradeEvent, market_label: str, depth):
-        # 0. Max Budget Check
-        # We estimate cost. Real cost is size * price.
-        # We need to calculate size first to know cost? Or check current_spend first?
-        # Let's do a preliminary check or check right before sizing.
-        # Actually checking raw balance is already done below.
-        pass
+    async def _handle_buy_signal(self, event: TradeEvent, market_label: str, depth, metadata: MarketMetadata = None):
+        # 0. AI Analysis Gate
+        if self.ai_service and self.ai_enabled:
+            try:
+                should_trade, analysis = await self.ai_service.should_execute_trade(
+                    token_id=event.token_id,
+                    trade_event=event,
+                    market_metadata=metadata,
+                    market_depth=depth
+                )
+                
+                if should_trade:
+                    # AI approves - auto-proceed
+                    logger.info(f"  🤖 AI Analysis: ✅ PROCEED (confidence: {analysis.confidence:.0%})")
+                else:
+                    # AI rejects - ask for manual override with timeout
+                    if analysis.confidence >= self.ai_min_confidence:
+                        logger.warning(f"  🤖 AI recommends SKIP (confidence: {analysis.confidence:.0%})")
+                        logger.warning(f"     Reason: {analysis.justification}")
+                        
+                        # Prompt for manual override with 10 second timeout
+                        override = await self._prompt_manual_override(market_label, analysis)
+                        
+                        if not override:
+                            logger.info(f"  ⏭️ Trade skipped (no manual override)")
+                            return
+                        else:
+                            logger.info(f"  👤 Manual override accepted - proceeding with trade")
+                    else:
+                        logger.info(f"  🤖 AI recommends skip but low confidence ({analysis.confidence:.0%}), auto-proceeding")
+            except Exception as e:
+                logger.error(f"  AI analysis failed: {e} - proceeding with trade")
 
         # 1. Budget Check (Wallet Balance)
         balance = await self.exchange.get_balance()

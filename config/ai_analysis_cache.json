@@ -1,0 +1,183 @@
+{
+  "106170852234620002017813568532533986876985194426528883587597720141396407607081": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the spread is tight and there's decent liquidity on the ask side, the whale's trade size is insignificant ($4.60) relative to the overall market volume. The Flyers are already priced at 46.5%, and there's very little time left until resolution, making it unlikely a small trade will significantly move the market.",
+    "risk_factors": [
+      "Flyers lose the game",
+      "Market price doesn't move in desired direction",
+      "Whale's signal is noise"
+    ],
+    "opportunity_factors": [
+      "Tight spread allows for quick exit",
+      "Potential for small profit if Flyers win"
+    ],
+    "estimated_resolution_time": "2 hours, 36 minutes",
+    "subjectivity_score": 0.0
+  },
+  "89066651497619199147285495755410047433308117372044633386106016435125989733330": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the small trade size combined with the relatively inefficient market (large spread) and the already low probability of Over 2.5 sets makes this a risky trade. The time until resolution is also relatively short, limiting potential for price movement.",
+    "risk_factors": [
+      "Krueger/Bejlek match outcome is unpredictable",
+      "Whale trade may be based on incomplete information or a contrarian strategy",
+      "Market price may move against the position before resolution",
+      "Low liquidity could make exiting the position difficult at the desired price"
+    ],
+    "opportunity_factors": [
+      "Potential for mispricing if the market is undervaluing the chance of a 3-set match",
+      "Whale trader may have inside information or a strong analytical edge"
+    ],
+    "estimated_resolution_time": "11 days",
+    "subjectivity_score": 0.1
+  },
+  "69790105046089876818614285887962281995170142407952810703323362170327185343328": {
+    "should_trade": true,
+    "confidence": 0.75,
+    "justification": "The market is leaning towards Chicago State winning, and a whale is adding to that position. With limited time until resolution and decent liquidity, mirroring the whale's buy order on Chicago State presents a favorable risk/reward profile, especially given the objective nature of the event.",
+    "risk_factors": [
+      "Chicago State could underperform",
+      "Unexpected game cancellation or postponement",
+      "Whale could be wrong or have inside information that is not accurate"
+    ],
+    "opportunity_factors": [
+      "Whale's historical performance",
+      "Short resolution time reduces uncertainty",
+      "Chicago State's perceived advantage based on market pricing"
+    ],
+    "estimated_resolution_time": "1 hour, 33 minutes",
+    "subjectivity_score": 0.0
+  },
+  "113348332783545824059052301461671403237631957684590093584956219756298211780468": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the market indicates a high probability of a Big 10 win, the short time to resolution and the small whale trade size relative to the overall market volume make this a less compelling opportunity. The potential profit is limited, and the risk of a last-minute shift in sentiment outweighs the potential gains from mirroring the whale.",
+    "risk_factors": [
+      "Short time to resolution increases volatility risk",
+      "Small whale trade may not be indicative of significant information",
+      "Potential for upset in the championship game"
+    ],
+    "opportunity_factors": [
+      "High implied probability of Big 10 win",
+      "Whale trader may have inside information or superior analysis"
+    ],
+    "estimated_resolution_time": "1 day, 1 hour, 33 minutes",
+    "subjectivity_score": 0.1
+  },
+  "86273571513194365980680004766874248849502149716226643156695730650640741818735": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the liquidity is good, the very short resolution time and extremely small whale trade size make this a low-confidence trade. The potential for profit is minimal, and the current Pacers price already reflects a reasonable probability.",
+    "risk_factors": [
+      "Short resolution time limits potential profit",
+      "Small whale trade size provides weak signal",
+      "Potential for late news impacting the game (injuries, etc.)"
+    ],
+    "opportunity_factors": [
+      "High market volume suggests efficient pricing",
+      "Good liquidity allows for easy entry/exit"
+    ],
+    "estimated_resolution_time": "1 hour, 32 minutes",
+    "subjectivity_score": 0.0
+  },
+  "110316625482956178019718689335218852383166626952390067906546205397912513435118": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is present, the negative spread and high ask liquidity suggest the market is already leaning heavily towards Golubic. The small whale trade size and relatively short resolution time don't justify taking a position at the current price.",
+    "risk_factors": [
+      "Golubic could lose the match",
+      "Market price may already reflect Golubic's perceived advantage",
+      "Whale's trade may be based on information already priced in"
+    ],
+    "opportunity_factors": [
+      "Potential for Golubic to win and price to increase",
+      "Whale signal could indicate inside information"
+    ],
+    "estimated_resolution_time": "11 days, 1 hour, 30 minutes",
+    "subjectivity_score": 0.1
+  },
+  "106488753917692596207238334300389366148251466540995990051390962197673001038310": {
+    "should_trade": false,
+    "confidence": 0.55,
+    "justification": "While the whale signal is present, the small trade size and relatively efficient market pricing suggest limited upside. The liquidity is also skewed towards bids, making it potentially difficult to exit at a favorable price if the market moves against the trade.",
+    "risk_factors": [
+      "Keys could underperform",
+      "Market price already reflects available information",
+      "Limited liquidity on the ask side",
+      "Small whale trade size may not be indicative of strong conviction"
+    ],
+    "opportunity_factors": [
+      "Whale signal present",
+      "Potential for slight mispricing in WTA markets",
+      "Short resolution timeline"
+    ],
+    "estimated_resolution_time": "11 days, 1 hour, 28 minutes",
+    "subjectivity_score": 0.1
+  },
+  "96183293358900405327419356712562758572876725700872230341345248053405060086825": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale's trade is significant, the market is very liquid and the outcome is highly likely based on the current price. With only 1 hour and 28 minutes until resolution, the potential profit is minimal and the risk of a last-minute shift outweighs the potential reward.",
+    "risk_factors": [
+      "Low potential profit due to short time to resolution",
+      "Potential for unexpected upset in the final minutes",
+      "Market price already reflects high likelihood of 'Yes' outcome"
+    ],
+    "opportunity_factors": [
+      "Whale trader signal",
+      "High market liquidity"
+    ],
+    "estimated_resolution_time": "1 hour, 28 minutes",
+    "subjectivity_score": 0.0
+  },
+  "19610288044512445018970900383394598704429716248417831382102395080716996421422": {
+    "should_trade": false,
+    "confidence": 0.2,
+    "justification": "The current price of 'Yes' is extremely low (0.7%), suggesting very little chance of Bugonia winning. While a whale is buying, the trade size is insignificant compared to the market's volume and ask liquidity, making it unlikely to move the price substantially or indicate strong conviction.",
+    "risk_factors": [
+      "Low probability event",
+      "Whale trade size is small",
+      "Potential for negative price movement if sentiment shifts further against 'Yes'"
+    ],
+    "opportunity_factors": [
+      "Potential for high returns if 'Bugonia' unexpectedly gains momentum",
+      "Following a whale, even with a small trade, could be profitable if they have inside information (unlikely)"
+    ],
+    "estimated_resolution_time": "1 month, 25 days",
+    "subjectivity_score": 0.7
+  },
+  "34465433013244737261777301958314575283534514587255327061285941306189159190135": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the liquidity is good, the whale trade is insignificant relative to the market volume, and the 'No' outcome is already heavily favored. The short timeframe until resolution also limits potential profit, making this an unattractive opportunity despite the whale signal.",
+    "risk_factors": [
+      "Israel unexpectedly strikes Iran",
+      "Market price shifts against the 'No' position",
+      "Whale's trade is based on private information that is incorrect or outdated"
+    ],
+    "opportunity_factors": [
+      "Potential for small profit if 'No' outcome is maintained",
+      "Liquidity allows for easy entry and exit"
+    ],
+    "estimated_resolution_time": "11 days",
+    "subjectivity_score": 0.6
+  },
+  "104365977645746321785514154400197348298386605519816715971421031551820217019565": {
+    "should_trade": true,
+    "confidence": 0.65,
+    "justification": "Following the whale's buy of Houston Christian Huskies seems reasonable given the relatively short resolution time and the decent liquidity. While the market appears somewhat efficient, the whale's significant buy suggests potential for a short-term price increase, making a small position worthwhile.",
+    "risk_factors": [
+      "Houston Christian Huskies could lose the game.",
+      "The whale's information could be incorrect or outdated.",
+      "The market could move against us before resolution."
+    ],
+    "opportunity_factors": [
+      "Potential for short-term profit by mirroring the whale's trade.",
+      "Relatively short resolution time reduces exposure to market fluctuations.",
+      "Decent liquidity allows for entry and exit."
+    ],
+    "estimated_resolution_time": "2 hours, 24 minutes",
+    "subjectivity_score": 0.0
+  }
+}
