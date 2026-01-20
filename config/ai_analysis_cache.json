@@ -639,5 +639,186 @@
     ],
     "estimated_resolution_time": "2 hours 22 minutes",
     "subjectivity_score": 0.1
+  },
+  "77452908931736408685582190817139077060725526624892099220203232792027249722821": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the spread is tight and liquidity is high, the whale's trade size is insignificant ($2.60) and unlikely to move the market. The Sharks are also significantly undervalued at 26.5% given the short time to resolution, suggesting a low probability of a profitable trade.",
+    "risk_factors": [
+      "Sharks are likely to lose",
+      "Whale's trade is too small to influence the market",
+      "Potential for unexpected game events (injuries, etc.)"
+    ],
+    "opportunity_factors": [
+      "Tight spread allows for quick exit if needed",
+      "High liquidity reduces slippage"
+    ],
+    "estimated_resolution_time": "7 hours, 20 minutes",
+    "subjectivity_score": 0.0
+  },
+  "85285371298666728157833887959686391289232801886428096646942933044532858495523": {
+    "should_trade": false,
+    "confidence": 0.55,
+    "justification": "While the whale signal is present, the extremely small trade size ($3.30) suggests low conviction. The market seems relatively efficient, and the potential profit is minimal given the risks.",
+    "risk_factors": [
+      "Potential for upset victory by Game Hunters",
+      "Whale signal may be noise due to small trade size",
+      "Market price already reflects available information"
+    ],
+    "opportunity_factors": [
+      "Potential for slight mispricing favoring Vasco Esports",
+      "Following a profitable whale, even with a small trade"
+    ],
+    "estimated_resolution_time": "7 hours, 19 minutes",
+    "subjectivity_score": 0.0
+  },
+  "15138030064393495392361957590536001641602189533334091533383337125506997282903": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the liquidity is good, the whale trade size is insignificant, and the market seems reasonably efficient. Following such a small whale trade in a relatively objective market is unlikely to be profitable, especially given the short timeframe until resolution.",
+    "risk_factors": [
+      "Fulham unexpectedly wins",
+      "Market price moves against the trade before resolution",
+      "Whale signal is noise"
+    ],
+    "opportunity_factors": [
+      "Potential for slight mispricing in the market",
+      "Whale has inside information (unlikely)"
+    ],
+    "estimated_resolution_time": "3 days, 22 hours",
+    "subjectivity_score": 0.1
+  },
+  "46459821676905969512485742679361040296175906519236006105543002802469103263739": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the potential upside exists if Vasco Esports wins, the current price doesn't offer enough value given the short timeframe and the small whale trade size. The market seems relatively efficient, and the risk of losing the entire investment in a short period outweighs the potential reward.",
+    "risk_factors": [
+      "Vasco Esports loses the match",
+      "Market price moves against the position before resolution",
+      "Short resolution timeframe limits potential profit"
+    ],
+    "opportunity_factors": [
+      "Potential mispricing of Vasco Esports' chances",
+      "Whale signal could indicate inside information or superior analysis"
+    ],
+    "estimated_resolution_time": "5 hours",
+    "subjectivity_score": 0.1
+  },
+  "13294549611854156060952327202052855585194847446707854951585060180328600525494": {
+    "should_trade": true,
+    "confidence": 0.7,
+    "justification": "The market heavily favors 'No,' and a whale is reinforcing that position. The remaining time until resolution is relatively short, limiting exposure, and the liquidity is sufficient to enter and exit the position. While geopolitical events are unpredictable, the current pricing suggests a good opportunity to profit from a likely outcome.",
+    "risk_factors": [
+      "Unexpected escalation of tensions between US and Iran",
+      "Misinterpretation of 'strike' definition leading to unexpected resolution",
+      "Whale's information is incorrect or outdated"
+    ],
+    "opportunity_factors": [
+      "Market heavily favors 'No' outcome",
+      "Whale is reinforcing the likely outcome",
+      "Short time to resolution reduces uncertainty"
+    ],
+    "estimated_resolution_time": "10 days",
+    "subjectivity_score": 0.6
+  },
+  "106764011072317552757982387931585339166939465549943485016265468903315339150319": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the very small trade size ($2.10) suggests low conviction. The spread is also quite wide, and the current price of 35.5% for Over 3.5 goals seems reasonable given the lack of further information, making this an unattractive trade.",
+    "risk_factors": [
+      "Wide bid-ask spread",
+      "Low whale conviction (small trade size)",
+      "Potential for no goals or only a few goals",
+      "Lack of information on team form and injuries"
+    ],
+    "opportunity_factors": [
+      "Potential for high-scoring game",
+      "Whale signal (though weak)"
+    ],
+    "estimated_resolution_time": "4 days, 20 hours, 15 minutes",
+    "subjectivity_score": 0.0
+  },
+  "74303834160086731884196938846116904279791326234547664227132818492746166725904": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is present, the market heavily favors Alcaraz, making a Hanfmann win unlikely. The small whale trade size and the relatively low liquidity for Hanfmann suggest this isn't a strong signal to follow, especially considering the unfavorable odds.",
+    "risk_factors": [
+      "Alcaraz is a strong favorite",
+      "Hanfmann has a low implied probability of winning",
+      "Whale trade size is small",
+      "Potential for quick loss if Alcaraz wins the first set easily"
+    ],
+    "opportunity_factors": [
+      "Potential for high payout if Hanfmann wins",
+      "Whale signal could indicate inside information or a contrarian bet"
+    ],
+    "estimated_resolution_time": "1 week, 5 days",
+    "subjectivity_score": 0.0
+  },
+  "10832696757358093775468120009000761778513405247768868107262967513475277652998": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale's trade is a signal, the remaining time until resolution is short, limiting potential profit. The current market prices also seem relatively efficient, and the whale's trade size is small relative to the overall market liquidity, suggesting limited informational advantage.",
+    "risk_factors": [
+      "US foreign policy is unpredictable",
+      "Unexpected escalation of tensions between US and Iran",
+      "Whale's trade may be based on private information that is incorrect or outdated"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if tensions de-escalate",
+      "Whale may have access to superior information"
+    ],
+    "estimated_resolution_time": "10 days",
+    "subjectivity_score": 0.6
+  },
+  "28200839143639341592495340432538288013723397188217258023406824550319200860206": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal exists, the small trade size and relatively short time to resolution, combined with the already low probability assigned to Game Hunters, make this a risky trade. The potential upside is limited, and the downside is substantial if Game Hunters lose.",
+    "risk_factors": [
+      "Game Hunters are the underdog",
+      "Short time to resolution limits potential for price movement",
+      "Whale trade size is small, indicating low conviction",
+      "Vasco Esports is heavily favored by the market"
+    ],
+    "opportunity_factors": [
+      "Potential for upset win by Game Hunters",
+      "Whale signal could indicate inside information or a strong belief in Game Hunters"
+    ],
+    "estimated_resolution_time": "7 hours, 12 minutes",
+    "subjectivity_score": 0.1
+  },
+  "75622030394035399036937070033090646111399878725123970869483987211900705097957": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the liquidity is high, the whale trade size is insignificant ($5.58) and unlikely to move the market. The event is imminent (less than 4 hours) and the current price reflects a reasonable probability of PSG winning, making it unlikely that a small 'No' position will be profitable.",
+    "risk_factors": [
+      "PSG could win, resulting in a loss",
+      "The market may not move significantly in the remaining time",
+      "The whale's signal may be incorrect or based on information not available to the public"
+    ],
+    "opportunity_factors": [
+      "Potential for a quick profit if PSG underperforms",
+      "High liquidity allows for easy entry and exit"
+    ],
+    "estimated_resolution_time": "3 hours, 11 minutes",
+    "subjectivity_score": 0.0
+  },
+  "16206267440377108972343351482425564384973031696941663558076310969498822538172": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the small trade size and relatively inefficient market (given the political nature) make this a low-conviction trade. The long resolution time and subjective nature of the event further reduce the attractiveness of mirroring this trade.",
+    "risk_factors": [
+      "Trump may not nominate Rieder even if he wants to",
+      "Rieder may decline the nomination",
+      "Trump may not be in a position to nominate the Fed chair",
+      "Market price may already reflect available information"
+    ],
+    "opportunity_factors": [
+      "Whale signal may indicate inside information or superior analysis",
+      "Potential for mispricing due to subjective nature of the event"
+    ],
+    "estimated_resolution_time": "11 months, 10 days",
+    "subjectivity_score": 0.8
   }
 }

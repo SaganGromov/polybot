@@ -246,6 +246,19 @@ class PolymarketAdapter(ExchangeProvider):
                     cost_decimals = abs(Decimal(str(final_cost)).as_tuple().exponent)
                     attempts += 1
                 
+                # CRITICAL: Polymarket minimum order size is 5 shares
+                min_order_size = Decimal("5.00")
+                if adjusted_size_dec < min_order_size:
+                    # Size fell below minimum during decimal adjustment
+                    # Round size up to minimum and adjust price down to maintain clean cost
+                    adjusted_size_dec = min_order_size
+                    # Find a price that gives us clean cost decimals (≤2)
+                    target_cost = (min_order_size * price_dec).quantize(Decimal("0.01"), rounding=ROUND_DOWN)
+                    price_dec = (target_cost / min_order_size).quantize(Decimal("0.01"), rounding=ROUND_DOWN)
+                    final_cost = adjusted_size_dec * price_dec
+                    cost_decimals = abs(Decimal(str(final_cost)).as_tuple().exponent)
+                    logger.info(f"  📏 Adjusted to minimum size: {adjusted_size_dec} @ {price_dec}")
+                
                 final_price = float(price_dec)
                 final_size = float(adjusted_size_dec)
                 final_cost_float = float(final_cost)

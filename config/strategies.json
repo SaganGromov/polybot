@@ -10,7 +10,7 @@
     "min_position_value": 0.03,
     "portfolio_log_interval_minutes": 1,
     "stop_loss_pct": 0.16,
-    "take_profit_pct": 0.44,
+    "take_profit_pct": 0.22,
     "risk_check_interval_seconds": 1,
     "ai_analysis": {
         "enabled": true,
