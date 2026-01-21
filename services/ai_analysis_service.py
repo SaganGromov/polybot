@@ -58,8 +58,6 @@ class AIAnalysisService:
         
         # Sports filter configuration (set via update_sports_filter_config)
         self.sports_filter_enabled = False
-        self.sports_use_ai = True
-        self.sports_blocked_categories: list[str] = []
         
         # Load cache and state
         self._cache: dict = {}
@@ -120,18 +118,11 @@ class AIAnalysisService:
             return False  # Unlimited
         return self._request_count >= self.max_requests
     
-    def update_sports_filter_config(
-        self,
-        enabled: bool,
-        use_ai: bool,
-        blocked_categories: list[str]
-    ):
+    def update_sports_filter_config(self, enabled: bool):
         """Update sports filter configuration."""
         self.sports_filter_enabled = enabled
-        self.sports_use_ai = use_ai
-        self.sports_blocked_categories = blocked_categories
         status = "ENABLED" if enabled else "DISABLED"
-        logger.info(f"🏈 Sports Filter: {status} (AI={use_ai}, blocked_categories={len(blocked_categories)})")
+        logger.info(f"🏈 Sports Filter: {status}")
     
     async def check_sports_filter(
         self,
@@ -140,6 +131,7 @@ class AIAnalysisService:
     ) -> tuple[bool, str]:
         """
         Check if a market should be blocked due to sports filter.
+        Uses Gemini AI for classification.
         
         Returns:
             (should_block, reason) - True if market is sports and should be blocked
@@ -152,11 +144,9 @@ class AIAnalysisService:
             cached = self._sports_cache[token_id]
             return cached["is_sports"], f"(cached) {cached['reason']}"
         
-        # Delegate to analyzer
+        # Delegate to analyzer - pure AI classification
         is_sports, reason = await self.analyzer.is_sports_market(
-            market_metadata=market_metadata,
-            blocked_categories=self.sports_blocked_categories,
-            use_ai_classification=self.sports_use_ai
+            market_metadata=market_metadata
         )
         
         # Cache result

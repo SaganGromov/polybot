@@ -84,9 +84,7 @@ async def watch_config(whale_watcher: WhaleMonitor, manager: PortfolioManager):
                 sports_config = data.get("sports_filter", {})
                 if manager.ai_service:
                     manager.ai_service.update_sports_filter_config(
-                        enabled=sports_config.get("enabled", False),
-                        use_ai=sports_config.get("use_ai_classification", True),
-                        blocked_categories=sports_config.get("blocked_categories", [])
+                        enabled=sports_config.get("enabled", False)
                     )
 
         except Exception as e:
@@ -144,8 +142,6 @@ async def main():
             # Load Sports Filter config
             sports_config = data.get("sports_filter", {})
             start_sports_enabled = sports_config.get("enabled", False)
-            start_sports_use_ai = sports_config.get("use_ai_classification", True)
-            start_sports_blocked = sports_config.get("blocked_categories", [])
                 
         except Exception as e:
             logger.error(f"Failed to load initial strategies.json: {e}")
@@ -154,8 +150,6 @@ async def main():
             start_ai_confidence = 0.6
             start_ai_max_requests = 100
             start_sports_enabled = False
-            start_sports_use_ai = True
-            start_sports_blocked = []
 
 
     # 1. Dependency Injection: Exchange Provider
@@ -209,9 +203,7 @@ async def main():
         )
         # Apply initial Sports Filter config
         ai_service.update_sports_filter_config(
-            enabled=start_sports_enabled,
-            use_ai=start_sports_use_ai,
-            blocked_categories=start_sports_blocked
+            enabled=start_sports_enabled
         )
 
     # 4. Setup Whale Watcher Targets

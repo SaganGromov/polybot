@@ -3386,5 +3386,88 @@
     ],
     "estimated_resolution_time": "2 hours, 37 minutes",
     "subjectivity_score": 0.0
+  },
+  "84471721265205866993331979397943119795201233567819652770485246284641331664532": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the liquidity is high, the whale trade is very small and unlikely to move the market significantly. The current price already favors Fery, and the small potential profit doesn't outweigh the risk of Fery underperforming or the market correcting.",
+    "risk_factors": [
+      "Fery could lose the match.",
+      "Market price may already reflect Fery's true probability.",
+      "Whale's signal might be inaccurate or based on information already priced in."
+    ],
+    "opportunity_factors": [
+      "High liquidity allows for easy entry and exit.",
+      "Potential for a small profit if Fery wins and the price increases slightly."
+    ],
+    "estimated_resolution_time": "1 week, 3 hours",
+    "subjectivity_score": 0.0
+  },
+  "98686000961840472718925829517679879428244289411307611978452808788429260739944": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the small trade size ($40) doesn't inspire much confidence. The market already seems to be pricing in a reasonable probability of the event not occurring (42.5%), and without knowing the end date, the time horizon is uncertain, making this a risky trade.",
+    "risk_factors": [
+      "Unknown resolution date",
+      "Small whale trade size",
+      "Potential for market manipulation",
+      "Subjectivity in grading/authentication if sale occurs"
+    ],
+    "opportunity_factors": [
+      "Potential for mispricing if market overestimates the likelihood of a high sale price",
+      "Whale signal (though weak)"
+    ],
+    "estimated_resolution_time": "Unknown",
+    "subjectivity_score": 0.3
+  },
+  "66487956239997306578107455279731398805753878680728827016441922981358252476704": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal suggests a potential opportunity, the extremely short resolution timeline and the already low probability assigned to Wyoming winning make this a risky trade. The potential profit is minimal compared to the risk of losing the entire investment in a very short time.",
+    "risk_factors": [
+      "Short resolution timeline",
+      "Low probability of Wyoming winning",
+      "Small whale trade size",
+      "High market confidence in Boise State"
+    ],
+    "opportunity_factors": [
+      "Whale signal",
+      "Potential for upset victory"
+    ],
+    "estimated_resolution_time": "1 hour, 48 minutes",
+    "subjectivity_score": 0.0
+  },
+  "68196597149960067931860153620809771948376014026279823242673924042774777447401": {
+    "should_trade": true,
+    "confidence": 0.7,
+    "justification": "The market strongly favors Kansas State, and a whale is adding to that position. The short resolution time and decent liquidity make this a reasonable, albeit somewhat expensive, trade to mirror.",
+    "risk_factors": [
+      "Kansas State could unexpectedly lose",
+      "The whale could be wrong or have inside information that is not relevant to the outcome",
+      "The market could move against us before resolution"
+    ],
+    "opportunity_factors": [
+      "Strong market sentiment favoring Kansas State",
+      "Whale signal confirming market sentiment",
+      "Short resolution time reduces exposure to unforeseen events"
+    ],
+    "estimated_resolution_time": "2 hours, 16 minutes",
+    "subjectivity_score": 0.0
+  },
+  "74258256387806516203338852570420188453362481038267771588823853014751392482118": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is present, the market is heavily favoring Auburn, and the short timeframe until resolution leaves little room for price movement. The potential profit is minimal compared to the risk of Auburn underperforming in the final minutes.",
+    "risk_factors": [
+      "Auburn could underperform in the remaining time.",
+      "The market is already heavily priced in Auburn's favor, limiting potential profit.",
+      "Whale's trade could be a misdirection or based on information already priced in."
+    ],
+    "opportunity_factors": [
+      "Following a whale trader could lead to short-term profit.",
+      "Auburn is currently favored, increasing the likelihood of a positive outcome."
+    ],
+    "estimated_resolution_time": "2 hours, 16 minutes",
+    "subjectivity_score": 0.1
   }
 }

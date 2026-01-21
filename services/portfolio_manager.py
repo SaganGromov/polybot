@@ -165,16 +165,20 @@ class PortfolioManager:
                 return
             
             # Check Sports Filter
-            if self.ai_service and self.ai_service.sports_filter_enabled:
-                try:
-                    is_sports, reason = await self.ai_service.check_sports_filter(
-                        event.token_id, metadata
-                    )
-                    if is_sports:
-                        logger.warning(f"  🏈 Sports market blocked: {reason}")
-                        return
-                except Exception as e:
-                    logger.error(f"  Sports filter check failed: {e} - proceeding with trade")
+            if self.ai_service:
+                logger.info(f"  🏈 Sports filter check: enabled={self.ai_service.sports_filter_enabled}, category='{metadata.category}'")
+                if self.ai_service.sports_filter_enabled:
+                    try:
+                        is_sports, reason = await self.ai_service.check_sports_filter(
+                            event.token_id, metadata
+                        )
+                        if is_sports:
+                            logger.warning(f"  🏈 BLOCKED - Sports market: {reason}")
+                            return
+                        else:
+                            logger.info(f"  ✅ Not sports: {reason}")
+                    except Exception as e:
+                        logger.error(f"  Sports filter check failed: {e} - proceeding with trade")
 
             # --- FETCH ORDER BOOK ---
             depth = await self.exchange.get_order_book(event.token_id)

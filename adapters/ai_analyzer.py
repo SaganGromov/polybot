@@ -213,76 +213,38 @@ Provide your analysis:"""
 
     async def is_sports_market(
         self,
-        market_metadata: MarketMetadata,
-        blocked_categories: list[str],
-        use_ai_classification: bool = True
+        market_metadata: MarketMetadata
     ) -> tuple[bool, str]:
         """
-        Detect if a market is sports-related.
-        
-        Uses a hybrid approach:
-        1. First checks category field against blocked keywords (fast, free)
-        2. Falls back to AI classification for ambiguous cases (accurate, uses API)
+        Detect if a market is sports-related using Gemini AI.
         
         Args:
             market_metadata: Market details with title, question, category
-            blocked_categories: List of category keywords to block (case-insensitive)
-            use_ai_classification: Whether to use AI for ambiguous cases
             
         Returns:
             (is_sports, reason) - True if market should be blocked
         """
-        # Normalize category for comparison
-        category = (market_metadata.category or "").strip()
+        if not self.api_key:
+            logger.warning("No Gemini API key - cannot classify sports markets")
+            return False, "No API key - allowing trade"
+        
         title = market_metadata.title or ""
         question = market_metadata.question or ""
+        category = market_metadata.category or "Unknown"
         
-        # Step 1: Check category against blocked list (case-insensitive substring match)
-        category_lower = category.lower()
-        for blocked in blocked_categories:
-            if blocked.lower() in category_lower:
-                return True, f"Category '{category}' matches blocked sports category '{blocked}'"
-        
-        # Step 2: Check title/question for obvious sports keywords
-        sports_keywords = [
-            "nfl", "nba", "mlb", "nhl", "mls", "uefa", "fifa",
-            "super bowl", "world series", "stanley cup", "championship",
-            "playoffs", "touchdown", "home run", "goal scored",
-            "basketball", "football", "baseball", "hockey", "soccer",
-            "tennis", "golf", "boxing", "mma", "ufc", "f1", "formula 1",
-            "grand prix", "olympics", "world cup"
-        ]
-        
-        text_lower = f"{title} {question}".lower()
-        for keyword in sports_keywords:
-            if keyword in text_lower:
-                return True, f"Title/question contains sports keyword '{keyword}'"
-        
-        # Step 3: If category is unknown/ambiguous and AI is enabled, use Gemini
-        if use_ai_classification and self.api_key:
-            if not category or category.lower() in ["unknown", "other", "misc", "general"]:
-                return await self._classify_sports_with_ai(market_metadata)
-        
-        # Not sports
-        return False, "No sports indicators detected"
-    
-    async def _classify_sports_with_ai(
-        self,
-        market_metadata: MarketMetadata
-    ) -> tuple[bool, str]:
-        """Use Gemini to classify if a market is sports-related."""
         prompt = f"""Analyze this prediction market and determine if it is related to sports.
 
-Market Title: {market_metadata.title}
-Market Question: {market_metadata.question}
-Category: {market_metadata.category or 'Unknown'}
+Market Title: {title}
+Market Question: {question}
+Category: {category}
 
 A market is considered "sports-related" if it involves:
-- Professional or amateur sports leagues (NFL, NBA, MLB, NHL, MLS, etc.)
+- Professional or amateur sports leagues (NFL, NBA, MLB, NHL, MLS, NCAA, etc.)
 - Sporting events, games, matches, or competitions
 - Athletes, teams, or sports organizations
 - Sports betting outcomes (scores, winners, player performance)
 - E-sports or competitive gaming tournaments
+- College sports (NCAA basketball, football, etc.)
 
 Respond with ONLY a JSON object in this format (no markdown, no code blocks):
 {{"is_sports": true or false, "reason": "brief explanation"}}"""
@@ -322,13 +284,8 @@ Respond with ONLY a JSON object in this format (no markdown, no code blocks):
                 is_sports = bool(result.get("is_sports", False))
                 reason = result.get("reason", "AI classification")
                 
-                if is_sports:
-                    logger.info(f"🤖 AI classified as sports: {reason}")
-                    return True, f"AI classification: {reason}"
-                else:
-                    return False, f"AI confirmed not sports: {reason}"
+                return is_sports, reason
                     
         except Exception as e:
             logger.warning(f"Sports AI classification error: {e}")
             return False, f"AI classification error - allowing trade"
-

@@ -20,30 +20,7 @@
         "max_requests": 555
     },
     "sports_filter": {
-        "enabled": true,
-        "use_ai_classification": true,
-        "blocked_categories": [
-            "Sports",
-            "Football",
-            "Basketball",
-            "Baseball",
-            "Hockey",
-            "Soccer",
-            "Tennis",
-            "Golf",
-            "Boxing",
-            "MMA",
-            "UFC",
-            "NFL",
-            "NBA",
-            "MLB",
-            "NHL",
-            "F1",
-            "Racing",
-            "Olympics",
-            "Cricket",
-            "Rugby"
-        ]
+        "enabled": true
     },
     "watched_wallets": [
         {
