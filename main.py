@@ -79,6 +79,15 @@ async def watch_config(whale_watcher: WhaleMonitor, manager: PortfolioManager):
                     # Update AI service max requests if service exists
                     if manager.ai_service:
                         manager.ai_service.update_max_requests(ai_config.get("max_requests", 100))
+                
+                # Update Sports Filter config
+                sports_config = data.get("sports_filter", {})
+                if manager.ai_service:
+                    manager.ai_service.update_sports_filter_config(
+                        enabled=sports_config.get("enabled", False),
+                        use_ai=sports_config.get("use_ai_classification", True),
+                        blocked_categories=sports_config.get("blocked_categories", [])
+                    )
 
         except Exception as e:
             logger.error(f"Error re-loading config: {e}")
@@ -131,6 +140,12 @@ async def main():
             start_ai_block = ai_config.get("block_on_negative", True)
             start_ai_confidence = ai_config.get("min_confidence_threshold", 0.6)
             start_ai_max_requests = ai_config.get("max_requests", 100)
+            
+            # Load Sports Filter config
+            sports_config = data.get("sports_filter", {})
+            start_sports_enabled = sports_config.get("enabled", False)
+            start_sports_use_ai = sports_config.get("use_ai_classification", True)
+            start_sports_blocked = sports_config.get("blocked_categories", [])
                 
         except Exception as e:
             logger.error(f"Failed to load initial strategies.json: {e}")
@@ -138,6 +153,9 @@ async def main():
             start_ai_block = True
             start_ai_confidence = 0.6
             start_ai_max_requests = 100
+            start_sports_enabled = False
+            start_sports_use_ai = True
+            start_sports_blocked = []
 
 
     # 1. Dependency Injection: Exchange Provider
@@ -188,6 +206,12 @@ async def main():
             enabled=start_ai_enabled,
             block_on_negative=start_ai_block,
             min_confidence=start_ai_confidence
+        )
+        # Apply initial Sports Filter config
+        ai_service.update_sports_filter_config(
+            enabled=start_sports_enabled,
+            use_ai=start_sports_use_ai,
+            blocked_categories=start_sports_blocked
         )
 
     # 4. Setup Whale Watcher Targets

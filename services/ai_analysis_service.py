@@ -35,6 +35,7 @@ class AIAnalysisService:
     - Caches analysis results per token_id to avoid duplicate API calls
     - Tracks API request count with configurable limit
     - Automatically disables AI when limit is reached
+    - Sports market filtering with AI classification
     """
     
     def __init__(
@@ -55,8 +56,14 @@ class AIAnalysisService:
         self.exchange = exchange
         self.max_requests = max_requests
         
+        # Sports filter configuration (set via update_sports_filter_config)
+        self.sports_filter_enabled = False
+        self.sports_use_ai = True
+        self.sports_blocked_categories: list[str] = []
+        
         # Load cache and state
         self._cache: dict = {}
+        self._sports_cache: dict = {}  # Cache for sports classification
         self._request_count: int = 0
         self._load_cache()
         self._load_state()
@@ -112,6 +119,50 @@ class AIAnalysisService:
         if self.max_requests <= 0:
             return False  # Unlimited
         return self._request_count >= self.max_requests
+    
+    def update_sports_filter_config(
+        self,
+        enabled: bool,
+        use_ai: bool,
+        blocked_categories: list[str]
+    ):
+        """Update sports filter configuration."""
+        self.sports_filter_enabled = enabled
+        self.sports_use_ai = use_ai
+        self.sports_blocked_categories = blocked_categories
+        status = "ENABLED" if enabled else "DISABLED"
+        logger.info(f"🏈 Sports Filter: {status} (AI={use_ai}, blocked_categories={len(blocked_categories)})")
+    
+    async def check_sports_filter(
+        self,
+        token_id: str,
+        market_metadata: MarketMetadata
+    ) -> tuple[bool, str]:
+        """
+        Check if a market should be blocked due to sports filter.
+        
+        Returns:
+            (should_block, reason) - True if market is sports and should be blocked
+        """
+        if not self.sports_filter_enabled:
+            return False, "Sports filter disabled"
+        
+        # Check cache first
+        if token_id in self._sports_cache:
+            cached = self._sports_cache[token_id]
+            return cached["is_sports"], f"(cached) {cached['reason']}"
+        
+        # Delegate to analyzer
+        is_sports, reason = await self.analyzer.is_sports_market(
+            market_metadata=market_metadata,
+            blocked_categories=self.sports_blocked_categories,
+            use_ai_classification=self.sports_use_ai
+        )
+        
+        # Cache result
+        self._sports_cache[token_id] = {"is_sports": is_sports, "reason": reason}
+        
+        return is_sports, reason
     
     def get_cached_analysis(self, token_id: str) -> Optional[TradeAnalysis]:
         """Get cached analysis for a token if it exists."""

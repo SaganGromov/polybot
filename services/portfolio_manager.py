@@ -163,6 +163,18 @@ class PortfolioManager:
             if event.token_id in self.blacklisted_token_ids:
                 logger.warning(f"  🛑 Token {event.token_id} ({market_label}) is blacklisted. Skipping trade.")
                 return
+            
+            # Check Sports Filter
+            if self.ai_service and self.ai_service.sports_filter_enabled:
+                try:
+                    is_sports, reason = await self.ai_service.check_sports_filter(
+                        event.token_id, metadata
+                    )
+                    if is_sports:
+                        logger.warning(f"  🏈 Sports market blocked: {reason}")
+                        return
+                except Exception as e:
+                    logger.error(f"  Sports filter check failed: {e} - proceeding with trade")
 
             # --- FETCH ORDER BOOK ---
             depth = await self.exchange.get_order_book(event.token_id)

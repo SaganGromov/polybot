@@ -1666,5 +1666,1725 @@
     ],
     "estimated_resolution_time": "25 days, 5 hours",
     "subjectivity_score": 0.7
+  },
+  "97326760061365767862743199899516603229868357668022732803104431936853786043670": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale is trading 'No', the market heavily favors 'Yes' (Wrexham winning). The small whale trade against such a strong consensus, combined with the short time to resolution, makes this a risky trade to mirror, even if the whale has been profitable in the past.",
+    "risk_factors": [
+      "Wrexham wins, resulting in a loss",
+      "Whale signal is incorrect",
+      "Limited time to resolution if the market moves against the trade"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if Wrexham loses",
+      "Whale's historical profitability"
+    ],
+    "estimated_resolution_time": "1 hour, 10 minutes",
+    "subjectivity_score": 0.0
+  },
+  "39379292261170178100405777581556760864617502957667220812657188397050748978079": {
+    "should_trade": false,
+    "confidence": 0.55,
+    "justification": "While following a whale can be profitable, the short timeframe until resolution and the relatively small whale trade size compared to the overall market liquidity make this a risky trade. The potential profit is limited, and the market may already be efficiently priced.",
+    "risk_factors": [
+      "Short resolution timeline limits potential profit and increases volatility risk",
+      "Whale trade size is small relative to overall market liquidity",
+      "Market may already be efficiently priced, negating any potential edge from the whale's signal",
+      "76ers may lose the first half"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if the 76ers perform well in the first half",
+      "Whale trader 'GamblingIsAllYouNeed' may have inside information or a strong predictive model"
+    ],
+    "estimated_resolution_time": "5 hours",
+    "subjectivity_score": 0.1
+  },
+  "62078885230172474658497953766724752297526945476987358201824628262352325531529": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is present, the current market prices heavily favor Bublik, making a Fucsovics win unlikely. The small whale trade size doesn't strongly suggest a significant edge, and the potential profit is limited given the low probability.",
+    "risk_factors": [
+      "Fucsovics losing the match",
+      "Whale signal being incorrect",
+      "Market price accurately reflecting probabilities"
+    ],
+    "opportunity_factors": [
+      "Potential for outsized returns if Fucsovics wins against expectations",
+      "Whale signal indicating potential mispricing"
+    ],
+    "estimated_resolution_time": "1 week, 5 days",
+    "subjectivity_score": 0.0
+  },
+  "104661572476922335170086346198796520615132718913194622768622880280768322254915": {
+    "should_trade": false,
+    "confidence": 0.4,
+    "justification": "While the whale's trade is notable, the current price of 'No' at 54.5% seems relatively efficient given the inherent uncertainty of a soccer match. The potential for a small profit doesn't outweigh the risks, especially considering the limited time until resolution.",
+    "risk_factors": [
+      "Eintracht Frankfurt could unexpectedly win",
+      "Whale's signal may be incorrect or based on outdated information",
+      "Market price could shift unfavorably before resolution"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if Eintracht Frankfurt loses",
+      "Whale's historical performance may indicate an edge"
+    ],
+    "estimated_resolution_time": "22 hours, 36 minutes",
+    "subjectivity_score": 0.1
+  },
+  "60584687475602241591679458421773792916251300200508085284461115829856686947593": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the liquidity is excellent and the event is objective, the whale's trade size is insignificant ($3.00) and unlikely to move the market. The current price of 76% for 'No' already reflects a strong belief that the game won't be a draw, making it less likely to find significant mispricing.",
+    "risk_factors": [
+      "The market is already efficient, reflecting the high probability of a non-draw result.",
+      "Following a whale with a very small trade size is unlikely to be profitable."
+    ],
+    "opportunity_factors": [
+      "High liquidity allows for easy entry and exit.",
+      "Objective outcome reduces ambiguity in resolution."
+    ],
+    "estimated_resolution_time": "4 days, 20 hours, 59 minutes",
+    "subjectivity_score": 0.0
+  },
+  "1148596756275584066467031943640753176749061751054940942783048901109098543721": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the 'No' outcome is heavily favored and the liquidity is good, the whale trade is small and the event is highly political, making it susceptible to unforeseen circumstances. The short resolution timeline also limits potential upside, making it a less attractive opportunity despite the seemingly favorable odds.",
+    "risk_factors": [
+      "Political instability in Venezuela",
+      "Unexpected government actions",
+      "Whale signal may be noise",
+      "Machado may find a way to enter despite restrictions"
+    ],
+    "opportunity_factors": [
+      "High probability of 'No' outcome based on current prices",
+      "Good liquidity for entry and exit",
+      "Potential for quick profit if 'No' outcome is confirmed"
+    ],
+    "estimated_resolution_time": "10 days",
+    "subjectivity_score": 0.7
+  },
+  "72332782610883927333377001336922316038463914108912504494136123034171350302461": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the market heavily favors Zheng, and Moutet would need to win by a significant margin. The current price of Moutet at 23.5% seems relatively fair given the handicap, making it unlikely to be profitable even with the whale's influence.",
+    "risk_factors": [
+      "Moutet losing the match",
+      "Moutet winning but not covering the -2.5 handicap",
+      "Whale signal being incorrect",
+      "Market already pricing in relevant information"
+    ],
+    "opportunity_factors": [
+      "Potential for Moutet to outperform expectations",
+      "Whale signal indicating inside information or superior analysis"
+    ],
+    "estimated_resolution_time": "1 week, 4 days, 4 hours, 39 minutes",
+    "subjectivity_score": 0.1
+  },
+  "83010388704271958647103864437500902999306590910910641230763607130796319310487": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the liquidity is good and the event is objective, the whale trade size is insignificant ($1.12) and doesn't provide a strong signal. The current market prices seem relatively efficient, and the potential profit from mirroring such a small trade is unlikely to outweigh the risks.",
+    "risk_factors": [
+      "Potential for upset in the match leading to more sets",
+      "Whale signal may be noise",
+      "Market price already reflects available information"
+    ],
+    "opportunity_factors": [
+      "Objective outcome reduces ambiguity",
+      "Good liquidity allows for easy entry and exit"
+    ],
+    "estimated_resolution_time": "1 week, 4 days, 4 hours, 37 minutes",
+    "subjectivity_score": 0.0
+  },
+  "24394670903706558879845790079760859552309100903651562795058188175118941818512": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale's buy signal is intriguing, the current 'Yes' price of 11.5% seems relatively efficient given the geopolitical situation. The limited time until resolution and the subjective nature of ceasefire agreements make this a risky trade, even with the whale's involvement.",
+    "risk_factors": [
+      "Ceasefire negotiations are unpredictable and highly dependent on political factors.",
+      "The short timeframe until resolution increases the risk of a negative outcome.",
+      "Whale's signal might be based on information not publicly available or a misjudgment."
+    ],
+    "opportunity_factors": [
+      "Potential for significant profit if a ceasefire agreement is reached.",
+      "Whale's historical trading performance (unspecified) could indicate expertise.",
+      "Current low price offers a high reward-to-risk ratio if the event occurs."
+    ],
+    "estimated_resolution_time": "2 months, 10 days",
+    "subjectivity_score": 0.8
+  },
+  "19086965821694617227632113744900853611698278122410747930641129462449631056970": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is present, the market is relatively efficient with a tight spread and high liquidity. The short timeframe until resolution and the already high price for Oklahoma (57.5%) make it less attractive, especially considering the small whale trade size relative to the overall market volume.",
+    "risk_factors": [
+      "South Carolina could outperform expectations.",
+      "The spread could shift in favor of South Carolina.",
+      "Whale's signal may not be reliable in this specific instance."
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if Oklahoma wins.",
+      "Whale's historical performance may indicate an edge.",
+      "Market may be slightly underestimating Oklahoma's chances."
+    ],
+    "estimated_resolution_time": "4 hours, 32 minutes",
+    "subjectivity_score": 0.0
+  },
+  "32650086238980403126954843336405043282695849203036882635618024292389650255694": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the small trade size combined with the relatively efficient market and short timeframe makes this trade unattractive. The spread is also relatively high, further reducing potential profitability.",
+    "risk_factors": [
+      "TEAM ORUGA loses the match",
+      "Market price moves against the position before resolution",
+      "High spread reduces potential profit"
+    ],
+    "opportunity_factors": [
+      "Whale signal indicates potential positive price movement",
+      "Potential for mispricing in the market"
+    ],
+    "estimated_resolution_time": "5 hours, 28 minutes",
+    "subjectivity_score": 0.1
+  },
+  "105669183228124998515870732596882859641644353998565550593551400557940976026686": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is tempting, the current market prices heavily favor TEAM ORUGA, suggesting Crashers are significantly undervalued. However, the short resolution time and relatively small whale trade size, combined with the existing low probability and limited upside, make this a risky trade to mirror.",
+    "risk_factors": [
+      "Crashers are genuinely the weaker team",
+      "Whale's trade is based on flawed information or a contrarian bet",
+      "Limited upside potential due to low probability",
+      "Short resolution time limits potential for price correction"
+    ],
+    "opportunity_factors": [
+      "Potential mispricing of Crashers if market underestimates their chances",
+      "Whale's signal could indicate inside information or superior analysis"
+    ],
+    "estimated_resolution_time": "7 hours, 25 minutes",
+    "subjectivity_score": 0.1
+  },
+  "20896893096555379955498521858890754249377088924653062468132559195674876940480": {
+    "should_trade": true,
+    "confidence": 0.65,
+    "justification": "Following the whale's buy order on Etcheverry presents a decent opportunity, given the reasonable liquidity and the objective nature of the event. While the spread is a bit wide, the potential for price movement following the whale's signal outweighs the immediate cost, especially considering the relatively short resolution timeline.",
+    "risk_factors": [
+      "Etcheverry could lose the match by more than 1.5 sets.",
+      "The whale's signal may be based on information already priced into the market.",
+      "Unexpected event (injury, withdrawal) could impact the outcome."
+    ],
+    "opportunity_factors": [
+      "Whale's trade could drive the price up.",
+      "Potential for mispricing in the market.",
+      "Objective outcome reduces uncertainty."
+    ],
+    "estimated_resolution_time": "2 weeks",
+    "subjectivity_score": 0.0
+  },
+  "66576679085812007338572047960104809885971851907138802976204893848917132688808": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale's trade is notable, the current market price of 13.3% seems relatively efficient given the dominance of other tech companies like Microsoft and Apple. The potential upside is limited, and the risk of Alphabet not reaching the top spot is substantial, making this trade unattractive despite the whale's activity.",
+    "risk_factors": [
+      "Alphabet's market cap may not grow sufficiently",
+      "Another company could surpass Alphabet",
+      "Market conditions could shift unfavorably for Alphabet",
+      "Whale's signal may be incorrect or based on private information that is no longer valid"
+    ],
+    "opportunity_factors": [
+      "Potential for Alphabet to announce a major breakthrough or acquisition",
+      "Market sentiment could shift in favor of Alphabet",
+      "Whale's signal could be an early indicator of a significant market movement"
+    ],
+    "estimated_resolution_time": "2 months",
+    "subjectivity_score": 0.3
+  },
+  "94232418731969891534299704356538513321235764584588587933489038825769114570483": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the market is liquid and the whale is buying Oregon, the small trade size ($12.85) suggests low conviction. The current market prices already reflect a near 50/50 split, making it unlikely to find significant mispricing, and the short resolution timeline limits potential for price movement.",
+    "risk_factors": [
+      "Michigan State could cover the spread",
+      "Whale's trade size is insignificant",
+      "Market price may already be efficient"
+    ],
+    "opportunity_factors": [
+      "High liquidity allows for easy entry/exit",
+      "Whale's position could indicate inside information or a strong model"
+    ],
+    "estimated_resolution_time": "6 hours",
+    "subjectivity_score": 0.0
+  },
+  "86594423954766334521592794351563043296242822563653385624404505201182378229469": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the market heavily favors Crashers, the small whale trade size and short time to resolution make this a risky proposition. The potential profit is minimal, and a surprise upset could easily wipe out any gains, especially considering the high implied probability already priced in.",
+    "risk_factors": [
+      "Upset victory by TEAM ORUGA",
+      "Market price correction before resolution",
+      "Low profit margin due to high implied probability"
+    ],
+    "opportunity_factors": [
+      "High implied probability of Crashers winning",
+      "Potential for quick profit if Crashers win early"
+    ],
+    "estimated_resolution_time": "5 hours, 9 minutes",
+    "subjectivity_score": 0.1
+  },
+  "42278065532772830099845956919753561098524438549828490848052846054380713130205": {
+    "should_trade": true,
+    "confidence": 0.65,
+    "justification": "Following the whale's buy of Toledo Rockets seems reasonable given the close current market prices and the objective nature of the event. The relatively short resolution time and decent liquidity make it an attractive, albeit risky, opportunity.",
+    "risk_factors": [
+      "The Minutemen could cover the spread.",
+      "The whale could be wrong or have inside information we lack.",
+      "Market prices could shift against us before resolution."
+    ],
+    "opportunity_factors": [
+      "Whale's trade could influence the market in our favor.",
+      "Potential for quick profit due to short resolution time.",
+      "Current market prices suggest a close game, making the spread uncertain."
+    ],
+    "estimated_resolution_time": "3 hours",
+    "subjectivity_score": 0.0
+  },
+  "38817752315568491859020883384222163649689900341461847617014128430752180800372": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (API error). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      "API error"
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "46523789014720500731101328209017578843836146355259878707082605708336955130035": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the liquidity is high and the event is objective, the whale trade size is insignificant ($10.62) and the market seems relatively efficient with 'No' already priced at 69%. Mirroring such a small trade offers minimal potential profit and carries unnecessary risk.",
+    "risk_factors": [
+      "Qaraba\u011f A\u011fdam FK could unexpectedly win",
+      "The market price could move against the position before resolution",
+      "Whale's signal may be noise or based on information not available to me"
+    ],
+    "opportunity_factors": [
+      "High liquidity allows for easy entry and exit",
+      "Objective outcome reduces ambiguity in resolution"
+    ],
+    "estimated_resolution_time": "21 hours, 44 minutes",
+    "subjectivity_score": 0.0
+  },
+  "94919764339175323701348059261867260636524546253947143890256173928981864093479": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the liquidity is high, the whale trade size is insignificant relative to the overall volume and liquidity. The market seems relatively efficient, and blindly following such a small whale trade is unlikely to be profitable.",
+    "risk_factors": [
+      "Villarreal could unexpectedly win",
+      "Whale's trade could be based on information already priced in",
+      "Small whale trade size indicates low conviction"
+    ],
+    "opportunity_factors": [
+      "High liquidity allows for easy entry and exit",
+      "Potential for mispricing if market overreacts to whale's trade"
+    ],
+    "estimated_resolution_time": "3 days, 23 hours, 52 minutes",
+    "subjectivity_score": 0.0
+  },
+  "46385937847510916450921790337702679244355526456325314107005377025554493620140": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the small trade size and short timeframe until resolution make this a risky proposition. The current market prices seem relatively efficient, and the potential for significant profit is limited given the small price movement expected in such a short time.",
+    "risk_factors": [
+      "South Carolina loses the game",
+      "Market price doesn't move favorably",
+      "Whale trade is not indicative of actual information"
+    ],
+    "opportunity_factors": [
+      "Whale signal could be accurate",
+      "South Carolina could win"
+    ],
+    "estimated_resolution_time": "3 hours, 51 minutes",
+    "subjectivity_score": 0.0
+  },
+  "45327051135184805342672365290854839403932845106079041102486113805703858039558": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the spread is tight and liquidity is good, the whale's trade size is insignificant ($5.54) and provides little confidence. The market is already relatively efficient with close to 50/50 odds, and the short resolution time limits potential gains.",
+    "risk_factors": [
+      "Game outcome unpredictable",
+      "Whale signal may be noise",
+      "Short resolution time limits profit potential"
+    ],
+    "opportunity_factors": [
+      "Tight spread",
+      "High liquidity"
+    ],
+    "estimated_resolution_time": "6 hours, 49 minutes",
+    "subjectivity_score": 0.0
+  },
+  "10263810595311808767682259200989265181611305481918141985830555006089994731893": {
+    "should_trade": true,
+    "confidence": 0.65,
+    "justification": "The whale's significant buy of Indiana Hoosiers suggests potential mispricing, and the short resolution timeline reduces exposure. While the spread is considerable, mirroring the whale's trade on the less favored outcome presents a potentially profitable opportunity, especially if the market corrects towards a more balanced probability.",
+    "risk_factors": [
+      "Michigan could win by a large margin, exceeding the spread.",
+      "The whale's information could be flawed or based on outdated data.",
+      "Market sentiment could shift against Indiana, further decreasing the price."
+    ],
+    "opportunity_factors": [
+      "Potential for market correction if Indiana is undervalued.",
+      "Whale's trading history suggests profitable signals.",
+      "Short resolution timeline limits potential losses."
+    ],
+    "estimated_resolution_time": "3 hours, 48 minutes",
+    "subjectivity_score": 0.0
+  },
+  "47404012862940884875913309247906438581995555818091960317392611900699115449899": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is present, the market heavily favors TCU already, and the small trade size doesn't suggest strong conviction. The short resolution timeline and relatively high price make this a less attractive opportunity despite the whale's involvement.",
+    "risk_factors": [
+      "TCU underperformance",
+      "Unexpected game events (injuries, etc.)",
+      "Market price already reflects likely outcome"
+    ],
+    "opportunity_factors": [
+      "Whale signal",
+      "Potential for slight price movement towards 100% if TCU wins"
+    ],
+    "estimated_resolution_time": "4 hours, 47 minutes",
+    "subjectivity_score": 0.0
+  },
+  "107605018814334265075670724966700249130611540622681786024506078784353828690635": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the spread is tight and liquidity is decent, the whale trade size is insignificant ($0.79) relative to the market volume. The current market prices already reflect a slight lean towards the Under, and the short resolution timeline offers limited opportunity for price correction based on new information.",
+    "risk_factors": [
+      "Low whale signal strength",
+      "Short resolution timeline",
+      "Market efficiency",
+      "Potential for unexpected game events (e.g., injuries) to drastically alter the score"
+    ],
+    "opportunity_factors": [
+      "Tight bid-ask spread",
+      "Decent liquidity",
+      "Potential for late scoring surge to push the total over"
+    ],
+    "estimated_resolution_time": "3 hours, 46 minutes",
+    "subjectivity_score": 0.1
+  },
+  "16350794993116265330765965042125628263705234353448983010863606574711582758428": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is present, the small trade size combined with the short timeframe and relatively efficient market makes this a less attractive opportunity. The current price already reflects a significant probability for Massachusetts, and the potential upside is limited given the time remaining.",
+    "risk_factors": [
+      "Short timeframe for price movement",
+      "Market price already reflects game odds",
+      "Whale trade size is small, potentially a test"
+    ],
+    "opportunity_factors": [
+      "Whale signal could indicate inside information or superior analysis",
+      "Potential for quick profit if market corrects slightly"
+    ],
+    "estimated_resolution_time": "2 hours, 45 minutes",
+    "subjectivity_score": 0.0
+  },
+  "95714617319049919584781142515884715407215120935039031676088644169511293771418": {
+    "should_trade": true,
+    "confidence": 0.7,
+    "justification": "The market is heavily favoring Iowa State, and a whale is adding to that position. While the short timeframe introduces risk, the high liquidity and strong signal suggest a potentially profitable, albeit quick, trade.",
+    "risk_factors": [
+      "Iowa State could unexpectedly lose",
+      "Short timeframe limits potential profit and increases risk of unexpected events",
+      "Whale could be wrong or manipulating the market"
+    ],
+    "opportunity_factors": [
+      "Strong market sentiment towards Iowa State",
+      "Whale signal suggests further price increase",
+      "High liquidity allows for easy entry and exit"
+    ],
+    "estimated_resolution_time": "3 hours, 43 minutes",
+    "subjectivity_score": 0.0
+  },
+  "44169729231600183934113609960222670358715639208411971924042241295619035924872": {
+    "should_trade": false,
+    "confidence": 0.4,
+    "justification": "While the liquidity is excellent, the whale trade is small relative to the overall volume and the market is already pricing in a near 50/50 chance of Khamenei being out. The subjectivity of the event and the relatively short timeframe until resolution make this a risky trade to blindly follow.",
+    "risk_factors": [
+      "Khamenei's health is unpredictable",
+      "Geopolitical events could influence the outcome",
+      "Succession plans within Iran are opaque"
+    ],
+    "opportunity_factors": [
+      "Potential for rapid price movement based on news events",
+      "High liquidity allows for easy entry and exit"
+    ],
+    "estimated_resolution_time": "11 months",
+    "subjectivity_score": 0.8
+  },
+  "84086158521505457776451802127854582065667424981876019060821675405769976140041": {
+    "should_trade": false,
+    "confidence": 0.4,
+    "justification": "While the liquidity is high, the short time to resolution and the small whale trade size make this a risky proposition. The current market price seems relatively efficient, and mirroring a small whale trade is unlikely to yield significant profit.",
+    "risk_factors": [
+      "Eintracht Frankfurt may lose",
+      "Market price is relatively efficient",
+      "Small whale trade may not be indicative of strong conviction",
+      "Short time to resolution limits potential profit"
+    ],
+    "opportunity_factors": [
+      "High market liquidity",
+      "Potential for a quick profit if Eintracht Frankfurt wins"
+    ],
+    "estimated_resolution_time": "21 hours, 25 minutes",
+    "subjectivity_score": 0.0
+  },
+  "6779856031335711878427150799049628173930342728982974160634799440476066366612": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the liquidity is excellent, the very short resolution time and the small size of the whale's trade make it unlikely to be profitable. The current market prices already seem to reflect a high probability of the Bruins covering the spread, and mirroring such a small whale trade in this situation is not advisable.",
+    "risk_factors": [
+      "Short resolution time limits profit potential",
+      "Small whale trade may not be indicative of strong conviction",
+      "Market price already reflects likely outcome"
+    ],
+    "opportunity_factors": [
+      "High liquidity allows for easy entry and exit",
+      "Potential for quick profit if the market is mispriced"
+    ],
+    "estimated_resolution_time": "4 hours",
+    "subjectivity_score": 0.0
+  },
+  "32512736470379054035310975306907887799316851732642751184996222911613590327612": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the spread is tight and the whale is buying Massachusetts, the very small trade size ($18.15) from the whale suggests low conviction. The current market price of 66.5% already reflects a strong belief in Massachusetts winning, making further gains unlikely given the short timeframe.",
+    "risk_factors": [
+      "Massachusetts could lose the game",
+      "Whale's trade signal may be weak or based on outdated information",
+      "Limited time until resolution reduces potential profit"
+    ],
+    "opportunity_factors": [
+      "Tight bid-ask spread allows for easy entry and exit",
+      "Whale is buying Massachusetts, indicating potential upward price movement"
+    ],
+    "estimated_resolution_time": "2 hours, 36 minutes",
+    "subjectivity_score": 0.0
+  },
+  "9622400784605458019298653013696102908634763719305612639631574388893508280534": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the spread is tight and liquidity is high, the small whale trade size ($10.09) doesn't provide a strong signal. The market already heavily favors Akron (74.5%), making significant profit unlikely in the short time remaining.",
+    "risk_factors": [
+      "Akron could lose the game",
+      "The market price may already reflect all available information",
+      "Whale's trade could be for reasons other than profit (e.g., hedging)"
+    ],
+    "opportunity_factors": [
+      "Tight spread allows for low-cost entry and exit",
+      "High liquidity reduces slippage"
+    ],
+    "estimated_resolution_time": "3 hours",
+    "subjectivity_score": 0.0
+  },
+  "67076910226706078190932071197776845355087170182555212200493103875418660497817": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While a whale is buying 'Yes', the current price of 2.8% seems very low given Alphabet's position. The time until resolution is short, but the market is heavily skewed towards 'No', suggesting significant doubt, and the whale's trade size is not large enough to significantly move the market or indicate extremely high confidence.",
+    "risk_factors": [
+      "Alphabet's market cap could decrease significantly due to unforeseen circumstances",
+      "Another company's market cap could increase dramatically",
+      "The whale's signal could be a misdirection or based on flawed analysis"
+    ],
+    "opportunity_factors": [
+      "Potential for a quick profit if Alphabet's market cap increases unexpectedly",
+      "Market may be underestimating Alphabet's potential in the short term"
+    ],
+    "estimated_resolution_time": "10 days",
+    "subjectivity_score": 0.2
+  },
+  "33095970334729779074566259375908871468730851342592579442677697625625982097658": {
+    "should_trade": false,
+    "confidence": 0.4,
+    "justification": "While the whale signal is present, the small trade size and relatively short resolution time combined with the already high implied probability of Jacquemot winning make this a risky trade. The market seems relatively efficient, and the potential for Putintseva to cover the -1.5 set handicap is not compelling enough to overcome these factors.",
+    "risk_factors": [
+      "Putintseva could lose in straight sets",
+      "Whale could be wrong or have inside information we lack",
+      "Market price may already reflect available information"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if Putintseva wins",
+      "Whale's historical performance may be positive (though unknown)"
+    ],
+    "estimated_resolution_time": "1 week, 5 days",
+    "subjectivity_score": 0.1
+  },
+  "58887995059323955114946889605002669339909308897106699259260366096468457429707": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the liquidity is good and the event is objective, the whale trade is tiny ($4) and unlikely to move the market. The current price of 82.5% for 'No' seems reasonable, making this a low-reward trade to follow.",
+    "risk_factors": [
+      "Real Sociedad B could unexpectedly win",
+      "The 'whale' could be making a contrarian bet or testing the market"
+    ],
+    "opportunity_factors": [
+      "High liquidity allows for easy entry and exit",
+      "Objective outcome reduces ambiguity"
+    ],
+    "estimated_resolution_time": "3 days, 18 hours, 46 minutes",
+    "subjectivity_score": 0.0
+  },
+  "89332444116476584478749160798595139328626611826638680036905669798170253467010": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is tempting, the Buffalo Bulls are significantly undervalued based on the market price. The short resolution time and high market liquidity are positives, but the current price doesn't offer enough potential profit to justify the risk of betting against the heavily favored Akron Zips.",
+    "risk_factors": [
+      "Akron Zips win probability is high",
+      "Whale could be wrong or have inside information we lack",
+      "Short resolution time limits potential for price correction"
+    ],
+    "opportunity_factors": [
+      "Potential for mispricing due to market inefficiency",
+      "Whale trader has a history of profitable trades",
+      "High liquidity allows for easy entry and exit"
+    ],
+    "estimated_resolution_time": "2 hours, 57 minutes",
+    "subjectivity_score": 0.0
+  },
+  "75647122110880635562343783757567368240328837138848059317345403324806799177650": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the liquidity is good, the whale trade size is insignificant and the market is likely efficient given the objective nature of the event. The short time until resolution makes it unlikely that a mispricing, if it exists, can be exploited for profit.",
+    "risk_factors": [
+      "Market efficiency prevents profitable trading",
+      "Whale signal is too small to be meaningful",
+      "LSU could still lose by more than 14.5 points"
+    ],
+    "opportunity_factors": [
+      "Potential for a late shift in sentiment favoring LSU",
+      "Whale may have inside information"
+    ],
+    "estimated_resolution_time": "3 hours, 25 minutes",
+    "subjectivity_score": 0.0
+  },
+  "27054174881046490269798384595103529732143756814303344248636948898437538464052": {
+    "should_trade": true,
+    "confidence": 0.7,
+    "justification": "The market is leaning towards Over 3.5 sets, but a significant whale is betting on Under 3.5, suggesting potential mispricing. The liquidity is sufficient to enter and exit a moderate position, and mirroring the whale's trade could be profitable.",
+    "risk_factors": [
+      "The whale's analysis could be incorrect.",
+      "The match could be affected by unforeseen circumstances (e.g., injury, weather).",
+      "Market sentiment could shift against the Under 3.5 outcome."
+    ],
+    "opportunity_factors": [
+      "Potential mispricing in the market.",
+      "Whale's signal suggests an edge.",
+      "Sufficient liquidity allows for entry and exit."
+    ],
+    "estimated_resolution_time": "1 week, 5 days",
+    "subjectivity_score": 0.1
+  },
+  "11631590502751337995086584451805403545770829549632613492416833230270784409909": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale trade is significant, the short time to resolution and the relatively low probability implied by the market price make this a risky trade. The potential upside is limited given the current 'Yes' price, and a negative surprise could lead to quick losses.",
+    "risk_factors": [
+      "US-Iran relations remain stable",
+      "No escalation in the region",
+      "Whale's information is incorrect or outdated",
+      "Limited time to resolution"
+    ],
+    "opportunity_factors": [
+      "Whale's historical performance is strong (unconfirmed)",
+      "Potential for rapid price increase if tensions escalate"
+    ],
+    "estimated_resolution_time": "10 days, 3 hours",
+    "subjectivity_score": 0.6
+  },
+  "86582863442764039699735977419741265869635735642166631514435274464883317069448": {
+    "should_trade": false,
+    "confidence": 0.75,
+    "justification": "The market has already closed on 2026-01-12 00:00 UTC. Therefore, it is impossible for the event to occur before the resolution date, making this a bad trade. Even with a whale signal, the market's closure makes the outcome certain.",
+    "risk_factors": [
+      "Market is already closed",
+      "Whale could be wrong or manipulating the market"
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": "Market closed 8 days ago",
+    "subjectivity_score": 0.1
+  },
+  "27991932713873459968809992892231701325625626222829632088771384627491023750254": {
+    "should_trade": false,
+    "confidence": 0.4,
+    "justification": "While the liquidity is good, the whale's trade size is small relative to the overall market volume, suggesting low conviction. The market is already pricing the 'Over' at 53.5%, and the short resolution timeline limits potential profit.",
+    "risk_factors": [
+      "Game outcome unpredictable",
+      "Whale signal may be noise",
+      "Market price already reflects likely outcome"
+    ],
+    "opportunity_factors": [
+      "High liquidity allows for easy entry/exit",
+      "Potential for quick profit if 'Over' is likely"
+    ],
+    "estimated_resolution_time": "5 hours, 12 minutes",
+    "subjectivity_score": 0.0
+  },
+  "15704223254061637699665008299235004894744524204070683496068480275285392327272": {
+    "should_trade": true,
+    "confidence": 0.7,
+    "justification": "Following the whale's $1,896.01 buy of 'No' seems reasonable given the relatively short timeframe until resolution and the decent liquidity. The current market prices suggest a significant probability of a US strike, but the whale's action indicates a belief that the market is overestimating this risk.",
+    "risk_factors": [
+      "Unexpected escalation of tensions between US and Iran",
+      "Misinterpretation of whale's trading strategy",
+      "Market price shifts against our position"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if tensions de-escalate",
+      "Whale's expertise in geopolitical events",
+      "Relatively tight bid-ask spread"
+    ],
+    "estimated_resolution_time": "5 months",
+    "subjectivity_score": 0.7
+  },
+  "37547918074009863566247156986191994928087593454221407957266972628139074215949": {
+    "should_trade": true,
+    "confidence": 0.65,
+    "justification": "Following the whale's buy of Dzumhur at $0.31 seems reasonable given the current market price of $0.345 and the potential for price movement. The liquidity is sufficient to enter and exit, and the objective nature of the event reduces subjectivity risk.",
+    "risk_factors": [
+      "Dzumhur could lose by more than 1.5 sets.",
+      "The whale's signal may be incorrect.",
+      "Market price could move against the position before resolution."
+    ],
+    "opportunity_factors": [
+      "Potential for price appreciation if Dzumhur performs well.",
+      "Whale's historical performance may indicate a profitable trade.",
+      "Relatively objective outcome reduces uncertainty."
+    ],
+    "estimated_resolution_time": "1 week, 3 days, 3 hours",
+    "subjectivity_score": 0.1
+  },
+  "18968608561242287661191163336502336781821150421763133530569605764060080081236": {
+    "should_trade": false,
+    "confidence": 0.55,
+    "justification": "While the whale signal is present, the small trade size and short resolution time make this a risky proposition. The market seems relatively efficient, and the potential profit is minimal given the spread and existing liquidity.",
+    "risk_factors": [
+      "Short resolution time limits reaction to new information",
+      "Small whale trade size may not be indicative of strong conviction",
+      "Market efficiency reduces potential for mispricing"
+    ],
+    "opportunity_factors": [
+      "Whale signal indicates potential upward price movement",
+      "Slightly undervalued based on current market probabilities"
+    ],
+    "estimated_resolution_time": "2 hours, 53 minutes",
+    "subjectivity_score": 0.0
+  },
+  "7871002440516320278514469858312225519581292266266404872239007195341583768562": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale is buying Ball State, the trade size is very small ($17.74), suggesting low conviction. The market is relatively efficient with a tight spread, and the short resolution time leaves little room for price movement, making it unlikely to be profitable.",
+    "risk_factors": [
+      "Low whale conviction",
+      "Short resolution time",
+      "Market efficiency",
+      "Small potential profit"
+    ],
+    "opportunity_factors": [
+      "Whale is buying Ball State",
+      "Potential for slight mispricing"
+    ],
+    "estimated_resolution_time": "2 hours, 52 minutes",
+    "subjectivity_score": 0.0
+  },
+  "37975265083682450969967223199653164268542375291978582835346444673615244164455": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the liquidity is excellent and the spread is tight, following a whale trading only $1.80 is not a strong signal. The market already heavily favors 'No' at 83.5%, suggesting limited upside, and the event is political in nature, making it difficult to predict.",
+    "risk_factors": [
+      "Khamenei's health could unexpectedly deteriorate",
+      "Unexpected political upheaval in Iran",
+      "Whale's trade could be a misclick or test trade"
+    ],
+    "opportunity_factors": [
+      "Tight spread allows for quick entry and exit",
+      "High liquidity reduces slippage"
+    ],
+    "estimated_resolution_time": "5 weeks, 2 days, 2 hours, 50 minutes",
+    "subjectivity_score": 0.8
+  },
+  "1158035426207183794652576640742463994882600129405140179986857681957233706064": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the spread is tight and liquidity is decent, the market heavily favors St. John's already, and the whale trade is small. The potential upside seems limited given the short time to resolution and already high probability assigned to St. John's winning.",
+    "risk_factors": [
+      "St. John's could lose the game",
+      "Whale's trade could be based on information already priced in",
+      "Small whale trade size indicates low conviction"
+    ],
+    "opportunity_factors": [
+      "Tight spread allows for relatively low-risk entry and exit",
+      "High liquidity reduces slippage"
+    ],
+    "estimated_resolution_time": "2 hours, 50 minutes",
+    "subjectivity_score": 0.0
+  },
+  "22215750185410101822096746065396192063201256913635688473819168169561550970339": {
+    "should_trade": false,
+    "confidence": 0.4,
+    "justification": "While the liquidity is good, the small whale trade size combined with the short timeframe and relatively efficient market makes this a risky proposition. The potential profit is likely minimal, and unforeseen events could easily swing the outcome.",
+    "risk_factors": [
+      "Game outcome is unpredictable",
+      "Short timeframe for price movement",
+      "Whale trade size is relatively small",
+      "Market already appears fairly efficient"
+    ],
+    "opportunity_factors": [
+      "High liquidity allows for easy entry and exit",
+      "Potential for slight mispricing favoring Arkansas"
+    ],
+    "estimated_resolution_time": "4 hours, 49 minutes",
+    "subjectivity_score": 0.0
+  },
+  "81623320864597739715761636027057094490915522117509279402306494498444781946067": {
+    "should_trade": true,
+    "confidence": 0.65,
+    "justification": "The Blue Jackets are slightly undervalued given the current market prices. Following the whale's buy signal, while risky, could be profitable given the short resolution time and potential for price movement, but the whale's trade size is relatively small compared to the total volume.",
+    "risk_factors": [
+      "The whale's signal might be incorrect.",
+      "The Blue Jackets could lose the game.",
+      "The market could move against the trade before resolution."
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit due to short resolution time.",
+      "Possible mispricing of the Blue Jackets outcome.",
+      "Whale's signal could indicate informed trading."
+    ],
+    "estimated_resolution_time": "2 hours, 47 minutes",
+    "subjectivity_score": 0.0
+  },
+  "107304261111525064103207984838181959789682970840092415021608210339948891720616": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is intriguing, the extremely short time to resolution and the relatively small whale trade size compared to the overall market volume make this a risky proposition. The current market prices already reflect a strong probability for the Suns, and the potential upside for the 76ers is limited given the time constraint.",
+    "risk_factors": [
+      "Short time to resolution limits potential profit",
+      "Whale trade size is small relative to market volume",
+      "Market price already reflects Suns as favorites",
+      "76ers may not win, resulting in a loss"
+    ],
+    "opportunity_factors": [
+      "Whale trader has a potentially profitable track record",
+      "Potential for mispricing if the market overestimates the Suns' chances"
+    ],
+    "estimated_resolution_time": "2 hours, 44 minutes",
+    "subjectivity_score": 0.0
+  },
+  "18478672467223531032162244170407969605426600877425558037356364206243822421839": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "The market heavily favors Miami, and the short time to resolution makes a Florida State upset unlikely. While a whale is buying, the small trade size and unfavorable odds suggest this isn't a high-confidence opportunity.",
+    "risk_factors": [
+      "Miami is heavily favored",
+      "Short time to resolution",
+      "Small whale trade size",
+      "Low liquidity on the bid side"
+    ],
+    "opportunity_factors": [
+      "Whale is buying Florida State",
+      "Potential for a surprise upset"
+    ],
+    "estimated_resolution_time": "2 hours, 42 minutes",
+    "subjectivity_score": 0.0
+  },
+  "105252206997885252352889070218074909957179496257006510170583432513037465278006": {
+    "should_trade": false,
+    "confidence": 0.95,
+    "justification": "The current price of 0.5% for Scotland to win the World Cup reflects the extremely low probability of this outcome. While a whale is buying, the trade size is insignificant ($2.16) compared to the market volume, and the current odds are likely efficient, making this an unfavorable trade.",
+    "risk_factors": [
+      "Scotland is a long shot to win the World Cup",
+      "Potential for negative price movement if Scotland performs poorly in lead-up games",
+      "Whale's trade may be based on non-fundamental factors or a mistake"
+    ],
+    "opportunity_factors": [
+      "Potential for a small, quick profit if market sentiment shifts unexpectedly",
+      "Possibility of Scotland exceeding expectations and improving their chances"
+    ],
+    "estimated_resolution_time": "6 months",
+    "subjectivity_score": 0.0
+  },
+  "24517479876924502140637939238586334915852027732204278556001332929930616692285": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is present, the short time to resolution and relatively small whale trade size, combined with the unfavorable spread and existing market pricing, make this a risky trade. The potential upside is limited, and the current price already reflects a significant probability of the Gamecocks winning.",
+    "risk_factors": [
+      "Short time to resolution limits potential for price movement",
+      "Unfavorable spread reduces potential profit",
+      "Whale trade size is relatively small",
+      "Oklahoma Sooners are currently priced as the less likely outcome"
+    ],
+    "opportunity_factors": [
+      "Whale signal suggests potential for price movement",
+      "Potential for upset win by Oklahoma Sooners"
+    ],
+    "estimated_resolution_time": "2 hours, 36 minutes",
+    "subjectivity_score": 0.0
+  },
+  "95537197253041496382145360862183613049724474803518136361187884830687068350519": {
+    "should_trade": false,
+    "confidence": 0.95,
+    "justification": "The market has already closed on 2026-01-16 00:00 UTC, so trading is impossible. The current prices are meaningless, and any trade would be immediately resolved against you. Therefore, it is not advisable to trade.",
+    "risk_factors": [
+      "Market is already closed",
+      "Prices are meaningless",
+      "Whale signal is irrelevant"
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": "Market already resolved",
+    "subjectivity_score": 0.0
+  },
+  "5735607854418697925028621346414220918593217970725020230915075541000804418371": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the short resolution timeline and relatively small whale trade size, combined with the already high price for the Sharks outcome, make this a risky trade. The potential profit is limited, and the risk of the Lightning covering the spread in the remaining time is significant.",
+    "risk_factors": [
+      "Short resolution timeline",
+      "Small whale trade size",
+      "High Sharks price",
+      "Lightning could cover the spread",
+      "Potential for late news impacting the game"
+    ],
+    "opportunity_factors": [
+      "Whale signal",
+      "Potential for quick profit if Sharks win by enough"
+    ],
+    "estimated_resolution_time": "2 hours, 34 minutes",
+    "subjectivity_score": 0.0
+  },
+  "55201180171382344648128505031675400629485078801250545752063029078975592767599": {
+    "should_trade": true,
+    "confidence": 0.7,
+    "justification": "The 'No' outcome, indicating Israel not striking Iran by March 31, 2026, is being bought by a whale, suggesting they believe the current price is undervalued. The market has high volume and good liquidity, making entry and exit relatively safe, and the resolution timeline provides ample time for the event to unfold.",
+    "risk_factors": [
+      "Unexpected escalation of tensions between Israel and Iran leading to a strike.",
+      "Whale's information could be outdated or incorrect.",
+      "Market sentiment could shift rapidly due to unforeseen geopolitical events."
+    ],
+    "opportunity_factors": [
+      "Whale's trade signals potential mispricing of the 'No' outcome.",
+      "High market volume allows for easy entry and exit.",
+      "Relatively short resolution timeline reduces holding risk."
+    ],
+    "estimated_resolution_time": "2 months, 1 week",
+    "subjectivity_score": 0.6
+  },
+  "108825404762047470175731338050746062254702019154966059351448423749263630558945": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the small trade size and short resolution time make this a risky proposition. The market appears relatively efficient, and the potential for a quick swing against the position outweighs the potential gains.",
+    "risk_factors": [
+      "Short resolution time increases volatility risk",
+      "Small whale trade size suggests low conviction",
+      "Market may already be efficiently priced"
+    ],
+    "opportunity_factors": [
+      "Whale signal indicating potential mispricing",
+      "Potential for quick profit if the market moves in the predicted direction"
+    ],
+    "estimated_resolution_time": "3 hours 30 minutes",
+    "subjectivity_score": 0.0
+  },
+  "22328725480259729609787591119396054767949850415089643197543282167029394269257": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the liquidity is good, the market heavily favors Saint Louis already at 82.5%. The whale's small trade size of $3.50 doesn't provide a strong signal, and the potential profit is limited given the short time to resolution.",
+    "risk_factors": [
+      "Saint Louis underperformance",
+      "Duquesne overperformance",
+      "Unexpected game cancellation or postponement"
+    ],
+    "opportunity_factors": [
+      "Potential for a small profit if Saint Louis wins as expected",
+      "Following a potentially informed whale trader"
+    ],
+    "estimated_resolution_time": "2 hours, 29 minutes",
+    "subjectivity_score": 0.0
+  },
+  "91980375753812879013746777887798276530569476350934077874305121010529806436914": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the spread is tight and there's decent liquidity, the whale's trade size is insignificant, and the market heavily favors St. Bonaventure. The short time to resolution and the current price of Loyola Chicago at 29.5% suggest limited upside potential.",
+    "risk_factors": [
+      "Loyola Chicago loses the game",
+      "Whale's signal is a false positive",
+      "Market price already reflects available information"
+    ],
+    "opportunity_factors": [
+      "Potential for a surprise upset by Loyola Chicago",
+      "Tight spread allows for quick exit if needed"
+    ],
+    "estimated_resolution_time": "2 hours, 26 minutes",
+    "subjectivity_score": 0.0
+  },
+  "15271966331695934736966290874718479032840220791970158127628073671127165566295": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the small trade size combined with the significant spread and relatively low volume makes this a risky trade. The market appears reasonably efficient, and the potential profit is unlikely to outweigh the risks.",
+    "risk_factors": [
+      "High spread",
+      "Low volume",
+      "Small whale trade size",
+      "Potential for upset in tennis match",
+      "Market efficiency"
+    ],
+    "opportunity_factors": [
+      "Whale signal",
+      "Potential for mispricing"
+    ],
+    "estimated_resolution_time": "1 week, 3 days",
+    "subjectivity_score": 0.0
+  },
+  "11878039579280349646114348292745398469407223296253430609244342603714131188692": {
+    "should_trade": false,
+    "confidence": 0.4,
+    "justification": "While the Ohio State Buckeyes are heavily favored, the very short timeframe until resolution and the small size of the whale trade make this an unattractive opportunity. The potential profit is minimal, and the risk of a last-minute upset outweighs the potential reward.",
+    "risk_factors": [
+      "Upset in the final minutes",
+      "Small whale trade may not be indicative of strong conviction",
+      "Limited time for price movement"
+    ],
+    "opportunity_factors": [
+      "Ohio State is heavily favored",
+      "Tight spread"
+    ],
+    "estimated_resolution_time": "1 hour, 54 minutes",
+    "subjectivity_score": 0.0
+  },
+  "91274140583452324849382569633029499058483550097485350765251675558646685044868": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While mirroring a whale might seem appealing, the extremely short resolution time, combined with the already low probability assigned to Western Michigan winning and the minimal trade size of the whale, makes this a risky proposition. The potential profit is unlikely to outweigh the risk of losing the investment in such a short timeframe.",
+    "risk_factors": [
+      "Short resolution time",
+      "Low probability of Western Michigan winning",
+      "Small whale trade size",
+      "Potential for slippage upon exit"
+    ],
+    "opportunity_factors": [
+      "Whale signal",
+      "Potential for mispricing (though unlikely)"
+    ],
+    "estimated_resolution_time": "2 hours",
+    "subjectivity_score": 0.0
+  },
+  "26310511444966676152901239545213464869875480698266972830365142324057733576025": {
+    "should_trade": true,
+    "confidence": 0.65,
+    "justification": "The market is relatively liquid and the spread is tight. Following a whale with a $420 buy on the Suns, who are already favored, presents a reasonable short-term opportunity, even though the edge may be small.",
+    "risk_factors": [
+      "Unexpected injuries to key players",
+      "The whale's signal could be a false positive or based on outdated information",
+      "The 76ers could outperform expectations"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit due to short resolution time",
+      "Whale's influence could drive the price higher",
+      "Suns are already favored to win"
+    ],
+    "estimated_resolution_time": "2 hours, 21 minutes",
+    "subjectivity_score": 0.1
+  },
+  "114092666668780347629364093247789771665303086337957235342322241886350896015062": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the extremely short resolution time and small trade size of the whale make this a risky proposition. The current price already reflects a significant probability for Clemson, and the potential for quick profit is limited given the spread and remaining time.",
+    "risk_factors": [
+      "Short resolution time limits profit potential",
+      "Small whale trade size indicates low conviction",
+      "Spread erosion could negate profits",
+      "Clemson could lose the game"
+    ],
+    "opportunity_factors": [
+      "Whale signal suggests potential mispricing",
+      "Potential for quick profit if Clemson wins"
+    ],
+    "estimated_resolution_time": "2 hours, 20 minutes",
+    "subjectivity_score": 0.0
+  },
+  "67387637080716841819521612034702195192747236530419584854293245081979781744835": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While mirroring a whale's trade might seem appealing, the very short time to resolution and the relatively small whale trade size, combined with the wide bid-ask spread, make this a risky proposition. The potential profit is limited, and the risk of slippage is high.",
+    "risk_factors": [
+      "Short time to resolution increases volatility",
+      "Wide bid-ask spread reduces potential profit",
+      "Small whale trade size provides weak signal",
+      "Lightning could lose by more than 1.5 goals"
+    ],
+    "opportunity_factors": [
+      "Whale trader might have inside information",
+      "Potential for quick profit if Lightning performs well"
+    ],
+    "estimated_resolution_time": "2 hours, 19 minutes",
+    "subjectivity_score": 0.1
+  },
+  "72184613631071030793533018549572152355483451049924681773247932849726205654636": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the market favors the Wild, the small size of the whale trade ($6.63) doesn't provide a strong signal. The market is relatively liquid, but the short resolution time and existing high price for the Wild outcome make this trade unattractive.",
+    "risk_factors": [
+      "Canadiens could unexpectedly win by 2+ goals",
+      "Whale trade could be noise or a mistake",
+      "Short resolution time limits potential for price movement"
+    ],
+    "opportunity_factors": [
+      "Market already favors the Wild",
+      "Potential for quick profit if Canadiens underperform"
+    ],
+    "estimated_resolution_time": "2 hours, 14 minutes",
+    "subjectivity_score": 0.0
+  },
+  "29028423100056345650033770318607394292826335377283131793328839720985081030781": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the market is liquid, the whale trade is insignificant ($7.65) and unlikely to move the market. The short timeframe until resolution and the even split in current outcomes suggest minimal edge.",
+    "risk_factors": [
+      "Low whale trade size",
+      "Short resolution timeframe",
+      "Evenly split market",
+      "Potential for unexpected game events (e.g., empty net goals) to swing the outcome"
+    ],
+    "opportunity_factors": [
+      "High liquidity allows for easy entry/exit",
+      "Potential for late goal surge to push over"
+    ],
+    "estimated_resolution_time": "2 hours, 7 minutes",
+    "subjectivity_score": 0.0
+  },
+  "1895262707521581559600957976696004057445635870727281411133492325522435989978": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the liquidity is good, the very short time to resolution and small whale trade size make this an unattractive opportunity. The current market prices seem relatively efficient, and mirroring such a small trade is unlikely to be profitable given the spread.",
+    "risk_factors": [
+      "Short time to resolution increases volatility risk",
+      "Small whale trade may be insignificant",
+      "Market prices may already reflect available information"
+    ],
+    "opportunity_factors": [
+      "High liquidity allows for easy entry and exit"
+    ],
+    "estimated_resolution_time": "4 hours",
+    "subjectivity_score": 0.0
+  },
+  "2470312084150266830079245772243325507843387623420078689338910699440119805451": {
+    "should_trade": true,
+    "confidence": 0.65,
+    "justification": "The market has decent liquidity and a relatively short resolution time. Following a whale with a significant buy order on the Baylor Bears presents a potentially profitable opportunity, especially given the close current outcome probabilities.",
+    "risk_factors": [
+      "Texas Tech could outperform expectations and cover the spread.",
+      "The whale's signal might be based on outdated information or a misjudgment.",
+      "Unexpected events during the game could shift momentum."
+    ],
+    "opportunity_factors": [
+      "Whale's buy order could drive the price of Baylor Bears higher.",
+      "Short resolution time minimizes exposure to unforeseen events.",
+      "Current market probabilities suggest a close game, making the spread outcome uncertain."
+    ],
+    "estimated_resolution_time": "4 hours",
+    "subjectivity_score": 0.1
+  },
+  "27839912507838765897228761503758781968830817244638197489771712217115075686453": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "The market is close to resolution, and the whale's trade size is very small relative to the overall market volume. The short timeframe and small signal make this a risky trade to mirror.",
+    "risk_factors": [
+      "Short resolution timeframe",
+      "Small whale trade size",
+      "Potential for random variance in game outcome",
+      "Unfavorable spread"
+    ],
+    "opportunity_factors": [
+      "Potential for mispricing in the final moments",
+      "Whale signal could indicate inside information (unlikely)"
+    ],
+    "estimated_resolution_time": "2 hours",
+    "subjectivity_score": 0.0
+  },
+  "7863727256341836321216237247386524109250532371863060764992564557212668438481": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is present, the extremely short resolution time and small trade size by the whale make this a risky proposition. The current price reflects a reasonable probability, and the potential profit is minimal given the spread and limited time for price movement.",
+    "risk_factors": [
+      "Short resolution time limits profit potential",
+      "Small whale trade size suggests low conviction",
+      "Spread eats into potential profit",
+      "St. Bonaventure could lose"
+    ],
+    "opportunity_factors": [
+      "Whale signal present",
+      "Potential for slight mispricing of St. Bonaventure"
+    ],
+    "estimated_resolution_time": "1 hour, 59 minutes",
+    "subjectivity_score": 0.0
+  },
+  "63056121719921516167977102726826988240226920655115829373391735886977427010546": {
+    "should_trade": true,
+    "confidence": 0.65,
+    "justification": "The market shows Fery as slightly favored, aligning with the whale's buy order. While the spread is a bit wide, the potential profit from a correct prediction, combined with the whale's signal, makes this a worthwhile, albeit moderately risky, trade.",
+    "risk_factors": [
+      "Etcheverry could outperform expectations and win by more than 1.5 sets",
+      "The whale's signal could be incorrect or based on information not available to us",
+      "The spread could widen further before resolution"
+    ],
+    "opportunity_factors": [
+      "The market currently favors Fery, suggesting potential for profit if this trend continues",
+      "Following a whale trader can sometimes lead to profitable trades",
+      "The event is relatively soon, reducing the time our capital is tied up"
+    ],
+    "estimated_resolution_time": "1 week, 5 days",
+    "subjectivity_score": 0.1
+  },
+  "78011236440210301900948684264515942271208527805809303716211744955049570165464": {
+    "should_trade": true,
+    "confidence": 0.75,
+    "justification": "The 'No' outcome is trading at 80.5%, which seems high given the inherent volatility and hype surrounding high-value collectibles. Following the whale's 'No' buy is reasonable, especially with decent liquidity and a relatively small trade size.",
+    "risk_factors": [
+      "The end date is unknown, making it difficult to assess the time value of money.",
+      "Logan Paul could create artificial scarcity or hype to drive up the price.",
+      "A wealthy collector could emerge and be willing to pay an exorbitant price."
+    ],
+    "opportunity_factors": [
+      "The current price of 'No' seems overvalued, suggesting potential for profit.",
+      "Following a whale trader can be advantageous, especially if they have inside information or expertise.",
+      "The liquidity is sufficient to enter and exit the position without significant slippage."
+    ],
+    "estimated_resolution_time": "Unknown",
+    "subjectivity_score": 0.4
+  },
+  "90835194670637961567491523632326046271822983352830528752541397387527418938075": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale is buying, the short resolution timeline and the unfavorable spread make this a risky trade. The market heavily favors the Sharks, and a small whale buy isn't enough to shift the odds significantly in such a short timeframe.",
+    "risk_factors": [
+      "Short resolution timeline",
+      "Unfavorable spread",
+      "Market heavily favors Sharks",
+      "Small whale trade size relative to market volume"
+    ],
+    "opportunity_factors": [
+      "Whale is buying Lightning"
+    ],
+    "estimated_resolution_time": "1 hour, 54 minutes",
+    "subjectivity_score": 0.0
+  },
+  "15470971723630340126379023464305254753539639285010628416630282017302992621065": {
+    "should_trade": true,
+    "confidence": 0.7,
+    "justification": "The 'No' outcome is trading at 74.5%, which seems high given the inherent volatility and hype surrounding rare collectibles. Following the whale on a 'No' purchase seems reasonable, especially with decent liquidity and a relatively tight spread.",
+    "risk_factors": [
+      "The market could be pricing in information we don't have.",
+      "Logan Paul could orchestrate a sale to manipulate the market.",
+      "The definition of 'sale price' could be ambiguous, leading to resolution issues."
+    ],
+    "opportunity_factors": [
+      "Potential mispricing of the 'No' outcome.",
+      "Following a whale with a history of successful trades.",
+      "Relatively high liquidity allows for easier entry and exit."
+    ],
+    "estimated_resolution_time": "Unknown - depends on when the card is sold",
+    "subjectivity_score": 0.3
+  },
+  "104235616603607171741967709756554372521781080873301221704152825785780214982081": {
+    "should_trade": false,
+    "confidence": 0.4,
+    "justification": "While mirroring a whale can be profitable, the small trade size ($2.89) from 'GamblingIsAllYouNeed' doesn't provide a strong signal, and the Rockets are already favored at 57.5%. The short resolution timeline also limits potential profit.",
+    "risk_factors": [
+      "Whale signal may be noise",
+      "Rockets may underperform",
+      "Short resolution time limits profit potential"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if Rockets win",
+      "Following a whale could be profitable"
+    ],
+    "estimated_resolution_time": "2 hours, 51 minutes",
+    "subjectivity_score": 0.0
+  },
+  "82854450440015078285519251203727200954059930214480303614127548747093678673597": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the liquidity is good, the whale trade is insignificant at $6.60 and the market is likely efficient. The short timeframe until resolution also makes it difficult to profit from any potential mispricing.",
+    "risk_factors": [
+      "Stars lose the game",
+      "Market price already reflects available information",
+      "Whale trade is not indicative of actual insight"
+    ],
+    "opportunity_factors": [
+      "Potential for slight mispricing in a short timeframe",
+      "High liquidity allows for easy entry and exit"
+    ],
+    "estimated_resolution_time": "2 hours, 20 minutes",
+    "subjectivity_score": 0.0
+  },
+  "27324757184371882921281981634760213710006787030832325945439399658098316030763": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While mirroring a whale can be profitable, the very small trade size ($1.79) suggests low conviction. The market is relatively efficient, and the short timeframe until resolution makes it risky to enter a position based on such a weak signal.",
+    "risk_factors": [
+      "Whale signal may be noise",
+      "Short timeframe for price movement",
+      "Market efficiency may prevent profit"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if whale is correct",
+      "Baylor Bears undervalued"
+    ],
+    "estimated_resolution_time": "3 hours, 49 minutes",
+    "subjectivity_score": 0.0
+  },
+  "13183596917635953168741912158928925800064846765961600690987570863663439087382": {
+    "should_trade": false,
+    "confidence": 0.55,
+    "justification": "While the whale signal is present, the market is heavily favoring the 'Over' outcome already, and the short timeframe until resolution leaves little room for price movement. The spread is also relatively wide, making it less attractive to enter a position at the current ask price.",
+    "risk_factors": [
+      "High market price already reflects likely outcome",
+      "Short timeframe limits potential profit",
+      "Wide bid-ask spread",
+      "Whale could be wrong or manipulating the market"
+    ],
+    "opportunity_factors": [
+      "Whale signal indicating potential for 'Over' outcome",
+      "High volume suggests active market"
+    ],
+    "estimated_resolution_time": "1 hour, 46 minutes",
+    "subjectivity_score": 0.0
+  },
+  "35764978510646161609238506763017713110121912500243936222449098879850174910543": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the market has decent liquidity, the whale's trade size is insignificant ($9.12) and unlikely to move the market substantially. The current market prices already reflect a significant probability for Minnesota winning (56.5%), making it less likely to find a profitable edge following this small whale trade.",
+    "risk_factors": [
+      "Minnesota loses the game",
+      "Whale's signal is a false positive",
+      "Market price already reflects available information"
+    ],
+    "opportunity_factors": [
+      "Potential for a late game shift in momentum favoring Minnesota",
+      "Possible mispricing if market underestimates Minnesota's chances"
+    ],
+    "estimated_resolution_time": "1 hour, 14 minutes",
+    "subjectivity_score": 0.0
+  },
+  "76085389505104607256715055655911388634752272946202485133030712218922535756877": {
+    "should_trade": true,
+    "confidence": 0.7,
+    "justification": "The 'Over' outcome has a slight edge at 56%, and the whale's buy signal, combined with the short resolution timeline, makes this a potentially profitable trade. The tight spread and decent liquidity minimize immediate risk, and mirroring the whale's position could yield quick returns.",
+    "risk_factors": [
+      "The game could be a low-scoring affair, resulting in the 'Under' outcome.",
+      "The whale's signal might be based on information that is already priced into the market."
+    ],
+    "opportunity_factors": [
+      "The short resolution timeline allows for a quick profit.",
+      "Following a whale with a significant trade size could be profitable."
+    ],
+    "estimated_resolution_time": "1 hour, 43 minutes",
+    "subjectivity_score": 0.0
+  },
+  "12687538195144755727479077435344043917426160752366011358446414525004596430257": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is present, the small trade size and the relatively efficient market with a short resolution time make this trade less attractive. The potential profit is limited, and the risk of slippage or an unfavorable outcome outweighs the potential reward.",
+    "risk_factors": [
+      "Short resolution time limits potential profit",
+      "Market price already reflects available information",
+      "Small whale trade size may not be indicative of strong conviction"
+    ],
+    "opportunity_factors": [
+      "Whale signal indicating potential upward price movement",
+      "Slight mispricing favoring North Carolina State Wolfpack"
+    ],
+    "estimated_resolution_time": "1 hour, 42 minutes",
+    "subjectivity_score": 0.0
+  },
+  "51938200731578812707138494107697139438171778504822964277008460677855152506238": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale's signal is tempting, the small trade size and the Aces' low implied probability (16%) suggest this might not be a profitable opportunity. The short resolution timeline also limits potential upside, and the market appears relatively efficient.",
+    "risk_factors": [
+      "Low implied probability of Evansville Aces winning",
+      "Short resolution timeline limits potential profit",
+      "Whale's trade size is small, indicating low conviction",
+      "Market may already be efficiently priced"
+    ],
+    "opportunity_factors": [
+      "Whale signal could indicate inside information or superior analysis",
+      "Potential for quick profit if Evansville Aces win"
+    ],
+    "estimated_resolution_time": "2 hours, 40 minutes",
+    "subjectivity_score": 0.0
+  },
+  "3837807667780543168000041285051247617984113118509090665084980247390753141516": {
+    "should_trade": true,
+    "confidence": 0.7,
+    "justification": "The market is relatively liquid, and the short timeframe until resolution reduces the risk of unforeseen events significantly altering the outcome. Following the whale on a 'No' outcome, which is already the more likely outcome based on current market prices, presents a reasonable opportunity for profit.",
+    "risk_factors": [
+      "Marseille could unexpectedly win the game.",
+      "The whale's signal may be based on information that is already priced into the market."
+    ],
+    "opportunity_factors": [
+      "The short resolution timeline minimizes exposure to unforeseen events.",
+      "The market shows a strong 'No' probability, aligning with the whale's trade."
+    ],
+    "estimated_resolution_time": "21 hours, 38 minutes",
+    "subjectivity_score": 0.0
+  },
+  "21461296134751347252342999849092923387819916286743681278948230675400200317618": {
+    "should_trade": true,
+    "confidence": 0.65,
+    "justification": "The Bulls are currently priced at 58%, and a whale is buying. While the spread is a bit wide, the short resolution time and the whale's signal make this a potentially profitable, albeit risky, trade.",
+    "risk_factors": [
+      "The Bulls could underperform in the first half.",
+      "The whale's signal could be incorrect.",
+      "The spread is relatively wide, impacting potential profit."
+    ],
+    "opportunity_factors": [
+      "Short resolution time allows for quick profit.",
+      "Whale's signal suggests potential mispricing.",
+      "NBA outcomes are generally predictable based on team performance."
+    ],
+    "estimated_resolution_time": "2 hours, 32 minutes",
+    "subjectivity_score": 0.1
+  },
+  "15610403757960672087645132402413181609068502505187076901860989170662864809048": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the current market price heavily favors 'Yes' (NVIDIA being the largest company). The small whale trade size and the short time horizon make this a risky bet against the prevailing market sentiment, especially considering the low liquidity on the 'No' side.",
+    "risk_factors": [
+      "Market sentiment strongly favors NVIDIA",
+      "Short time horizon for significant market cap shift",
+      "Low liquidity on the 'No' side",
+      "Whale trade size is relatively small"
+    ],
+    "opportunity_factors": [
+      "Potential for outsized gains if NVIDIA falters",
+      "Whale signal could indicate inside information or unique insight"
+    ],
+    "estimated_resolution_time": "2 months",
+    "subjectivity_score": 0.2
+  },
+  "96722554474172463707587607599766431314436621865635981731294552168623024308187": {
+    "should_trade": false,
+    "confidence": 0.55,
+    "justification": "While the whale's trade is significant, the market is already heavily favoring the Rockets, and the remaining time until resolution is short. The potential profit is limited, and any unexpected shift in momentum could lead to losses, making this a risky trade.",
+    "risk_factors": [
+      "Rockets underperformance",
+      "Spurs overperformance",
+      "Late game injury to key Rockets player",
+      "Market price already reflects likely outcome"
+    ],
+    "opportunity_factors": [
+      "Whale signal",
+      "High market volume"
+    ],
+    "estimated_resolution_time": "2 hours, 24 minutes",
+    "subjectivity_score": 0.0
+  },
+  "46499009192670634796947258532454206792811559897298922744003603134842947429706": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While mirroring a whale is tempting, the very short time to resolution and the relatively small whale trade size, combined with a poor spread, make this an unattractive trade. The risk outweighs the potential reward, especially considering the already high implied probability of the 'Over' outcome.",
+    "risk_factors": [
+      "Short time to resolution increases volatility risk",
+      "Small whale trade size provides weak signal",
+      "Unfavorable spread reduces potential profit",
+      "Low market volume increases price slippage risk"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if the 'Over' outcome is realized",
+      "Whale signal could indicate inside information or superior analysis"
+    ],
+    "estimated_resolution_time": "2 hours, 23 minutes",
+    "subjectivity_score": 0.0
+  },
+  "96621624293894180925662520574295940510482776431672561673173893453543717817826": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the market has high liquidity, the whale trade is very small ($7.96) and unlikely to move the market significantly. The time until resolution is short, making it difficult to profit even if the 'Under' outcome is likely.",
+    "risk_factors": [
+      "Low whale trade size",
+      "Short time to resolution",
+      "Potential for late goals to push the score over"
+    ],
+    "opportunity_factors": [
+      "High market liquidity",
+      "Potential mispricing of the 'Under' outcome"
+    ],
+    "estimated_resolution_time": "2 hours",
+    "subjectivity_score": 0.0
+  },
+  "56794196050632563245515009569514743013575762565817428572887694273374401152892": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the spread is tight, the whale trade is insignificant relative to the market volume and liquidity. The current price of 70.5% for Putintseva seems reasonable, and blindly following such a small whale trade is unlikely to be profitable.",
+    "risk_factors": [
+      "Putintseva could lose the match.",
+      "The whale's trade may be based on information not available to me, but the small size suggests it's not strong information.",
+      "Market price could move against the position before resolution."
+    ],
+    "opportunity_factors": [
+      "Tight spread allows for relatively low-risk entry and exit.",
+      "Potential for small profit if Putintseva wins and the price increases slightly."
+    ],
+    "estimated_resolution_time": "1 week, 2 days",
+    "subjectivity_score": 0.0
+  },
+  "74739151022776708548700552815480875869505538977699942450614292139196316225714": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the very short time to resolution and the relatively small size of the whale trade compared to the overall market volume make this a risky proposition. The current market prices already heavily favor TCU, and the potential for significant price movement in the Cowboys' favor in the next few hours seems limited.",
+    "risk_factors": [
+      "Short time to resolution",
+      "Low whale trade size relative to market volume",
+      "Market heavily favors TCU",
+      "Potential for late-breaking news negatively impacting Oklahoma State"
+    ],
+    "opportunity_factors": [
+      "Whale signal",
+      "Potential for upset victory by Oklahoma State"
+    ],
+    "estimated_resolution_time": "2 hours",
+    "subjectivity_score": 0.0
+  },
+  "98460775796116008085555714166765054825961577301924446058408674780459442144744": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the market has high liquidity, the whale trade size is insignificant ($10.08) relative to the total volume ($1.1M), making it unlikely to influence the price. The short time until resolution also limits potential profit, and the current prices reflect a reasonable assessment of the teams' probabilities.",
+    "risk_factors": [
+      "Low whale trade size",
+      "Short time to resolution",
+      "Potential for unexpected game events (injuries, etc.)"
+    ],
+    "opportunity_factors": [
+      "High market liquidity",
+      "Potential for mispricing if the market overreacts to news"
+    ],
+    "estimated_resolution_time": "2 hours, 13 minutes",
+    "subjectivity_score": 0.0
+  },
+  "490993143000803453511690919189272391605338632638509302100130944707477996186": {
+    "should_trade": true,
+    "confidence": 0.65,
+    "justification": "The market is relatively liquid, and a whale is buying Boise State. While the time to resolution is short, the potential upside from following a whale with a decent-sized trade outweighs the risks, especially given the relatively objective nature of the event.",
+    "risk_factors": [
+      "Boise State could lose the game.",
+      "The whale's information could be incorrect.",
+      "The market could move against us before resolution."
+    ],
+    "opportunity_factors": [
+      "Following a profitable whale.",
+      "Potential for quick profit due to short resolution time.",
+      "Market mispricing favoring Boise State."
+    ],
+    "estimated_resolution_time": "2 hours, 42 minutes",
+    "subjectivity_score": 0.0
+  },
+  "84152358319119225418411056135883792093137496912003525826122375399360825197321": {
+    "should_trade": false,
+    "confidence": 0.4,
+    "justification": "While the whale signal is present, the very short resolution time and relatively low liquidity for the 'buy' side make this a risky trade. The current price of 45.5% for Miami (OH) already reflects a significant probability, and the small potential profit window doesn't justify the risk given the limited time remaining.",
+    "risk_factors": [
+      "Short resolution time",
+      "Low bid liquidity",
+      "Potential for unexpected game events (fouls, injuries) to shift odds quickly",
+      "Whale signal may be misleading or based on outdated information"
+    ],
+    "opportunity_factors": [
+      "Whale signal indicating potential mispricing",
+      "Potential for quick profit if Miami (OH) odds increase rapidly"
+    ],
+    "estimated_resolution_time": "1 hour, 10 minutes",
+    "subjectivity_score": 0.0
+  },
+  "30280985066497428621157485879013365141309130175390500554116775674639015324571": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the small trade size ($0.50) combined with the relatively inefficient market (20% spread) and the low probability of Jacquemot winning the set makes this a risky trade. The potential profit is unlikely to outweigh the risks, especially given the high ask price.",
+    "risk_factors": [
+      "Low probability of Jacquemot winning",
+      "Wide bid-ask spread",
+      "Small whale trade size suggests low conviction",
+      "Potential for match cancellation or postponement"
+    ],
+    "opportunity_factors": [
+      "Whale signal present",
+      "Potential for mispricing if market overestimates Putintseva's strength"
+    ],
+    "estimated_resolution_time": "1 week, 2 days",
+    "subjectivity_score": 0.1
+  },
+  "33884257662229971241081516917444763461180961402674573195422680704778701876683": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the market is relatively efficient with a tight spread. The small whale trade size and short time to resolution make this a risky trade with limited upside, especially considering the current market prices already favor San Jose State.",
+    "risk_factors": [
+      "Short time to resolution increases volatility",
+      "Small whale trade size may not be indicative of strong conviction",
+      "Market prices already reflect a high probability of San Jose State covering the spread",
+      "Potential for unexpected game events (injuries, etc.) to shift the outcome"
+    ],
+    "opportunity_factors": [
+      "Whale signal indicating potential edge",
+      "High liquidity allows for easy entry and exit"
+    ],
+    "estimated_resolution_time": "4 hours",
+    "subjectivity_score": 0.0
+  },
+  "104926674861886475369369289526224261980939022953804983047114229875508827755051": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While a whale is buying Senators, the market is already heavily favoring that outcome at 78%. With less than an hour until resolution, the potential upside is limited, and the risk of the Blue Jackets winning is too high to justify entering a position at this price, even mirroring a whale.",
+    "risk_factors": [
+      "Blue Jackets win",
+      "Senators lead already priced in",
+      "Limited time for price movement"
+    ],
+    "opportunity_factors": [
+      "Whale signal",
+      "High market volume"
+    ],
+    "estimated_resolution_time": "58 minutes",
+    "subjectivity_score": 0.0
+  },
+  "58515973152466021276891644407232149149221422096873758352988854845442880076204": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the best bid is slightly below the current market price, the small whale trade size and short time to resolution make this an unattractive opportunity. The potential profit is minimal, and the risk of a last-minute shift in sentiment outweighs the potential reward.",
+    "risk_factors": [
+      "Short time to resolution increases volatility risk",
+      "Small whale trade may not be indicative of strong conviction",
+      "Potential for last-minute score changes"
+    ],
+    "opportunity_factors": [
+      "Best bid slightly below current market price"
+    ],
+    "estimated_resolution_time": "2 hours, 51 minutes",
+    "subjectivity_score": 0.0
+  },
+  "28255818956326203772637386203803155586448782044066184601125368468740360884472": {
+    "should_trade": false,
+    "confidence": 0.4,
+    "justification": "While the whale signal is present, the small trade size relative to the overall liquidity and the short time to resolution make this a less compelling opportunity. The current market prices already seem fairly efficient, and the potential profit margin is limited.",
+    "risk_factors": [
+      "Short time to resolution increases volatility risk",
+      "Whale trade size is small, potentially insignificant",
+      "Market prices may already reflect available information"
+    ],
+    "opportunity_factors": [
+      "Whale signal suggests potential mispricing",
+      "High liquidity allows for easy entry and exit"
+    ],
+    "estimated_resolution_time": "3 hours, 47 minutes",
+    "subjectivity_score": 0.0
+  },
+  "27693247148619724851296840684211171582810712586019994664784318066997895695565": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the liquidity is good and the event is objective, the market heavily favors the Timberwolves already at 85.5%. The small whale trade doesn't justify buying in at this price, especially with limited time until resolution.",
+    "risk_factors": [
+      "Timberwolves lose",
+      "Whale signal is a losing trade",
+      "Market price already reflects likely outcome"
+    ],
+    "opportunity_factors": [
+      "High liquidity allows for easy entry/exit",
+      "Objective outcome reduces ambiguity"
+    ],
+    "estimated_resolution_time": "2 hours 45 minutes",
+    "subjectivity_score": 0.0
+  },
+  "38569620961150080594399737488045084628585947065801444448446440562594348512952": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale is buying Vanderbilt, the small trade size and the short time until resolution make this a risky proposition. The current market prices already reflect a near 50/50 split, and the potential for significant price movement in either direction is limited given the short timeframe.",
+    "risk_factors": [
+      "Short resolution timeline limits profit potential",
+      "Small whale trade size may not be indicative of strong conviction",
+      "Market price already reflects close probabilities"
+    ],
+    "opportunity_factors": [
+      "Whale is buying Vanderbilt",
+      "Potential for slight mispricing given the close probabilities"
+    ],
+    "estimated_resolution_time": "2 hours, 43 minutes",
+    "subjectivity_score": 0.0
+  },
+  "13055849634755476417586949068115514998900703456156155063531306624891722612343": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "The market heavily favors Under 2.5 sets, and while a whale bought a small amount of Over 2.5, the low volume and strong market sentiment against the trade make it risky. The whale's trade size is also insignificant relative to the overall liquidity, suggesting limited conviction.",
+    "risk_factors": [
+      "Low market volume",
+      "Strong market sentiment against the trade",
+      "Small whale trade size",
+      "Potential for quick straight-set wins"
+    ],
+    "opportunity_factors": [
+      "Potential for upset or close match leading to three sets",
+      "Possible mispricing due to low volume"
+    ],
+    "estimated_resolution_time": "1 week, 3 days",
+    "subjectivity_score": 0.1
+  },
+  "20255184811397835685434817224982759635544769864783276125538049172063149977123": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is present, the extremely short timeframe until resolution and the relatively small whale trade size compared to the overall market volume make this a risky trade. The current market price already reflects a strong belief in Auburn winning, and a small whale buy of Ole Miss is unlikely to significantly shift the odds in the next few hours.",
+    "risk_factors": [
+      "Short timeframe for outcome change",
+      "Small whale trade size relative to market volume",
+      "Auburn is heavily favored",
+      "Potential for late game Auburn surge"
+    ],
+    "opportunity_factors": [
+      "Whale signal present",
+      "Potential for upset victory by Ole Miss"
+    ],
+    "estimated_resolution_time": "2 hours, 40 minutes",
+    "subjectivity_score": 0.0
+  },
+  "47464162562803976692174106147839347381275739665575084778075674362819766007944": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the spread is tight and liquidity is decent, the whale's trade size is insignificant relative to the market's volume, making it unlikely to move the price substantially. Etcheverry is favored, and following a small whale trade on the underdog carries too much risk.",
+    "risk_factors": [
+      "Etcheverry is the favorite",
+      "Whale trade size is too small to influence the market",
+      "Fery may not perform well"
+    ],
+    "opportunity_factors": [
+      "Tight spread allows for quick exit",
+      "Potential for Fery to outperform expectations"
+    ],
+    "estimated_resolution_time": "1 week, 3 days",
+    "subjectivity_score": 0.0
+  },
+  "10168688937026885178773447175107973339372066006366473979704307665024819259931": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While mirroring a whale can be profitable, the extremely small trade size ($0.96) from the whale suggests low conviction. The market heavily favors Michigan State, and the short time to resolution combined with the low liquidity on the bid side for Oregon makes this a risky trade.",
+    "risk_factors": [
+      "Low whale conviction",
+      "Short time to resolution",
+      "Low bid-side liquidity",
+      "Michigan State is heavily favored"
+    ],
+    "opportunity_factors": [
+      "Potential for upset victory",
+      "Whale signal (though weak)"
+    ],
+    "estimated_resolution_time": "2 hours, 37 minutes",
+    "subjectivity_score": 0.0
   }
 }

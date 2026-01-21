@@ -19,6 +19,32 @@
         "min_confidence_threshold": 0.2,
         "max_requests": 555
     },
+    "sports_filter": {
+        "enabled": true,
+        "use_ai_classification": true,
+        "blocked_categories": [
+            "Sports",
+            "Football",
+            "Basketball",
+            "Baseball",
+            "Hockey",
+            "Soccer",
+            "Tennis",
+            "Golf",
+            "Boxing",
+            "MMA",
+            "UFC",
+            "NFL",
+            "NBA",
+            "MLB",
+            "NHL",
+            "F1",
+            "Racing",
+            "Olympics",
+            "Cricket",
+            "Rugby"
+        ]
+    },
     "watched_wallets": [
         {
             "address": "0xdd225a03cd7ed89e3931906c67c75ab31cf89ef1",
