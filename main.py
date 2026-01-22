@@ -94,6 +94,15 @@ async def watch_config(whale_watcher: WhaleMonitor, manager: PortfolioManager):
                     manager.ai_service.update_sports_filter_config(
                         enabled=sports_config.get("enabled", False)
                     )
+                
+                # Update Whale Monitor scaling config
+                whale_config = data.get("whale_monitor", {})
+                if whale_config:
+                    whale_watcher.update_scaling_config(
+                        batch_size=whale_config.get("batch_size"),
+                        batch_delay_ms=whale_config.get("batch_delay_ms"),
+                        max_concurrent=whale_config.get("max_concurrent")
+                    )
 
         except Exception as e:
             logger.error(f"Error re-loading config: {e}")
@@ -232,13 +241,17 @@ async def main():
         )
 
     # 4. Setup Whale Watcher Targets
-    # Loaded from settings
+    # Load whale scaling config
+    whale_config = data.get("whale_monitor", {}) if os.path.exists(CONFIG_PATH) else {}
     
     # WhaleMonitor pushes events to Manager
     whale_watcher = WhaleMonitor(
         targets=start_wallets,
         on_event=manager.on_trade_event,
-        exchange=exchange  # Pass exchange for rich metadata logging
+        exchange=exchange,
+        batch_size=whale_config.get("batch_size", 50),
+        batch_delay_ms=whale_config.get("batch_delay_ms", 100),
+        max_concurrent=whale_config.get("max_concurrent", 20)
     )
 
         # 4. Run Loops
@@ -262,7 +275,7 @@ async def main():
     except KeyboardInterrupt:
         logger.info("🛑 Shutdown signal received.")
     finally:
-        whale_watcher.stop()
+        await whale_watcher.stop()
         manager.stop()
         await exchange.stop()
         logger.info("👋 Goodnight.")

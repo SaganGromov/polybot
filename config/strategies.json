@@ -1,5 +1,5 @@
 {
-    "max_budget": 111,
+    "max_budget": 222,
     "blacklisted_token_ids": [
         "24420568577280176716341723057953812624759441045546995696689825477618083211388",
         "51171279104285400909666677762285621845926753560865042481170667672124752488918",
@@ -7,7 +7,7 @@
         "89542913275712193318094653507974179514515481868036641034694126271263346250770",
         "59023056724194593586735131758260125056263013074566402555518089880336674405555"
     ],
-    "min_share_price": 0.37,
+    "min_share_price": 0.31,
     "min_position_value": 0.03,
     "portfolio_log_interval_minutes": 1,
     "stop_loss_pct": 0.16,
@@ -18,11 +18,21 @@
     "ai_analysis": {
         "enabled": true,
         "block_on_negative": true,
-        "min_confidence_threshold": 0.2,
-        "max_requests": 22222
+        "min_confidence_threshold": 0.6,
+        "max_requests": 22222,
+        "rate_limit_rps": 5.0,
+        "max_concurrent_ai": 10,
+        "queue_timeout": 120,
+        "circuit_breaker_threshold": 5,
+        "circuit_breaker_cooldown_seconds": 60
     },
     "sports_filter": {
         "enabled": true
+    },
+    "whale_monitor": {
+        "batch_size": 50,
+        "batch_delay_ms": 100,
+        "max_concurrent": 20
     },
     "watched_wallets": [
         {

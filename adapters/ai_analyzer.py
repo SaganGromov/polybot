@@ -224,11 +224,11 @@ Provide your analysis:"""
             return self._fallback_analysis("Failed to parse response")
     
     def _fallback_analysis(self, reason: str) -> TradeAnalysis:
-        """Return a fallback analysis when AI fails."""
+        """Return a fallback analysis when AI fails - BLOCKS trades for safety."""
         return TradeAnalysis(
-            should_trade=True,  # Default to allowing trade on AI failure
-            confidence=0.3,
-            justification=f"AI analysis unavailable ({reason}). Defaulting to allow trade.",
+            should_trade=False,  # Block trades when AI is unavailable for safety
+            confidence=0.0,
+            justification=f"AI analysis unavailable ({reason}). Blocking trade for safety.",
             risk_factors=["AI analysis not performed", reason],
             opportunity_factors=[]
         )
@@ -247,8 +247,8 @@ Provide your analysis:"""
             (is_sports, reason) - True if market should be blocked
         """
         if not self.api_key:
-            logger.warning("No Gemini API key - cannot classify sports markets")
-            return False, "No API key - allowing trade"
+            logger.warning("No Gemini API key - cannot classify sports markets, blocking trade")
+            return True, "No API key - blocking trade for safety"
         
         title = market_metadata.title or ""
         question = market_metadata.question or ""
@@ -287,7 +287,7 @@ Respond with ONLY a JSON object in this format (no markdown, no code blocks):
                 
                 if response.status_code != 200:
                     logger.warning(f"Sports classification API error: {response.status_code}")
-                    return False, "AI classification failed - allowing trade"
+                    return True, f"AI classification failed (HTTP {response.status_code}) - blocking trade for safety"
                 
                 data = response.json()
                 candidates = data.get("candidates", [])
@@ -310,4 +310,4 @@ Respond with ONLY a JSON object in this format (no markdown, no code blocks):
                     
         except Exception as e:
             logger.warning(f"Sports AI classification error: {e}")
-            return False, f"AI classification error - allowing trade"
+            return True, f"AI classification error - blocking trade for safety"

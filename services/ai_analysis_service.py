@@ -38,6 +38,7 @@ class AIAnalysisService:
     - Tracks API request count with configurable limit
     - Automatically disables AI when limit is reached
     - Sports market filtering with AI classification
+    - Circuit breaker to prevent cascading failures
     """
     
     def __init__(
@@ -45,7 +46,9 @@ class AIAnalysisService:
         analyzer: AIAnalysisProvider, 
         exchange: ExchangeProvider,
         max_requests: int = 100,
-        rate_limit_config: Optional[Dict[str, Any]] = None
+        rate_limit_config: Optional[Dict[str, Any]] = None,
+        circuit_breaker_threshold: int = 5,
+        circuit_breaker_cooldown: int = 60
     ):
         """
         Initialize the AI analysis service.
@@ -58,6 +61,8 @@ class AIAnalysisService:
                 - rate_limit_rps: Requests per second (default: 5.0)
                 - max_concurrent_ai: Max concurrent requests (default: 10)
                 - queue_timeout: Queue timeout in seconds (default: 120)
+            circuit_breaker_threshold: Consecutive failures before circuit opens
+            circuit_breaker_cooldown: Seconds to wait before retrying after circuit opens
         """
         self.analyzer = analyzer
         self.exchange = exchange
@@ -65,6 +70,12 @@ class AIAnalysisService:
         
         # Sports filter configuration (set via update_sports_filter_config)
         self.sports_filter_enabled = False
+        
+        # Circuit breaker state
+        self._circuit_breaker_threshold = circuit_breaker_threshold
+        self._circuit_breaker_cooldown = circuit_breaker_cooldown
+        self._consecutive_failures = 0
+        self._circuit_open_until: float = 0.0  # timestamp when circuit can close
         
         # Initialize rate limiter with config
         rl_config = rate_limit_config or {}
@@ -81,7 +92,7 @@ class AIAnalysisService:
         self._load_cache()
         self._load_state()
         
-        logger.info(f"🤖 AIAnalysisService initialized (requests: {self._request_count}/{self.max_requests if self.max_requests > 0 else '∞'}, cached: {len(self._cache)})")
+        logger.info(f"🤖 AIAnalysisService initialized (requests: {self._request_count}/{self.max_requests if self.max_requests > 0 else '∞'}, cached: {len(self._cache)}, circuit_breaker: {circuit_breaker_threshold} failures / {circuit_breaker_cooldown}s cooldown)")
     
     def _load_cache(self):
         """Load analysis cache from JSON file."""
@@ -145,6 +156,40 @@ class AIAnalysisService:
         if self.max_requests <= 0:
             return False  # Unlimited
         return self._request_count >= self.max_requests
+    
+    def _is_circuit_open(self) -> bool:
+        """Check if circuit breaker is open (blocking requests)."""
+        import time
+        if self._circuit_open_until > 0:
+            if time.time() < self._circuit_open_until:
+                return True
+            else:
+                # Circuit can close, reset state
+                logger.info("🟢 AI circuit breaker closed - resuming normal operation")
+                self._circuit_open_until = 0.0
+                self._consecutive_failures = 0
+        return False
+    
+    def _record_failure(self):
+        """Record an AI failure for circuit breaker."""
+        import time
+        self._consecutive_failures += 1
+        if self._consecutive_failures >= self._circuit_breaker_threshold:
+            self._circuit_open_until = time.time() + self._circuit_breaker_cooldown
+            logger.warning(f"🔴 AI circuit breaker OPEN - {self._consecutive_failures} consecutive failures. Blocking AI for {self._circuit_breaker_cooldown}s")
+    
+    def _record_success(self):
+        """Record an AI success to reset circuit breaker."""
+        if self._consecutive_failures > 0:
+            self._consecutive_failures = 0
+    
+    def update_circuit_breaker_config(self, threshold: int = None, cooldown: int = None):
+        """Update circuit breaker configuration."""
+        if threshold is not None:
+            self._circuit_breaker_threshold = threshold
+        if cooldown is not None:
+            self._circuit_breaker_cooldown = cooldown
+        logger.info(f"⚡ Circuit breaker config updated: threshold={self._circuit_breaker_threshold}, cooldown={self._circuit_breaker_cooldown}s")
     
     def update_sports_filter_config(self, enabled: bool):
         """Update sports filter configuration."""
@@ -214,15 +259,27 @@ class AIAnalysisService:
         
         # Check if we've hit the API limit
         if self.is_limit_reached():
-            logger.warning(f"🤖 API limit reached ({self._request_count}/{self.max_requests}). Defaulting to APPROVE.")
+            logger.warning(f"🤖 API limit reached ({self._request_count}/{self.max_requests}). BLOCKING trade for safety.")
             fallback = TradeAnalysis(
-                should_trade=True,
+                should_trade=False,
                 confidence=0.0,
-                justification=f"API limit reached ({self._request_count} requests). Defaulting to allow trade.",
+                justification=f"API limit reached ({self._request_count} requests). Blocking trade for safety.",
                 risk_factors=["AI analysis skipped - API limit"],
                 opportunity_factors=[]
             )
-            return True, fallback
+            return False, fallback
+        
+        # Check circuit breaker
+        if self._is_circuit_open():
+            logger.warning(f"🔴 AI circuit breaker OPEN - blocking trade for safety")
+            fallback = TradeAnalysis(
+                should_trade=False,
+                confidence=0.0,
+                justification="AI circuit breaker open (too many recent failures). Blocking trade for safety.",
+                risk_factors=["AI circuit breaker active"],
+                opportunity_factors=[]
+            )
+            return False, fallback
         
         try:
             # Fetch market data if not provided
@@ -245,15 +302,16 @@ class AIAnalysisService:
                         context=context
                     )
             except asyncio.TimeoutError:
-                logger.warning(f"⏳ AI request queued too long, skipping analysis")
+                self._record_failure()
+                logger.warning(f"⏳ AI request queued too long, BLOCKING trade for safety")
                 fallback = TradeAnalysis(
-                    should_trade=True,
+                    should_trade=False,
                     confidence=0.0,
-                    justification="AI request queue timeout. Defaulting to allow trade.",
+                    justification="AI request queue timeout. Blocking trade for safety.",
                     risk_factors=["AI analysis skipped - queue timeout"],
                     opportunity_factors=[]
                 )
-                return True, fallback
+                return False, fallback
             
             # Increment request counter and save
             self._request_count += 1
@@ -263,6 +321,9 @@ class AIAnalysisService:
             self._cache[token_id] = analysis.model_dump()
             self._save_cache()
             
+            # Record success for circuit breaker
+            self._record_success()
+            
             # Log the analysis result
             self._log_analysis(trade_event, analysis)
             
@@ -271,16 +332,17 @@ class AIAnalysisService:
             return analysis.should_trade, analysis
             
         except Exception as e:
+            self._record_failure()
             logger.error(f"AI analysis failed: {e}")
-            # On failure, default to allowing the trade
+            # On failure, BLOCK the trade for safety
             fallback = TradeAnalysis(
-                should_trade=True,
+                should_trade=False,
                 confidence=0.0,
-                justification=f"AI analysis failed ({e}). Defaulting to allow trade.",
+                justification=f"AI analysis failed ({e}). Blocking trade for safety.",
                 risk_factors=["AI analysis error"],
                 opportunity_factors=[]
             )
-            return True, fallback
+            return False, fallback
     
     def _build_context(self, trade_event: TradeEvent) -> dict:
         """Build context dictionary from trade event and environment."""

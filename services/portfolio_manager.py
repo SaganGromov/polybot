@@ -184,7 +184,8 @@ class PortfolioManager:
                         else:
                             logger.info(f"  ✅ Not sports: {reason}")
                     except Exception as e:
-                        logger.error(f"  Sports filter check failed: {e} - proceeding with trade")
+                        logger.error(f"  🛑 Sports filter check failed: {e} - BLOCKING trade for safety")
+                        return  # Block trade when filter fails
 
             # --- FETCH ORDER BOOK ---
             depth = await self.exchange.get_order_book(event.token_id)
@@ -229,7 +230,8 @@ class PortfolioManager:
                     else:
                         logger.info(f"  🤖 AI recommends skip but low confidence ({analysis.confidence:.0%}), auto-proceeding")
             except Exception as e:
-                logger.error(f"  AI analysis failed: {e} - proceeding with trade")
+                logger.error(f"  🛑 AI analysis failed: {e} - BLOCKING trade for safety")
+                return  # Block trade when AI fails
 
         # 1. Budget Check (Wallet Balance)
         balance = await self.exchange.get_balance()

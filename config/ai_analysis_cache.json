@@ -4703,5 +4703,246 @@
     "opportunity_factors": [],
     "estimated_resolution_time": null,
     "subjectivity_score": null
+  },
+  "32169302633723235235251659810064817019484855501133685217130365128535248672349": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      ""
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "51207183842737171378247957563413480376588860057674517615060239118814543287243": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      ""
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "106339270200679626281115692353246297395509465377804023092449486105002977573609": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      ""
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "111586095293526351206795245090206014309706907978873686726846480230389671857748": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      ""
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "57558393410465245387635659599744517653593416143009067176451975602454236422105": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      ""
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "3995843383268268365711097518948184039577293912105000845212529097115503678108": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      ""
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "24852828613183316013033738266948377389580726196580530916244400816829942162777": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      ""
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "38279627172652826233541961770612539837451537729379650178442741486102537557582": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      ""
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "69300808619165547345611526360610690752921896868329744591845427552054174358393": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      ""
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "87675555610087283323985555263688794909450017101671372496667211421781730202985": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is present, the very short time to resolution and the relatively small whale trade size, combined with the unfavorable odds and spread, make this trade unattractive. The potential profit is minimal, and the risk of losing the investment in a short timeframe is significant.",
+    "risk_factors": [
+      "Short time to resolution increases volatility",
+      "Small whale trade may not be indicative of strong conviction",
+      "Unfavorable odds based on current market prices",
+      "Spread reduces potential profit",
+      "Aztecs are currently the underdog"
+    ],
+    "opportunity_factors": [
+      "Whale signal indicates potential for price movement",
+      "Potential for quick profit if Aztecs win"
+    ],
+    "estimated_resolution_time": "1 hour, 23 minutes",
+    "subjectivity_score": 0.0
+  },
+  "84288480549885312685806926874624207473878922683525927348992621136421246958644": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the very short timeframe until resolution makes this a high-risk gamble. The small whale trade size and the already relatively high 'Yes' price suggest limited upside potential, and Bitcoin's volatility could easily move the price outside the narrow range.",
+    "risk_factors": [
+      "Bitcoin price volatility",
+      "Short timeframe until resolution",
+      "Whale trade size is small",
+      "Market could move against the position quickly"
+    ],
+    "opportunity_factors": [
+      "Whale signal",
+      "Potential for quick profit if Bitcoin price moves favorably"
+    ],
+    "estimated_resolution_time": "14 hours, 23 minutes",
+    "subjectivity_score": 0.0
+  },
+  "62293561274137233847506957139011053416620533613007727865010454846221854064717": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While mirroring a whale can be profitable, the extremely small trade size ($0.96) from Punisher2022 suggests a lack of strong conviction or a test trade. The market is already relatively efficient with a narrow spread, and the potential profit from mirroring such a small trade is minimal and not worth the risk.",
+    "risk_factors": [
+      "Small whale trade size indicates low conviction",
+      "Market efficiency reduces potential for profit",
+      "UNCW could lose the game",
+      "Whale could be wrong or manipulating the market"
+    ],
+    "opportunity_factors": [
+      "Potential for slight profit if UNCW wins",
+      "Following a whale could be profitable in general"
+    ],
+    "estimated_resolution_time": "21 hours, 23 minutes",
+    "subjectivity_score": 0.0
+  },
+  "76547572527204403360961634971240254329607894074534069849728460780943454362107": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale is trading 'Down', the trade size is very small ($12.75), suggesting low conviction. The market is relatively efficient, and the short resolution time provides limited opportunity for price movement, making this trade unattractive.",
+    "risk_factors": [
+      "Market could move against the 'Down' position",
+      "Whale's trade might be noise or a test trade",
+      "Limited time for price to move significantly"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if Bitcoin moves down",
+      "Following a whale could be profitable in the long run"
+    ],
+    "estimated_resolution_time": "3 hours, 23 minutes",
+    "subjectivity_score": 0.1
+  },
+  "65596524896985010415844814777069255362767748488616308434723608750130614059462": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While a whale is buying 'Yes', the current probability of 28.5% seems reasonable given Bitcoin's volatility. The time until resolution is short, but the potential upside doesn't outweigh the risk of a relatively large price movement not occurring in the next ~9 days.",
+    "risk_factors": [
+      "Bitcoin price may not dip to $85,000 in the remaining time",
+      "Whale could be wrong or manipulating the market",
+      "Liquidity may dry up before the resolution"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if Bitcoin dips sharply",
+      "Whale's historical performance could be positive (unknown)"
+    ],
+    "estimated_resolution_time": "9 days",
+    "subjectivity_score": 0.2
+  },
+  "23551730123892278697379547167568603886677384341614560282810343960930100700107": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the liquidity is good, the whale trade is insignificant and the market is likely efficiently priced. The short timeframe until resolution also limits potential profit, making this a risky trade to mirror.",
+    "risk_factors": [
+      "Fenerbah\u00e7e loses the match",
+      "Market is efficiently priced",
+      "Whale signal is too small to be reliable"
+    ],
+    "opportunity_factors": [
+      "Potential for Fenerbah\u00e7e to win",
+      "High liquidity allows for easy entry/exit"
+    ],
+    "estimated_resolution_time": "15 hours",
+    "subjectivity_score": 0.0
+  },
+  "20033259391170184690360842170453499368593615384500762669953666219739192197782": {
+    "should_trade": false,
+    "confidence": 0.4,
+    "justification": "While mirroring a whale can be profitable, the small trade size relative to the overall market volume and the short resolution timeline make this a risky proposition. The current market prices already reflect a relatively balanced view, and the potential for significant price movement in the remaining time is limited.",
+    "risk_factors": [
+      "Short resolution timeline limits potential profit",
+      "Whale's trade may be based on information already priced in",
+      "Bitcoin price volatility",
+      "Small trade size may not significantly impact the market"
+    ],
+    "opportunity_factors": [
+      "Potential for short-term price movement driven by whale's trade",
+      "Following a potentially profitable whale trader"
+    ],
+    "estimated_resolution_time": "6 hours",
+    "subjectivity_score": 0.1
+  },
+  "19773465193550709412593336098123191117870796508798669033257036910643420764427": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the liquidity is good and the spread is tight, the market heavily favors 'No' (98.6%). The whale trade is small, and the potential upside is minimal given the already low probability of 'Yes'.",
+    "risk_factors": [
+      "Unexpected political shifts",
+      "Whale signal could be noise",
+      "Low probability event"
+    ],
+    "opportunity_factors": [
+      "High liquidity",
+      "Tight spread"
+    ],
+    "estimated_resolution_time": "2 days",
+    "subjectivity_score": 0.7
   }
 }
