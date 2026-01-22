@@ -4944,5 +4944,660 @@
     ],
     "estimated_resolution_time": "2 days",
     "subjectivity_score": 0.7
+  },
+  "100950272918076589213966569490332247368529132351859425598831807175876271444957": {
+    "should_trade": false,
+    "confidence": 0.0,
+    "justification": "AI analysis unavailable (). Blocking trade for safety.",
+    "risk_factors": [
+      "AI analysis not performed",
+      ""
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "2313989679109684846673927514753105979725621945807519831764389320973852108972": {
+    "should_trade": false,
+    "confidence": 0.0,
+    "justification": "AI analysis unavailable (). Blocking trade for safety.",
+    "risk_factors": [
+      "AI analysis not performed",
+      ""
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "76542669077063688376474554152770428499262080020205126869108388615748790761200": {
+    "should_trade": false,
+    "confidence": 0.0,
+    "justification": "AI analysis unavailable (). Blocking trade for safety.",
+    "risk_factors": [
+      "AI analysis not performed",
+      ""
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "105134443736054562548782260666531568278457941751449235826951886402383056859564": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While mirroring a whale might seem appealing, the extremely small trade size ($5.06) suggests low conviction from the whale. Furthermore, the market's current pricing heavily favors 'Up,' making a 'Down' outcome less likely and increasing the risk of losing the investment.",
+    "risk_factors": [
+      "Low whale conviction due to small trade size",
+      "Market heavily favors 'Up' outcome",
+      "Potential for rapid price fluctuations in XRP"
+    ],
+    "opportunity_factors": [
+      "Potential for short-term profit if XRP price drops unexpectedly",
+      "Following a whale trader could be profitable in the long run (though not in this specific instance)"
+    ],
+    "estimated_resolution_time": "3 hours",
+    "subjectivity_score": 0.6
+  },
+  "113176939949911029563101653010994603183200164101086602584767448802108208111436": {
+    "should_trade": false,
+    "confidence": 0.55,
+    "justification": "While the whale signal is present, the very short resolution timeline and relatively inefficient market (given the narrow price range) make this a risky trade. The small whale trade size also reduces confidence in the signal's predictive power.",
+    "risk_factors": [
+      "Bitcoin price volatility in the short term",
+      "Market inefficiency due to short resolution time",
+      "Whale signal may be noise",
+      "Limited time to react to market changes"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if Bitcoin price moves into the range",
+      "Whale signal could indicate insider information or superior analysis"
+    ],
+    "estimated_resolution_time": "14 hours",
+    "subjectivity_score": 0.1
+  },
+  "41340276117389496389259807641852431980432634255443357901418157681194956276698": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the liquidity is good, the market price already reflects a very high probability of the outcome. Following the whale in this case seems unlikely to yield significant profit, especially given the subjective nature of political outcomes and the unknown resolution timeline.",
+    "risk_factors": [
+      "Political outcomes are inherently unpredictable",
+      "Market price already reflects high probability",
+      "Unknown resolution timeline",
+      "Whale could be wrong or have inside information that is no longer relevant"
+    ],
+    "opportunity_factors": [
+      "High liquidity allows for easy entry and exit",
+      "Whale trader has a history of profitable trades (assumed)"
+    ],
+    "estimated_resolution_time": "Unknown",
+    "subjectivity_score": 0.8
+  },
+  "72182453539612790459830913283016051770413650923737832655077596596821602608072": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While mirroring a whale can be profitable, the small trade size ($21.60) and short resolution time (less than 4 hours) make this a high-risk, low-reward trade. The market is relatively efficient, and the potential for significant price movement in either direction is high, making it difficult to predict the outcome.",
+    "risk_factors": [
+      "Short resolution time",
+      "Small whale trade size",
+      "Market volatility",
+      "Potential for slippage"
+    ],
+    "opportunity_factors": [
+      "Potential for short-term price movement",
+      "Following a potentially profitable whale"
+    ],
+    "estimated_resolution_time": "3 hours, 59 minutes",
+    "subjectivity_score": 0.6
+  },
+  "77602741840981106086239967110007351544336355415711849091084817593589343440318": {
+    "should_trade": false,
+    "confidence": 0.4,
+    "justification": "While the current price suggests a near 50/50 chance, the whale's trade size is insignificant relative to the market volume, and the short resolution timeline makes it difficult to predict price movement with any certainty. The high spread and limited time until resolution make this a risky trade to mirror.",
+    "risk_factors": [
+      "Solana price volatility",
+      "Short resolution timeline",
+      "Whale signal may be noise",
+      "High spread",
+      "Market manipulation"
+    ],
+    "opportunity_factors": [
+      "Potential for short-term price spike",
+      "Whale may have inside information (unlikely given trade size)"
+    ],
+    "estimated_resolution_time": "13 hours, 56 minutes",
+    "subjectivity_score": 0.3
+  },
+  "67887887656211418316241850843090845552840507401068429134413016885437503003652": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the liquidity is good, the market heavily favors 'Yes' at 92.2%, suggesting it's already priced in. The whale trade is small, and the potential upside is limited given the short time to resolution, making it an unattractive risk/reward profile.",
+    "risk_factors": [
+      "Bitcoin price volatility",
+      "Market already heavily favors 'Yes'",
+      "Small whale trade size",
+      "Limited time to resolution"
+    ],
+    "opportunity_factors": [
+      "High liquidity",
+      "Potential for a small profit if Bitcoin price increases slightly"
+    ],
+    "estimated_resolution_time": "13 hours, 57 minutes",
+    "subjectivity_score": 0.1
+  },
+  "67046192002307405519017927362000621262018949534914241919846603943984737010005": {
+    "should_trade": false,
+    "confidence": 0.1,
+    "justification": "The market heavily implies the Bank of Japan will not decrease interest rates. The whale trade size is zero, indicating a potential error or lack of conviction, and the time until resolution is very short, offering minimal opportunity for price movement.",
+    "risk_factors": [
+      "Market consensus is strongly against the outcome",
+      "Very short time to resolution",
+      "Whale signal is unreliable due to zero trade size",
+      "Limited potential for profit"
+    ],
+    "opportunity_factors": [
+      "Potential for surprise announcement by Bank of Japan (very low probability)"
+    ],
+    "estimated_resolution_time": "20 hours, 57 minutes",
+    "subjectivity_score": 0.3
+  },
+  "90435811253665578014957380826505992530054077692143838383981805324273750424057": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is intriguing, the event's likelihood is extremely low, and the subjective nature of 'Jesus Christ's return' introduces significant resolution risk. The small trade size of the whale relative to the market's massive volume suggests limited conviction, making this a risky proposition.",
+    "risk_factors": [
+      "Subjective resolution criteria for 'Jesus Christ's return'",
+      "Extremely low probability event",
+      "Potential for delayed or disputed resolution",
+      "Whale trade size is insignificant compared to market volume"
+    ],
+    "opportunity_factors": [
+      "Potential for mispricing due to the unusual nature of the market",
+      "Whale signal could indicate inside information or a unique perspective"
+    ],
+    "estimated_resolution_time": "6 months",
+    "subjectivity_score": 0.9
+  },
+  "35065681235829177581153073223029688269698753311455183545034637214024833906621": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the 'Up' outcome has high current probability, the whale trade is extremely small ($0.69), suggesting low conviction. The market already heavily favors 'Up' (89.5%), making further gains unlikely, and the short resolution time limits potential profit.",
+    "risk_factors": [
+      "High market expectation of 'Up' outcome",
+      "Small whale trade size indicates low conviction",
+      "Short resolution time limits profit potential",
+      "Potential for unexpected price fluctuations in ETH"
+    ],
+    "opportunity_factors": [
+      "Potential for short-term price spike if 'Up' outcome is realized",
+      "Following a whale, even with a small trade, could be profitable in a highly correlated market"
+    ],
+    "estimated_resolution_time": "3 hours",
+    "subjectivity_score": 0.1
+  },
+  "56369772478534954338683665819559528414197495274302917800610633957542171787417": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While a whale is buying, the current price of 0.9% for Rand Paul winning the 2028 nomination seems very low, and the large ask liquidity suggests strong resistance to price increases. The long resolution timeline and subjective nature of the event make this a risky trade, even with a whale signal.",
+    "risk_factors": [
+      "Rand Paul's political career could decline further",
+      "Another candidate could emerge as a stronger contender",
+      "Whale could be wrong or manipulating the market",
+      "Low liquidity on the bid side makes exiting difficult at a profit"
+    ],
+    "opportunity_factors": [
+      "Potential for significant upside if Rand Paul gains momentum",
+      "Whale's involvement could signal inside information or a strategic move",
+      "Current price may be an undervaluation of Rand Paul's chances"
+    ],
+    "estimated_resolution_time": "2 years, 9 months, 15 days",
+    "subjectivity_score": 0.8
+  },
+  "32270611938989854998780137893988155411775732962814092777955806734993067895966": {
+    "should_trade": false,
+    "confidence": 0.95,
+    "justification": "The market heavily favors 'Yes' at 99.1%, indicating a strong consensus that the Bank of Japan will maintain its interest rates. While the whale's signal to buy 'Yes' aligns with this consensus, the potential profit is minimal given the already high price and the very short time until resolution, making it unattractive despite the high confidence.",
+    "risk_factors": [
+      "BoJ unexpectedly changes interest rates",
+      "Black swan event affecting BoJ decision",
+      "Market price already reflects near certainty"
+    ],
+    "opportunity_factors": [
+      "Whale signal aligns with market consensus",
+      "High liquidity reduces slippage risk"
+    ],
+    "estimated_resolution_time": "20 hours, 52 minutes",
+    "subjectivity_score": 0.2
+  },
+  "80694579401351264164227298907274589580833973806359615446281061184346942673161": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While mirroring a whale can be profitable, the very small trade size ($3.92) from TortoiseMaker suggests low conviction. The market is already near 50/50, and the potential profit is minimal given the risks of Bitcoin volatility.",
+    "risk_factors": [
+      "Bitcoin price volatility",
+      "Whale signal may be noise",
+      "Market inefficiency is low",
+      "Small whale trade size indicates low confidence"
+    ],
+    "opportunity_factors": [
+      "Potential for short-term price movement",
+      "Following a whale could be profitable in general"
+    ],
+    "estimated_resolution_time": "3 hours, 49 minutes",
+    "subjectivity_score": 0.0
+  },
+  "99244664687336748361209215278899930943522057979914603099375893243537282410737": {
+    "should_trade": false,
+    "confidence": 0.7,
+    "justification": "While the liquidity is good and a whale is trading 'Yes', the current price of 93.7% is extremely high, suggesting the market is already pricing in a very strong belief that Yoon Suk Yeol will be sentenced to at least 30 years in prison. The potential upside is limited, and the downside risk is substantial if the market corrects even slightly.",
+    "risk_factors": [
+      "High current price leaves little room for profit",
+      "Political events are unpredictable and subjective",
+      "Whale's information may be flawed or outdated"
+    ],
+    "opportunity_factors": [
+      "High liquidity allows for easy entry and exit",
+      "Whale's trading activity suggests potential for short-term price movement"
+    ],
+    "estimated_resolution_time": "11 months",
+    "subjectivity_score": 0.8
+  },
+  "70771354585365381988139008309072205730081182435161568795508496003376222185889": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale's activity is notable, the short timeframe and the already significant market volume suggest that the current price of 23.5% reflects a reasonable assessment of the event's likelihood. The potential for unforeseen events is always present, but the limited time until resolution makes it a risky proposition to buy in at this price, even mirroring a whale.",
+    "risk_factors": [
+      "Khamenei's health remains stable",
+      "Political situation in Iran remains unchanged",
+      "Succession plans are not accelerated",
+      "Whale's information is incorrect or outdated"
+    ],
+    "opportunity_factors": [
+      "Sudden deterioration of Khamenei's health",
+      "Unexpected political upheaval in Iran",
+      "Whale has access to privileged information"
+    ],
+    "estimated_resolution_time": "2 months, 1 week",
+    "subjectivity_score": 0.7
+  },
+  "39262267221676949796326419211008961431735960549601091803803006482409998029102": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the spread is tight and liquidity is decent, the whale trade size is insignificant ($10.80) relative to the total market volume. The market is heavily favoring 'Up' and the whale's 'Down' bet is too small to suggest any informational advantage or significant market manipulation.",
+    "risk_factors": [
+      "Market heavily favors 'Up'",
+      "Whale trade size is insignificant",
+      "Potential for random price fluctuations in Bitcoin"
+    ],
+    "opportunity_factors": [
+      "Tight spread allows for low-cost entry/exit",
+      "Decent liquidity"
+    ],
+    "estimated_resolution_time": "3 hours",
+    "subjectivity_score": 0.1
+  },
+  "28750411537670913386611986317444276695034904678813687400034891569686083300176": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "The market has already closed two days ago, making this trade impossible to execute profitably. The whale trade is likely an error or based on stale information, and the high 'Yes' price reflects a misunderstanding of the market's status.",
+    "risk_factors": [
+      "Market is already closed",
+      "Whale trade could be an error",
+      "High price due to misunderstanding"
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": "Market already resolved",
+    "subjectivity_score": 0.1
+  },
+  "111549356376232726523716944429697464891308700839297201420986950650173377234599": {
+    "should_trade": true,
+    "confidence": 0.75,
+    "justification": "The market heavily favors 'No', but a whale is buying 'No', suggesting potential information or a contrarian play. Given the relatively short resolution time and decent liquidity, mirroring the whale's 'No' purchase seems reasonable, especially if they have inside information about Musk's tweeting habits.",
+    "risk_factors": [
+      "Elon Musk could unexpectedly tweet more than anticipated.",
+      "The whale's signal could be a false flag or based on flawed information.",
+      "Market sentiment could shift rapidly, decreasing the value of 'No' shares."
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if the whale's signal is accurate.",
+      "High probability of 'No' outcome based on current market prices.",
+      "Decent liquidity allows for easy entry and exit."
+    ],
+    "estimated_resolution_time": "2 days, 14 hours",
+    "subjectivity_score": 0.3
+  },
+  "27800862011409067769841803593294797958680124976617506462996079005415021446030": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the potential payout is high given the low probability, the whale trade size is insignificant ($0.90) relative to the market volume, suggesting low conviction. The market seems relatively efficient, and the short timeframe leaves little room for significant price movement even if the probability shifts slightly.",
+    "risk_factors": [
+      "Elon Musk's tweeting behavior is unpredictable",
+      "The whale trade might be a small test or misdirection",
+      "Market price may not move significantly even if the outcome is likely"
+    ],
+    "opportunity_factors": [
+      "Potential for high ROI if Elon Musk tweets within the specified range",
+      "Market may be underestimating the probability of the event",
+      "Following a profitable whale, even with a small trade, can be beneficial in the long run"
+    ],
+    "estimated_resolution_time": "1 day, 13 hours, 45 minutes",
+    "subjectivity_score": 0.2
+  },
+  "19549406327953528386812871522763096772062238873796040553905789139755184248648": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "The whale's trade size is insignificant ($3.43) relative to the market volume ($2,854.23) and liquidity. The market is near 50/50, and the small profit window does not justify the risk of Bitcoin price fluctuations in the next few hours.",
+    "risk_factors": [
+      "Bitcoin price volatility",
+      "Market manipulation",
+      "Whale signal is unreliable",
+      "High spread relative to potential profit"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if Bitcoin price moves favorably",
+      "Following a whale could be profitable in the long run (if this whale is actually profitable)"
+    ],
+    "estimated_resolution_time": "3 hours",
+    "subjectivity_score": 0.2
+  },
+  "52607315900507156846622820770453728082833251091510131025984187712529448877245": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal is present, the current market price of 11% seems relatively efficient given the short timeframe until resolution. The potential upside is limited, and a government shutdown in the next week is unlikely, making this a risky trade.",
+    "risk_factors": [
+      "Government shutdown unlikely in the short timeframe",
+      "Limited upside potential",
+      "Whale could be wrong or have different information"
+    ],
+    "opportunity_factors": [
+      "Whale signal could indicate inside information or superior analysis",
+      "Potential for rapid price increase if shutdown becomes more likely"
+    ],
+    "estimated_resolution_time": "8 days",
+    "subjectivity_score": 0.6
+  },
+  "67652966877550910225628087451011296997468909205349272135825848580347126920027": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the market heavily favors Emma Stone being nominated, the whale trade is small and the 'No' outcome has very low liquidity. The time until resolution is short, but the potential profit is limited and the risk of being unable to exit the position at a reasonable price is significant.",
+    "risk_factors": [
+      "Low liquidity for 'No' outcome",
+      "Small whale trade size",
+      "Short time until resolution limits potential profit",
+      "Emma Stone could unexpectedly receive significant negative press affecting nomination chances"
+    ],
+    "opportunity_factors": [
+      "Potential mispricing if market overestimates Stone's nomination chances",
+      "Whale signal could indicate inside information or a strong contrarian view"
+    ],
+    "estimated_resolution_time": "20 hours, 39 minutes",
+    "subjectivity_score": 0.3
+  },
+  "75325926334064369719522833702687350588543226350264281045007110029547967164523": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the liquidity is excellent and the spread is tight, the current price of 'No' at 98.2% already reflects the high improbability of the Iranian regime falling within the next 8 days. Following a small whale trade in this already heavily favored direction is unlikely to yield significant profit.",
+    "risk_factors": [
+      "Black swan event leading to regime collapse",
+      "Whale signal is a misdirection or based on flawed information",
+      "Market price remains stable, resulting in minimal profit"
+    ],
+    "opportunity_factors": [
+      "Potential for small profit if market price of 'No' increases slightly",
+      "High liquidity allows for easy entry and exit"
+    ],
+    "estimated_resolution_time": "8 days",
+    "subjectivity_score": 0.6
+  },
+  "84474562203600653088630169915392238795819871094596767105558568527705155018466": {
+    "should_trade": false,
+    "confidence": 0.8,
+    "justification": "The market heavily favors 'No,' and the whale trade is insignificant ($0.01). The short time to resolution means there's little time for the price to shift even if the weather forecast changes dramatically, making a 'Yes' outcome highly improbable.",
+    "risk_factors": [
+      "Weather forecast is inaccurate",
+      "Unexpected cold front",
+      "Market remains heavily skewed against 'Yes'"
+    ],
+    "opportunity_factors": [
+      "Potential for a very high payout if the temperature is 49\u00b0F or below",
+      "Short time to resolution reduces opportunity cost"
+    ],
+    "estimated_resolution_time": "8 hours, 36 minutes",
+    "subjectivity_score": 0.0
+  },
+  "50404975229502792492852407083204224534996768904504153224796813248922024271451": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is tempting, the market heavily favors 'Yes' (78.5%), making 'No' a risky proposition. The small time window before resolution and the subjective nature of awards nominations further decrease the attractiveness of this trade, despite the whale's involvement.",
+    "risk_factors": [
+      "Subjectivity of Academy Award nominations",
+      "High market confidence in 'Yes' outcome",
+      "Short timeframe until market resolution",
+      "Whale could be wrong or have different risk tolerance"
+    ],
+    "opportunity_factors": [
+      "Potential for mispricing due to market overconfidence",
+      "Whale 'InsiderrrZ' has potentially valuable information",
+      "Relatively low cost to enter the position"
+    ],
+    "estimated_resolution_time": "20 hours, 36 minutes",
+    "subjectivity_score": 0.8
+  },
+  "67615115261620620127741638561035770655888783424569117918183990947201186932340": {
+    "should_trade": true,
+    "confidence": 0.65,
+    "justification": "The market has a relatively short resolution time, and the whale's buy signal on 'Up' suggests a potential upward price movement. While the whale's trade size is small, the current price of 'Up' at 54% may be slightly undervalued, offering a small profit opportunity if the price moves towards the whale's expectation.",
+    "risk_factors": [
+      "Bitcoin price volatility",
+      "Whale signal may be a false positive",
+      "Small whale trade size indicates low conviction"
+    ],
+    "opportunity_factors": [
+      "Short resolution time",
+      "Potential mispricing of 'Up' outcome",
+      "Whale signal indicating upward price movement"
+    ],
+    "estimated_resolution_time": "5 hours, 34 minutes",
+    "subjectivity_score": 0.3
+  },
+  "107497259924014101120833054359244209179064033764980103636954562467069199808803": {
+    "should_trade": false,
+    "confidence": 0.2,
+    "justification": "The 'Yes' outcome is highly improbable given the current price and the political landscape. While a whale is buying, the trade size is relatively small compared to the overall market volume, making it unlikely to significantly move the market. The long resolution time also increases the risk of unforeseen events.",
+    "risk_factors": [
+      "Low probability event",
+      "Long resolution time",
+      "Whale trade size is small relative to market volume",
+      "Trump may not be in a position to nominate anyone"
+    ],
+    "opportunity_factors": [
+      "Potential for outsized gains if the improbable occurs",
+      "Following a whale could be profitable in some cases"
+    ],
+    "estimated_resolution_time": "11 months",
+    "subjectivity_score": 0.7
+  },
+  "112640187121872104723655834799934821712465419714201363140089615513884600316497": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is intriguing, the small trade size and relatively short timeframe until resolution make this a less compelling opportunity. The market seems reasonably efficient, and the potential upside is limited compared to the downside risk if Bitcoin experiences significant volatility.",
+    "risk_factors": [
+      "Bitcoin price volatility",
+      "Market correction",
+      "Whale signal may be noise",
+      "Limited upside potential"
+    ],
+    "opportunity_factors": [
+      "Potential for Bitcoin price decline",
+      "Whale signal may be predictive"
+    ],
+    "estimated_resolution_time": "11 months, 9 days",
+    "subjectivity_score": 0.2
+  },
+  "71908039530432679126699531182441314574775870170156372057931816416533831667755": {
+    "should_trade": false,
+    "confidence": 0.75,
+    "justification": "The market heavily favors Ethereum being above $2800, making the 'No' outcome very unlikely. While the whale signal exists, the extremely low probability and small trade size do not justify going against the market consensus, especially with limited liquidity on the 'No' side.",
+    "risk_factors": [
+      "Ethereum price spikes unexpectedly",
+      "Whale signal is a misdirection or mistake",
+      "Low liquidity on the 'No' side"
+    ],
+    "opportunity_factors": [
+      "Potential for outsized returns if Ethereum price crashes",
+      "Whale signal could indicate inside information"
+    ],
+    "estimated_resolution_time": "1 day, 13 hours, 30 minutes",
+    "subjectivity_score": 0.1
+  },
+  "99508447001367967456853533091993073701797754282906312817939008909473650422829": {
+    "should_trade": false,
+    "confidence": 0.4,
+    "justification": "While the whale signal is intriguing, the small trade size and short resolution time make it a risky proposition. The market seems relatively efficient, and the potential profit is likely minimal after fees, especially considering the inherent volatility of Bitcoin.",
+    "risk_factors": [
+      "Bitcoin price volatility",
+      "Whale signal may be noise",
+      "Short resolution time limits profit potential",
+      "Market efficiency reduces mispricing opportunities"
+    ],
+    "opportunity_factors": [
+      "Potential for short-term price movement",
+      "Whale trader may have inside information"
+    ],
+    "estimated_resolution_time": "3 hours 30 minutes",
+    "subjectivity_score": 0.2
+  },
+  "90561464051856462967089950966240649067697342956280490209479188947741396434893": {
+    "should_trade": false,
+    "confidence": 0.4,
+    "justification": "The market is about to resolve, and the whale trade is insignificant ($1.44). The subjectivity of counting the number of times someone says \"Peace\" and the short time to resolution make this a risky trade to mirror.",
+    "risk_factors": [
+      "Subjective counting of words",
+      "Very short time to resolution",
+      "Insignificant whale trade size",
+      "Potential for Trump to deviate from prepared remarks"
+    ],
+    "opportunity_factors": [
+      "Potential for Trump to frequently use the word \"Peace\" during the announcement"
+    ],
+    "estimated_resolution_time": "Negative 3 hours, 34 minutes (already resolved)",
+    "subjectivity_score": 0.7
+  },
+  "54381379224176757340207902226198635316251175036192570268930373046520727613302": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While following a whale can be profitable, the current market price of 17.5% for SPD winning the most seats seems relatively efficient, given the political landscape. The small whale trade size and the subjective nature of political outcomes make this a less compelling opportunity, especially considering the limited potential upside.",
+    "risk_factors": [
+      "Political outcomes are inherently unpredictable.",
+      "Whale's signal may be based on outdated or incorrect information.",
+      "SPD's support could decline before the election.",
+      "The whale's position may be part of a larger hedging strategy."
+    ],
+    "opportunity_factors": [
+      "Potential for SPD support to increase unexpectedly.",
+      "Whale 'mombil' may have inside information or superior analysis.",
+      "Market mispricing due to limited information or emotional trading."
+    ],
+    "estimated_resolution_time": "2 months",
+    "subjectivity_score": 0.8
+  },
+  "71354961394578494408937143110907843550577676051621608744496329353364208118436": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the large ask liquidity is appealing, the current 'Yes' price of 23.5% seems relatively fair given the geopolitical situation. The whale trade is small, and the outcome is highly subjective, making this a risky trade to mirror.",
+    "risk_factors": [
+      "Geopolitical events are unpredictable",
+      "Outcome is subjective and depends on interpretation of 'officially agrees'",
+      "Whale trade size is small, indicating low conviction",
+      "Market could move against the position before resolution"
+    ],
+    "opportunity_factors": [
+      "High ask liquidity allows for easy entry and exit",
+      "Potential for significant profit if ceasefire agreement is reached",
+      "Whale trader may have inside information or superior analysis"
+    ],
+    "estimated_resolution_time": "2 months",
+    "subjectivity_score": 0.8
+  },
+  "50909801964063219475559155420127060121303689362942005196294255673854743794225": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While mirroring a whale might seem advantageous, the extremely small trade size ($3.05) suggests low conviction. The short resolution window and relatively low liquidity, combined with the already priced-in probability, make this trade unattractive despite the whale signal.",
+    "risk_factors": [
+      "Low whale conviction due to small trade size",
+      "Potential for rapid price fluctuations in ETH",
+      "Limited liquidity for exiting the position",
+      "Market inefficiency due to short timeframe"
+    ],
+    "opportunity_factors": [
+      "Potential for short-term price movement in favor of 'Down' outcome",
+      "Whale signal indicating a possible edge"
+    ],
+    "estimated_resolution_time": "3 hours",
+    "subjectivity_score": 0.2
+  },
+  "115417529271639173099431843153477340157176069881171592686628839654361692976337": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "The market heavily favors 'No', suggesting a low probability of XRP dipping to $1.50 within the specified timeframe. While the whale signal exists, the small trade size and the already low 'Yes' probability make this an unattractive trade.",
+    "risk_factors": [
+      "XRP price volatility",
+      "Unexpected market crash",
+      "Whale signal is incorrect or misleading"
+    ],
+    "opportunity_factors": [
+      "Potential for a sudden XRP price drop",
+      "Market mispricing (unlikely)"
+    ],
+    "estimated_resolution_time": "4 days",
+    "subjectivity_score": 0.1
+  },
+  "36873990491685061697797429373815875133688566397124746516954174552245605222407": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "The market heavily favors 'Yes' at 86.5%, making a 'No' purchase risky. While the whale signal exists, the small trade size ($1.69) doesn't inspire confidence, and the potential profit is limited given the current odds.",
+    "risk_factors": [
+      "Low probability outcome",
+      "Small whale trade size",
+      "Limited potential profit"
+    ],
+    "opportunity_factors": [
+      "Potential for outsized returns if 'No' outcome occurs",
+      "Whale signal may indicate inside information"
+    ],
+    "estimated_resolution_time": "20 hours, 23 minutes",
+    "subjectivity_score": 0.6
+  },
+  "29644106903758442142962883375936242105975182941365098207713730958104213541786": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the market heavily favors 'Down,' the small trade size from the whale and the short resolution time make this a risky proposition. The potential profit is minimal, and any unexpected price fluctuation in Ethereum could quickly lead to a loss.",
+    "risk_factors": [
+      "Ethereum price volatility",
+      "Short resolution time limits profit potential",
+      "Whale's trade size is small, indicating low conviction"
+    ],
+    "opportunity_factors": [
+      "Market heavily favors 'Down' outcome",
+      "Potential for quick profit if Ethereum price decreases"
+    ],
+    "estimated_resolution_time": "3 hours, 23 minutes",
+    "subjectivity_score": 0.2
+  },
+  "34551606549875928972193520396544368029176529083448203019529657908155427866742": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is tempting, the current 'Yes' price of 5.5% seems relatively efficient given the long timeframe and the inherent uncertainty of presidential appointments. The small whale trade size and high subjectivity make this a risky bet, especially considering the large ask liquidity suggests limited upward price pressure.",
+    "risk_factors": [
+      "Trump may not nominate Hassett",
+      "Hassett may decline the nomination",
+      "Trump may not be able to nominate anyone (e.g., due to political gridlock or unforeseen circumstances)",
+      "Market price may not move significantly even if Hassett is nominated initially"
+    ],
+    "opportunity_factors": [
+      "Whale trader 'Eatpraylove' has a history of profitable trades",
+      "Potential for significant price appreciation if Hassett becomes a leading candidate",
+      "Market may be underestimating the possibility of a surprise nomination"
+    ],
+    "estimated_resolution_time": "11 months",
+    "subjectivity_score": 0.8
   }
 }

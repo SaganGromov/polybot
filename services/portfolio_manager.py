@@ -8,6 +8,7 @@ from polybot.core.interfaces import ExchangeProvider, MarketMetadata
 from polybot.core.models import Position, Side, Order, OrderStatus
 from polybot.core.events import TradeEvent
 from polybot.services.execution import SmartExecutor
+from polybot.services.trade_logger import TradeLogger
 from polybot.config.settings import settings
 
 if TYPE_CHECKING:
@@ -42,6 +43,9 @@ class PortfolioManager:
         self.cumulative_spend = 0.0
         self.managed_tokens: Set[str] = set()
         self._load_state()
+        
+        # Trade Logger
+        self.trade_logger = TradeLogger()
 
     def _load_state(self):
         if os.path.exists(self.state_file):
@@ -200,15 +204,24 @@ class PortfolioManager:
 
 
     async def _handle_buy_signal(self, event: TradeEvent, market_label: str, depth, metadata: MarketMetadata = None):
+        # Track AI analysis for logging
+        ai_analysis = None
+        ai_from_cache = False
+        ai_manual_override = False
+        
         # 0. AI Analysis Gate
         if self.ai_service and self.ai_enabled:
             try:
+                # Check if cached
+                ai_from_cache = self.ai_service.get_cached_analysis(event.token_id) is not None
+                
                 should_trade, analysis = await self.ai_service.should_execute_trade(
                     token_id=event.token_id,
                     trade_event=event,
                     market_metadata=metadata,
                     market_depth=depth
                 )
+                ai_analysis = analysis
                 
                 if should_trade:
                     # AI approves - auto-proceed
@@ -227,6 +240,7 @@ class PortfolioManager:
                             return
                         else:
                             logger.info(f"  👤 Manual override accepted - proceeding with trade")
+                            ai_manual_override = True
                     else:
                         logger.info(f"  🤖 AI recommends skip but low confidence ({analysis.confidence:.0%}), auto-proceeding")
             except Exception as e:
@@ -314,6 +328,31 @@ class PortfolioManager:
             self._save_state()
             logger.info(f"  💰 Spend Updated: Total ${self.cumulative_spend:.2f} / ${self.max_budget:.2f}")
             
+            # Log the trade
+            self.trade_logger.log_buy(
+                token_id=event.token_id,
+                market_label=market_label,
+                size=size,
+                price=limit_price,
+                cost_usd=cost_estimate,
+                whale_name=event.source_wallet_name,
+                whale_address=event.source_wallet_address,
+                whale_trade_size=event.usd_size,
+                whale_outcome=event.outcome,
+                market_metadata=metadata,
+                ai_analysis=ai_analysis,
+                ai_enabled=self.ai_enabled,
+                ai_from_cache=ai_from_cache,
+                ai_manual_override=ai_manual_override,
+                strategy_params={
+                    'stop_loss_pct': self.stop_loss_pct,
+                    'take_profit_pct': self.take_profit_pct,
+                    'min_share_price': self.min_share_price,
+                    'max_budget': self.max_budget,
+                    'cumulative_spend': self.cumulative_spend,
+                }
+            )
+            
         except Exception as e:
             logger.error(f"  Failed to mirror buy: {e}")
 
@@ -400,6 +439,25 @@ class PortfolioManager:
                     min_price=0.01,  # Dump it
                     market_name=market_label
                 )
+                
+                # Log the stop loss sell
+                self.trade_logger.log_sell(
+                    token_id=pos.token_id,
+                    market_label=market_label,
+                    trigger_reason="stop_loss",
+                    size=pos.size,
+                    price=market_price,
+                    entry_price=pos.average_entry_price,
+                    roi_percent=roi * 100,
+                    market_metadata=meta,
+                    strategy_params={
+                        'stop_loss_pct': self.stop_loss_pct,
+                        'take_profit_pct': self.take_profit_pct,
+                        'min_share_price': self.min_share_price,
+                        'max_budget': self.max_budget,
+                        'cumulative_spend': self.cumulative_spend,
+                    }
+                )
             
             # TAKE PROFIT
             elif roi > self.take_profit_pct:
@@ -430,11 +488,31 @@ class PortfolioManager:
                 logger.info(f"{'='*60}")
                 
                 # Trailing stop logic could go here, but for now hard exit
+                sell_size = pos.size / 2  # Sell half
                 await self.executor.exit_position(
                     pos.token_id, 
-                    pos.size / 2,  # Sell half? Or all
+                    sell_size,
                     min_price=market_price * 0.9,
                     market_name=market_label
+                )
+                
+                # Log the take profit sell
+                self.trade_logger.log_sell(
+                    token_id=pos.token_id,
+                    market_label=market_label,
+                    trigger_reason="take_profit",
+                    size=sell_size,
+                    price=market_price,
+                    entry_price=pos.average_entry_price,
+                    roi_percent=roi * 100,
+                    market_metadata=meta,
+                    strategy_params={
+                        'stop_loss_pct': self.stop_loss_pct,
+                        'take_profit_pct': self.take_profit_pct,
+                        'min_share_price': self.min_share_price,
+                        'max_budget': self.max_budget,
+                        'cumulative_spend': self.cumulative_spend,
+                    }
                 )
                 
         except Exception as e:

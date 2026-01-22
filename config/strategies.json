@@ -18,7 +18,7 @@
     "ai_analysis": {
         "enabled": true,
         "block_on_negative": true,
-        "min_confidence_threshold": 0.6,
+        "min_confidence_threshold": 0.2,
         "max_requests": 22222,
         "rate_limit_rps": 5.0,
         "max_concurrent_ai": 10,
