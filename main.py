@@ -61,12 +61,14 @@ async def watch_config(whale_watcher: WhaleMonitor, manager: PortfolioManager):
                 min_pos_val = data.get("min_position_value", 0.03)
                 blacklist = data.get("blacklisted_token_ids", [])
                 risk_check = data.get("risk_check_interval_seconds")
+                tp_hold_min = data.get("take_profit_hold_min_price")
+                sl_hold_min = data.get("stop_loss_hold_min_price")
                 
                 if sl is not None and tp is not None and min_p is not None:
-                    manager.update_strategies(sl, tp, min_p, log_int, max_b, min_pos_val, blacklist, risk_check)
+                    manager.update_strategies(sl, tp, min_p, log_int, max_b, min_pos_val, blacklist, risk_check, tp_hold_min, sl_hold_min)
                 elif sl is not None and tp is not None:
                      # Fallback
-                    manager.update_strategies(sl, tp, manager.min_share_price, log_int, manager.max_budget, min_pos_val, blacklist, risk_check)
+                    manager.update_strategies(sl, tp, manager.min_share_price, log_int, manager.max_budget, min_pos_val, blacklist, risk_check, tp_hold_min, sl_hold_min)
 
                 # Update AI Config
                 ai_config = data.get("ai_analysis", {})
@@ -105,6 +107,8 @@ async def main():
     start_min_pos_value = 0.03
     start_blacklist = []
     start_risk_check = 10  # Default: check every 10 seconds
+    start_tp_hold_min_price = 0.0  # Default: disabled (no hold threshold)
+    start_sl_hold_min_price = 0.0  # Default: disabled (no hold threshold)
 
     if os.path.exists(CONFIG_PATH):
         try:
@@ -131,6 +135,10 @@ async def main():
                 start_blacklist = data["blacklisted_token_ids"]
             if "risk_check_interval_seconds" in data:
                 start_risk_check = data["risk_check_interval_seconds"]
+            if "take_profit_hold_min_price" in data:
+                start_tp_hold_min_price = data["take_profit_hold_min_price"]
+            if "stop_loss_hold_min_price" in data:
+                start_sl_hold_min_price = data["stop_loss_hold_min_price"]
             
             # Load AI config
             ai_config = data.get("ai_analysis", {})
@@ -191,7 +199,9 @@ async def main():
         min_position_value=start_min_pos_value,
         blacklisted_token_ids=start_blacklist,
         ai_service=ai_service,
-        risk_check_interval_seconds=start_risk_check
+        risk_check_interval_seconds=start_risk_check,
+        take_profit_hold_min_price=start_tp_hold_min_price,
+        stop_loss_hold_min_price=start_sl_hold_min_price
     )
     
     # Apply initial AI config

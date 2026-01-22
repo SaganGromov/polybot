@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 class PortfolioManager:
-    def __init__(self, exchange: ExchangeProvider, executor: SmartExecutor, stop_loss_pct: float = 0.20, take_profit_pct: float = 0.9, min_share_price: float = 0.19, log_interval_minutes: int = 60, max_budget: float = 100.0, min_position_value: float = 0.03, blacklisted_token_ids: List[str] = None, ai_service: Optional['AIAnalysisService'] = None, risk_check_interval_seconds: int = 10):
+    def __init__(self, exchange: ExchangeProvider, executor: SmartExecutor, stop_loss_pct: float = 0.20, take_profit_pct: float = 0.9, min_share_price: float = 0.19, log_interval_minutes: int = 60, max_budget: float = 100.0, min_position_value: float = 0.03, blacklisted_token_ids: List[str] = None, ai_service: Optional['AIAnalysisService'] = None, risk_check_interval_seconds: int = 10, take_profit_hold_min_price: float = 0.0, stop_loss_hold_min_price: float = 0.0):
         self.exchange = exchange
         self.executor = executor
         self.stop_loss_pct = stop_loss_pct
@@ -27,6 +27,8 @@ class PortfolioManager:
         self.min_position_value = min_position_value
         self.blacklisted_token_ids = set(blacklisted_token_ids or [])
         self.risk_check_interval_seconds = risk_check_interval_seconds
+        self.take_profit_hold_min_price = take_profit_hold_min_price
+        self.stop_loss_hold_min_price = stop_loss_hold_min_price
         self._running = False
         
         # AI Analysis Integration
@@ -64,7 +66,7 @@ class PortfolioManager:
         except Exception as e:
             logger.error(f"Failed to save bot state: {e}")
 
-    def update_strategies(self, stop_loss: float, take_profit: float, min_price: float, log_interval: int, max_budget: float, min_position_value: float = 0.03, blacklisted_token_ids: List[str] = None, risk_check_interval_seconds: int = None):
+    def update_strategies(self, stop_loss: float, take_profit: float, min_price: float, log_interval: int, max_budget: float, min_position_value: float = 0.03, blacklisted_token_ids: List[str] = None, risk_check_interval_seconds: int = None, take_profit_hold_min_price: float = None, stop_loss_hold_min_price: float = None):
         """Updates strategy parameters dynamically."""
         self.stop_loss_pct = stop_loss
         self.take_profit_pct = take_profit
@@ -76,7 +78,11 @@ class PortfolioManager:
             self.blacklisted_token_ids = set(blacklisted_token_ids)
         if risk_check_interval_seconds is not None:
             self.risk_check_interval_seconds = risk_check_interval_seconds
-        logger.info(f"🔄 PortfolioManager updated: SL={stop_loss*100:.1f}%, TP={take_profit*100:.1f}%, MinPrice={min_price}, MinPosVal=${min_position_value}, LogInt={log_interval}min, Budget=${max_budget}, BlacklistSize={len(self.blacklisted_token_ids)}, RiskCheck={self.risk_check_interval_seconds}s")
+        if take_profit_hold_min_price is not None:
+            self.take_profit_hold_min_price = take_profit_hold_min_price
+        if stop_loss_hold_min_price is not None:
+            self.stop_loss_hold_min_price = stop_loss_hold_min_price
+        logger.info(f"🔄 PortfolioManager updated: SL={stop_loss*100:.1f}%, TP={take_profit*100:.1f}%, TP_Hold>={self.take_profit_hold_min_price:.2f}, SL_Hold>={self.stop_loss_hold_min_price:.2f}, MinPrice={min_price}, MinPosVal=${min_position_value}, RiskCheck={self.risk_check_interval_seconds}s")
 
     def update_ai_config(self, enabled: bool, block_on_negative: bool, min_confidence: float):
         """Updates AI analysis configuration."""
@@ -363,6 +369,19 @@ class PortfolioManager:
                 pnl_emoji = "📉"
                 managed_tag = "🤖" if pos.token_id in self.managed_tokens else "📌"
                 outcome_label = f" ({meta.queried_outcome})" if meta.queried_outcome else ""
+                
+                # Check if we should hold due to high price
+                if self.stop_loss_hold_min_price > 0 and market_price >= self.stop_loss_hold_min_price:
+                    logger.info(f"{'='*60}")
+                    logger.info(f"🛑 STOP LOSS TRIGGERED - BUT HOLDING (price >= {self.stop_loss_hold_min_price:.2f})")
+                    logger.info(f"   Q: {market_label}")
+                    logger.info(f"   {market_context}")
+                    logger.info(f"   {managed_tag} Position{outcome_label}: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
+                    logger.info(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: -{self.stop_loss_pct*100:.1f}%)")
+                    logger.info(f"   💎 HOLDING: Current price {market_price:.3f} >= hold threshold {self.stop_loss_hold_min_price:.2f}")
+                    logger.info(f"{'='*60}")
+                    return  # Don't exit, continue holding
+                
                 logger.warning(f"{'='*60}")
                 logger.warning(f"🛑 STOP LOSS TRIGGERED")
                 logger.warning(f"   Q: {market_label}")
@@ -385,6 +404,19 @@ class PortfolioManager:
                 pnl_emoji = "📈"
                 managed_tag = "🤖" if pos.token_id in self.managed_tokens else "📌"
                 outcome_label = f" ({meta.queried_outcome})" if meta.queried_outcome else ""
+                
+                # Check if we should hold due to high price
+                if self.take_profit_hold_min_price > 0 and market_price >= self.take_profit_hold_min_price:
+                    logger.info(f"{'='*60}")
+                    logger.info(f"💰 TAKE PROFIT TRIGGERED - BUT HOLDING (price >= {self.take_profit_hold_min_price:.2f})")
+                    logger.info(f"   Q: {market_label}")
+                    logger.info(f"   {market_context}")
+                    logger.info(f"   {managed_tag} Position{outcome_label}: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
+                    logger.info(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: +{self.take_profit_pct*100:.1f}%)")
+                    logger.info(f"   💎 HOLDING: Current price {market_price:.3f} >= hold threshold {self.take_profit_hold_min_price:.2f}")
+                    logger.info(f"{'='*60}")
+                    return  # Don't exit, continue holding
+                
                 logger.info(f"{'='*60}")
                 logger.info(f"💰 TAKE PROFIT TRIGGERED")
                 logger.info(f"   Q: {market_label}")

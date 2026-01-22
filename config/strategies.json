@@ -12,6 +12,8 @@
     "portfolio_log_interval_minutes": 1,
     "stop_loss_pct": 0.16,
     "take_profit_pct": 0.55,
+    "take_profit_hold_min_price": 0.75,
+    "stop_loss_hold_min_price": 0.75,
     "risk_check_interval_seconds": 1,
     "ai_analysis": {
         "enabled": true,
@@ -38,6 +40,54 @@
         {
             "address": "0x507e52ef684ca2dd91f90a9d26d149dd3288beae",
             "name": "GamblingIsAllYouNeed"
+        },
+        {
+            "address": "0xc6174a742b2926f00e683828019cef708ff9cd8e",
+            "name": "0xc6174a742B2926f00E683828019CEF708ff9cd8E-1762579911011"
+        },
+        {
+            "address": "0x2c4ca29d332c67d3ad7bf22b3cfe9486e3b1cb39",
+            "name": "ololololololololo"
+        },
+        {
+            "address": "0x6ade597c0e2b43c0bf3542cada8a5e330d73f5b0",
+            "name": "TheOnlyHuman"
+        },
+        {
+            "address": "0xaf35976ff7f860668fc20a3aeea881e4a6e8b5ea",
+            "name": "nukevegas"
+        },
+        {
+            "address": "0xd776f0a066fd3014ecfac89cfd414440982bffeb",
+            "name": "bomb   er"
+        },
+        {
+            "address": "0xfffadf38a520cd5a0035ff52d7fceb436a08864b",
+            "name": "GoriIIa"
+        },
+        {
+            "address": "0xa81eefec9c08fa157d855f1ac5caf8feab1903dc",
+            "name": "Snow-White"
+        },
+        {
+            "address": "0xa61ef8773ec2e821962306ca87d4b57e39ff0abd",
+            "name": "risk-manager"
+        },
+        {
+            "address": "0xfe0ad5ed4c912a46a4e41198e673bd371c384a63",
+            "name": "techsuit"
+        },
+        {
+            "address": "0xe7387473b067235436884d16799777cf279edf65",
+            "name": "Huludubu"
+        },
+        {
+            "address": "0x76c327ff3965b8db1a4e2b50ee6aeb19b90abaae",
+            "name": "captaincurry"
+        },
+        {
+            "address": "0x4d0e9b029700163625c551a0073636f3dc5ec45b",
+            "name": "yougotme"
         }
     ]
 }
