@@ -81,6 +81,12 @@ async def watch_config(whale_watcher: WhaleMonitor, manager: PortfolioManager):
                     # Update AI service max requests if service exists
                     if manager.ai_service:
                         manager.ai_service.update_max_requests(ai_config.get("max_requests", 100))
+                        # Update rate limiting config
+                        manager.ai_service.update_rate_limit_config(
+                            rate_limit_rps=ai_config.get("rate_limit_rps"),
+                            max_concurrent_ai=ai_config.get("max_concurrent_ai"),
+                            queue_timeout=ai_config.get("queue_timeout")
+                        )
                 
                 # Update Sports Filter config
                 sports_config = data.get("sports_filter", {})
@@ -177,10 +183,19 @@ async def main():
     if settings.GEMINI_API_KEY and settings.GEMINI_API_KEY.get_secret_value():
         from polybot.adapters.ai_analyzer import GeminiAnalyzerAdapter
         ai_analyzer = GeminiAnalyzerAdapter()
+        
+        # Build rate limit config from ai_analysis section
+        rate_limit_config = {
+            "rate_limit_rps": ai_config.get("rate_limit_rps", 5.0),
+            "max_concurrent_ai": ai_config.get("max_concurrent_ai", 10),
+            "queue_timeout": ai_config.get("queue_timeout", 120.0)
+        }
+        
         ai_service = AIAnalysisService(
             analyzer=ai_analyzer, 
             exchange=exchange,
-            max_requests=start_ai_max_requests
+            max_requests=start_ai_max_requests,
+            rate_limit_config=rate_limit_config
         )
         logger.info("   🤖 AI Analysis: ENABLED (Gemini)")
     else:

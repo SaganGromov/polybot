@@ -19,7 +19,7 @@
         "enabled": true,
         "block_on_negative": true,
         "min_confidence_threshold": 0.2,
-        "max_requests": 555
+        "max_requests": 22222
     },
     "sports_filter": {
         "enabled": true

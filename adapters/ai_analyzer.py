@@ -7,6 +7,7 @@ Follows the adapter pattern established in the codebase.
 
 import logging
 import json
+import asyncio
 import httpx
 from polybot.core.interfaces import AIAnalysisProvider
 from polybot.core.models import TradeAnalysis, MarketMetadata, MarketDepth
@@ -121,6 +122,7 @@ Provide your analysis:"""
         Analyze whether a trade should be executed using Gemini AI.
         
         Returns TradeAnalysis with recommendation and justification.
+        Includes retry logic with exponential backoff for rate limit errors.
         """
         if not self.api_key:
             # No API key - return default approval
@@ -135,44 +137,64 @@ Provide your analysis:"""
         
         prompt = self._build_analysis_prompt(token_id, market_metadata, market_depth, context)
         
-        try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
-                response = await client.post(
-                    f"{self.base_url}/models/{self.model}:generateContent",
-                    params={"key": self.api_key},
-                    json={
-                        "contents": [{"parts": [{"text": prompt}]}],
-                        "generationConfig": {
-                            "temperature": 0.3,  # Lower temperature for more consistent analysis
-                            "topP": 0.8,
-                            "maxOutputTokens": 1024
+        max_retries = 3
+        base_delay = 1.0
+        
+        for attempt in range(max_retries):
+            try:
+                async with httpx.AsyncClient(timeout=30.0) as client:
+                    response = await client.post(
+                        f"{self.base_url}/models/{self.model}:generateContent",
+                        params={"key": self.api_key},
+                        json={
+                            "contents": [{"parts": [{"text": prompt}]}],
+                            "generationConfig": {
+                                "temperature": 0.3,  # Lower temperature for more consistent analysis
+                                "topP": 0.8,
+                                "maxOutputTokens": 1024
+                            }
                         }
-                    }
-                )
-                
-                if response.status_code != 200:
-                    logger.error(f"Gemini API error: {response.status_code} - {response.text}")
-                    return self._fallback_analysis("API error")
-                
-                data = response.json()
-                
-                # Extract text from response
-                candidates = data.get("candidates", [])
-                if not candidates:
-                    logger.error("No candidates in Gemini response")
-                    return self._fallback_analysis("Empty response")
-                
-                text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
-                
-                # Parse JSON from response
-                return self._parse_response(text)
-                
-        except httpx.TimeoutException:
-            logger.error("Gemini API timeout")
-            return self._fallback_analysis("Request timeout")
-        except Exception as e:
-            logger.error(f"Gemini API error: {e}")
-            return self._fallback_analysis(str(e))
+                    )
+                    
+                    # Handle rate limiting with retry
+                    if response.status_code == 429:
+                        if attempt < max_retries - 1:
+                            delay = base_delay * (2 ** attempt)
+                            logger.warning(f"🚦 Rate limited by Gemini API, retrying in {delay}s (attempt {attempt + 1}/{max_retries})")
+                            await asyncio.sleep(delay)
+                            continue
+                        else:
+                            logger.error("Rate limit persists after max retries")
+                            return self._fallback_analysis("Rate limit exceeded")
+                    
+                    if response.status_code != 200:
+                        logger.error(f"Gemini API error: {response.status_code} - {response.text}")
+                        return self._fallback_analysis("API error")
+                    
+                    data = response.json()
+                    
+                    # Extract text from response
+                    candidates = data.get("candidates", [])
+                    if not candidates:
+                        logger.error("No candidates in Gemini response")
+                        return self._fallback_analysis("Empty response")
+                    
+                    text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                    
+                    # Parse JSON from response
+                    return self._parse_response(text)
+                    
+            except httpx.TimeoutException:
+                if attempt < max_retries - 1:
+                    delay = base_delay * (2 ** attempt)
+                    logger.warning(f"Gemini API timeout, retrying in {delay}s (attempt {attempt + 1}/{max_retries})")
+                    await asyncio.sleep(delay)
+                    continue
+                logger.error("Gemini API timeout after max retries")
+                return self._fallback_analysis("Request timeout")
+            except Exception as e:
+                logger.error(f"Gemini API error: {e}")
+                return self._fallback_analysis(str(e))
     
     def _parse_response(self, text: str) -> TradeAnalysis:
         """Parse the Gemini response into a TradeAnalysis object."""

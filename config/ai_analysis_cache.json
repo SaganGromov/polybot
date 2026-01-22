@@ -4288,5 +4288,420 @@
     ],
     "estimated_resolution_time": "8 days",
     "subjectivity_score": 0.6
+  },
+  "107260947483754609187027824375421276920053162249429448361414976955477292229313": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "The spread is very wide, and the whale trade is small relative to the overall volume. While the event is imminent, the potential for profit is limited by the high ask price and the low confidence in the whale's signal given the small trade size.",
+    "risk_factors": [
+      "Wide bid-ask spread",
+      "Small whale trade size",
+      "Low liquidity at the best bid price",
+      "Nongshim Esports Academy may lose the game"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if Nongshim Esports Academy wins",
+      "Following a potentially informed whale trader"
+    ],
+    "estimated_resolution_time": "6 hours, 37 minutes",
+    "subjectivity_score": 0.1
+  },
+  "35832317941063254231412016522085483667311386389296338740309697943215547800065": {
+    "should_trade": false,
+    "confidence": 0.55,
+    "justification": "While the whale is betting against Solana reaching $130, the small trade size ($0.79) doesn't inspire confidence. The market is relatively efficient, and the potential profit is limited given the current prices and the short timeframe.",
+    "risk_factors": [
+      "Solana price could spike unexpectedly",
+      "Whale could be making a contrarian bet or testing the market",
+      "Market could be more efficient than anticipated"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if Solana stays below $130",
+      "Whale may have inside information or a strong conviction"
+    ],
+    "estimated_resolution_time": "2 days",
+    "subjectivity_score": 0.1
+  },
+  "28164243505694233318285672457762959881051436660797995032412194645163650086721": {
+    "should_trade": false,
+    "confidence": 0.85,
+    "justification": "The market heavily favors 'No' at 98.8%, indicating a very low probability of Elon Musk tweeting within the specified range. While a whale is buying 'Yes', the extremely small trade size of $2.70 suggests low conviction and doesn't justify going against the overwhelming market sentiment and the short remaining time until resolution.",
+    "risk_factors": [
+      "Low probability event",
+      "Short time to resolution",
+      "Whale trade size is insignificant",
+      "Market is heavily against the outcome"
+    ],
+    "opportunity_factors": [
+      "Potential for outsized gains if the unlikely event occurs",
+      "Whale signal (though weak)"
+    ],
+    "estimated_resolution_time": "1 day, 14 hours, 37 minutes",
+    "subjectivity_score": 0.0
+  },
+  "97843293122288703370022019372634618571257687787119056866679067209716429289724": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (Server disconnected without sending a response.). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      "Server disconnected without sending a response."
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "64593137543812233583569831045184315479017499648992940692531661513708406053376": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "The market is about to resolve, the whale trade is tiny, and the spread is massive. There's no time to profit from any potential mispricing, and the low liquidity on the bid side makes exiting difficult.",
+    "risk_factors": [
+      "Market resolves imminently",
+      "Low bid-side liquidity",
+      "Wide bid-ask spread",
+      "Tiny whale trade size"
+    ],
+    "opportunity_factors": [
+      "Potential mispricing (though unlikely)",
+      "Following a whale (though trade is small)"
+    ],
+    "estimated_resolution_time": "Less than 2 hours",
+    "subjectivity_score": 0.6
+  },
+  "24933039166805039092417584231718074611770945991444207350785961880289057774359": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While mirroring a whale can be profitable, the very small trade size ($1.40) from the whale suggests low conviction. The market also has a short resolution time and the current price of 'Up' at 40% seems reasonable given the 'Down' outcome is at 60%.",
+    "risk_factors": [
+      "Whale signal is weak due to small trade size",
+      "Market may be efficiently priced",
+      "Short resolution time limits potential profit"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if the price moves favorably",
+      "Following a whale could lead to unexpected gains"
+    ],
+    "estimated_resolution_time": "3 hours, 37 minutes",
+    "subjectivity_score": 0.2
+  },
+  "37553153998693380670857208408425399740373310817860780263908431095180775476801": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the potential payout is high if the Heat win, the current market price of 1.1% suggests an extremely low probability of success. The whale's trade size is insignificant compared to the overall market volume, making it unlikely to influence the price significantly.",
+    "risk_factors": [
+      "Miami Heat performance decline",
+      "Key player injuries",
+      "Stronger competition from other teams",
+      "Whale signal may be noise"
+    ],
+    "opportunity_factors": [
+      "Potential for significant payout if Miami Heat wins",
+      "Possible market mispricing due to low liquidity at the 'Yes' outcome"
+    ],
+    "estimated_resolution_time": "5 months",
+    "subjectivity_score": 0.1
+  },
+  "1433678596590011823107869013256059805703145719262578781424997066454664458199": {
+    "should_trade": true,
+    "confidence": 0.75,
+    "justification": "The market is relatively liquid, and the whale's significant buy order suggests potential mispricing in favor of BNK FearX Youth. Given the objective nature of the outcome and the short resolution timeline, mirroring the whale's trade presents a favorable risk/reward profile.",
+    "risk_factors": [
+      "Dplus KIA Challengers outperforms expectations",
+      "Unexpected roster changes or technical issues",
+      "Whale's information is outdated or incorrect"
+    ],
+    "opportunity_factors": [
+      "Whale's expertise in League of Legends",
+      "Potential for quick profit due to short resolution time",
+      "Market mispricing favoring BNK FearX Youth"
+    ],
+    "estimated_resolution_time": "6 hours, 37 minutes",
+    "subjectivity_score": 0.1
+  },
+  "102513306967593304205454540053934815722468004443207674004156353667103145821397": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While mirroring a whale might seem appealing, the very small trade size ($6.60) offers little confidence in the whale's conviction. The market is also fairly efficient with a tight spread, making it difficult to find an edge.",
+    "risk_factors": [
+      "Whale signal could be noise or a small test trade",
+      "Market could move against the position quickly",
+      "Limited time until resolution increases volatility risk"
+    ],
+    "opportunity_factors": [
+      "Potential for quick profit if the price moves in the predicted direction",
+      "Following a whale could be profitable in the long run if this is a consistent pattern"
+    ],
+    "estimated_resolution_time": "3 hours",
+    "subjectivity_score": 0.1
+  },
+  "79088566337162437836671719273222979446951480948581045590914647087925119645023": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale's buy signal is tempting, the market already heavily favors Laura Virginia Fern\u00e1ndez Delgado winning. The short time to resolution and high existing price leave little room for profit, and the subjectivity of political outcomes introduces significant risk.",
+    "risk_factors": [
+      "Political outcomes are inherently subjective and unpredictable",
+      "High existing price leaves limited upside",
+      "Short time to resolution increases risk of unforeseen events impacting the outcome",
+      "Whale's trade may be based on information already priced into the market"
+    ],
+    "opportunity_factors": [
+      "Whale trader has a potentially profitable track record",
+      "High volume suggests a liquid market, allowing for easier entry and exit"
+    ],
+    "estimated_resolution_time": "9 days, 21 hours, 37 minutes",
+    "subjectivity_score": 0.8
+  },
+  "42963156288545482814810864694417190314076167441342551041683693279684465868010": {
+    "should_trade": true,
+    "confidence": 0.7,
+    "justification": "The Seahawks outcome is currently undervalued given the whale's significant buy-in, suggesting potential for price movement. The event is objective, and the liquidity is sufficient to enter and exit the position, making it a reasonable trade to mirror.",
+    "risk_factors": [
+      "The Seahawks may not cover the spread.",
+      "The whale's signal may be based on information already priced into the market or on a flawed analysis.",
+      "Unexpected injuries or game-day events could negatively impact the Seahawks' performance."
+    ],
+    "opportunity_factors": [
+      "The whale trader 'botbot' has a potentially successful track record.",
+      "The current price of the Seahawks outcome is below 50%, suggesting potential upside.",
+      "The objective nature of the event reduces the risk of subjective interpretation."
+    ],
+    "estimated_resolution_time": "3 days",
+    "subjectivity_score": 0.0
+  },
+  "42645635688384173938505005153732536262139883933750646945028210271328873690888": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is interesting, the market already prices in a high probability (88.2%) of OpenSea's FDV being above $500M one day after launch. The potential upside is limited, and the risk of a slight correction outweighs the potential profit, especially considering the time until resolution.",
+    "risk_factors": [
+      "Market overestimation of OpenSea's FDV",
+      "Negative news impacting OpenSea's launch",
+      "Whale signal could be a pump and dump",
+      "Regulatory hurdles impacting OpenSea's valuation"
+    ],
+    "opportunity_factors": [
+      "Whale's historical trading performance",
+      "Potential for OpenSea to exceed expectations",
+      "Market inefficiency due to limited information"
+    ],
+    "estimated_resolution_time": "11 months, 9 days",
+    "subjectivity_score": 0.3
+  },
+  "32024673573601418983026404459333228328438326231226192858364067781053320044389": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale signal is present, the market heavily favors Hawaii (91.5%), leaving little room for profit. The small whale trade size and short resolution time don't outweigh the already high price, making it unlikely to be profitable.",
+    "risk_factors": [
+      "Hawaii already heavily favored, limiting upside",
+      "Small whale trade may not be indicative of strong conviction",
+      "Potential for upset victory by Bakersfield"
+    ],
+    "opportunity_factors": [
+      "Whale signal present",
+      "High liquidity allows for easy entry/exit"
+    ],
+    "estimated_resolution_time": "1 day, 2 hours, 36 minutes",
+    "subjectivity_score": 0.0
+  },
+  "114350083305515876605975857295292847572608542141507135338338719165921048222327": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "While the whale signal exists, the small trade size and relatively short time to resolution, combined with the already low probability of 'No' and the potential for rapid market shifts in response to economic data releases, make this a risky trade with limited upside. The current market price already reflects a strong belief in no rate change.",
+    "risk_factors": [
+      "Unexpected economic data release",
+      "FOMC member commentary",
+      "Geopolitical events impacting the economy",
+      "Whale trade may be a hedge or misdirection"
+    ],
+    "opportunity_factors": [
+      "Potential for a surprise rate change",
+      "Whale signal could indicate inside information",
+      "Market overconfidence in 'no change' outcome"
+    ],
+    "estimated_resolution_time": "1 month, 3 weeks",
+    "subjectivity_score": 0.3
+  },
+  "25302387097837649513632634312498795019860866038516935945047492738305694597679": {
+    "should_trade": false,
+    "confidence": 0.3,
+    "justification": "The current price heavily favors the 'Over' outcome, suggesting the market believes a high-scoring game is likely. While following a whale can be profitable, the small trade size and the already low price of 'Under' make this a risky trade with limited upside.",
+    "risk_factors": [
+      "High market expectation of 'Over' outcome",
+      "Small whale trade size may not be a strong signal",
+      "Limited potential profit due to low 'Under' price",
+      "Risk of quick goals early in the game"
+    ],
+    "opportunity_factors": [
+      "Potential for a low-scoring game against market expectations",
+      "Whale signal could indicate inside information or a contrarian view"
+    ],
+    "estimated_resolution_time": "2 days",
+    "subjectivity_score": 0.0
+  },
+  "28202464625486789746457608997725342863823793561004359807995984526831752354776": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the liquidity is good and the spread is tight, the market heavily favors 'No' and the whale trade is small. The short timeframe until resolution makes it unlikely that the price will move significantly in the desired direction to generate profit, especially considering the already high probability assigned to 'No'.",
+    "risk_factors": [
+      "Zelenskyy unexpectedly changes his attire plans.",
+      "The market price doesn't move enough to cover transaction fees."
+    ],
+    "opportunity_factors": [
+      "Potential for a quick profit if Zelenskyy unexpectedly wears a suit and tie.",
+      "High liquidity allows for easy entry and exit."
+    ],
+    "estimated_resolution_time": "21 hours, 37 minutes",
+    "subjectivity_score": 0.2
+  },
+  "89036168105179001192755120118050209760422683300339582903158940882158509550672": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the liquidity is excellent, the whale trade size is insignificant ($4) and doesn't provide a strong signal. The market already heavily favors 'No,' and the potential profit is limited given the current price of $0.79. Therefore, mirroring this trade is unlikely to be profitable.",
+    "risk_factors": [
+      "FOMC decisions are difficult to predict",
+      "Economic data releases could shift expectations",
+      "The whale's signal may be noise"
+    ],
+    "opportunity_factors": [
+      "Large liquidity allows for easy entry and exit",
+      "Potential for small profit if market trends further towards 'No'"
+    ],
+    "estimated_resolution_time": "1 month, 25 days",
+    "subjectivity_score": 0.6
+  },
+  "113689564696134010397605001832750509195155730029258888570920506901252575318870": {
+    "should_trade": false,
+    "confidence": 0.6,
+    "justification": "While the whale is trading a significant amount, the current price of 'No' at 97.5% already reflects a very low probability of the Utah Mammoth winning the Stanley Cup. The potential profit is limited, and the market appears relatively efficient, making this trade unattractive despite the whale's activity.",
+    "risk_factors": [
+      "Utah Mammoth could significantly improve and become a contender",
+      "Whale could be wrong or manipulating the market",
+      "Market resolution could be delayed or disputed"
+    ],
+    "opportunity_factors": [
+      "Potential for small profit if market price increases slightly",
+      "Whale's historical performance might indicate a profitable trade"
+    ],
+    "estimated_resolution_time": "5 months",
+    "subjectivity_score": 0.0
+  },
+  "2378443661973698489161597632278282279509190785393472387989852170736912701257": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (Server disconnected without sending a response.). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      "Server disconnected without sending a response."
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "53313178220590450380477912081431639873747405125246491579560085366413795721626": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (Server disconnected without sending a response.). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      "Server disconnected without sending a response."
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "95762662943254569541125072852284883719783980930089253599679328929189755840395": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (Server disconnected without sending a response.). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      "Server disconnected without sending a response."
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "87297610090837867868160384872943538380917599552051560848094540207922204637810": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (Server disconnected without sending a response.). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      "Server disconnected without sending a response."
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "85273658663649539230585239615279466778865201150801811442114390005024933083624": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (Server disconnected without sending a response.). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      "Server disconnected without sending a response."
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "24748432196422796104949486974147748092690016040930881961320018270529236593218": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (Server disconnected without sending a response.). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      "Server disconnected without sending a response."
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "53858291026247647951768751405527614827285809026459127319377503841903785412335": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (Server disconnected without sending a response.). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      "Server disconnected without sending a response."
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "5696256002830425095773350415970497521807751621606677935878961079946544685641": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      ""
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "71405741861467881832201251712059422496723798889737372312541879427061938444910": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (Request timeout). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      "Request timeout"
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
+  },
+  "63289774376752206764274643458578859532852550927207906737276449838548064316421": {
+    "should_trade": true,
+    "confidence": 0.3,
+    "justification": "AI analysis unavailable (Request timeout). Defaulting to allow trade.",
+    "risk_factors": [
+      "AI analysis not performed",
+      "Request timeout"
+    ],
+    "opportunity_factors": [],
+    "estimated_resolution_time": null,
+    "subjectivity_score": null
   }
 }

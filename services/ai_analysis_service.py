@@ -12,13 +12,15 @@ This service acts as the application layer, coordinating between
 the domain interfaces and the infrastructure adapters.
 """
 
+import asyncio
 import logging
 import json
 import os
-from typing import Optional
+from typing import Optional, Dict, Any
 from polybot.core.interfaces import AIAnalysisProvider, ExchangeProvider
 from polybot.core.models import TradeAnalysis, MarketMetadata, MarketDepth
 from polybot.core.events import TradeEvent
+from polybot.services.rate_limiter import AIRateLimiter
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +44,8 @@ class AIAnalysisService:
         self, 
         analyzer: AIAnalysisProvider, 
         exchange: ExchangeProvider,
-        max_requests: int = 100
+        max_requests: int = 100,
+        rate_limit_config: Optional[Dict[str, Any]] = None
     ):
         """
         Initialize the AI analysis service.
@@ -51,6 +54,10 @@ class AIAnalysisService:
             analyzer: The AI analysis provider (Gemini, Mock, etc.)
             exchange: Exchange provider for fetching market data
             max_requests: Maximum API requests allowed (0 = unlimited)
+            rate_limit_config: Rate limiting configuration dict with keys:
+                - rate_limit_rps: Requests per second (default: 5.0)
+                - max_concurrent_ai: Max concurrent requests (default: 10)
+                - queue_timeout: Queue timeout in seconds (default: 120)
         """
         self.analyzer = analyzer
         self.exchange = exchange
@@ -58,6 +65,14 @@ class AIAnalysisService:
         
         # Sports filter configuration (set via update_sports_filter_config)
         self.sports_filter_enabled = False
+        
+        # Initialize rate limiter with config
+        rl_config = rate_limit_config or {}
+        self.rate_limiter = AIRateLimiter(
+            requests_per_second=rl_config.get("rate_limit_rps", 5.0),
+            max_concurrent=rl_config.get("max_concurrent_ai", 10),
+            queue_timeout=rl_config.get("queue_timeout", 120.0)
+        )
         
         # Load cache and state
         self._cache: dict = {}
@@ -111,6 +126,19 @@ class AIAnalysisService:
         """Update the maximum API request limit."""
         self.max_requests = max_requests
         logger.info(f"🤖 AI request limit updated: {self._request_count}/{max_requests if max_requests > 0 else '∞'}")
+    
+    def update_rate_limit_config(
+        self,
+        rate_limit_rps: Optional[float] = None,
+        max_concurrent_ai: Optional[int] = None,
+        queue_timeout: Optional[float] = None
+    ):
+        """Update rate limiter configuration dynamically."""
+        self.rate_limiter.update_config(
+            requests_per_second=rate_limit_rps,
+            max_concurrent=max_concurrent_ai,
+            queue_timeout=queue_timeout
+        )
     
     def is_limit_reached(self) -> bool:
         """Check if API request limit has been reached."""
@@ -207,13 +235,25 @@ class AIAnalysisService:
             # Build context from trade event and additional data
             context = self._build_context(trade_event)
             
-            # Delegate to AI provider
-            analysis = await self.analyzer.analyze_trade(
-                token_id=token_id,
-                market_metadata=market_metadata,
-                market_depth=market_depth,
-                context=context
-            )
+            # Delegate to AI provider with rate limiting
+            try:
+                async with await self.rate_limiter.acquire():
+                    analysis = await self.analyzer.analyze_trade(
+                        token_id=token_id,
+                        market_metadata=market_metadata,
+                        market_depth=market_depth,
+                        context=context
+                    )
+            except asyncio.TimeoutError:
+                logger.warning(f"⏳ AI request queued too long, skipping analysis")
+                fallback = TradeAnalysis(
+                    should_trade=True,
+                    confidence=0.0,
+                    justification="AI request queue timeout. Defaulting to allow trade.",
+                    risk_factors=["AI analysis skipped - queue timeout"],
+                    opportunity_factors=[]
+                )
+                return True, fallback
             
             # Increment request counter and save
             self._request_count += 1
