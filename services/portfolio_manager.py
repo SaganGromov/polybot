@@ -3,9 +3,9 @@ import logging
 import math
 import json
 import os
-from typing import List, Set, Optional, TYPE_CHECKING
+from typing import List, Set, Optional, Dict, TYPE_CHECKING
 from polybot.core.interfaces import ExchangeProvider, MarketMetadata
-from polybot.core.models import Position, Side, Order, OrderStatus
+from polybot.core.models import Position, Side, Order, OrderStatus, MarketType
 from polybot.core.events import TradeEvent
 from polybot.services.execution import SmartExecutor
 from polybot.services.trade_logger import TradeLogger
@@ -32,6 +32,14 @@ class PortfolioManager:
         self.stop_loss_hold_min_price = stop_loss_hold_min_price
         self._running = False
         
+        # Crypto-specific SL/TP configuration
+        self.crypto_rules_enabled = False
+        self.crypto_stop_loss_pct = 0.20
+        self.crypto_take_profit_pct = 0.45
+        self.crypto_tp_hold_min_price = 0.75
+        self.crypto_sl_hold_min_price = 0.75
+        self.crypto_tokens: Set[str] = set()  # Track which tokens are crypto price markets
+        
         # AI Analysis Integration
         self.ai_service = ai_service
         self.ai_enabled = False
@@ -54,7 +62,8 @@ class PortfolioManager:
                     data = json.load(f)
                     self.cumulative_spend = data.get("cumulative_spend", 0.0)
                     self.managed_tokens = set(data.get("managed_tokens", []))
-                logger.info(f"💾 Loaded Bot State: Cumulative Spend=${self.cumulative_spend:.2f}, Managed Tokens={len(self.managed_tokens)}")
+                    self.crypto_tokens = set(data.get("crypto_tokens", []))
+                logger.info(f"💾 Loaded Bot State: Cumulative Spend=${self.cumulative_spend:.2f}, Managed Tokens={len(self.managed_tokens)}, Crypto Tokens={len(self.crypto_tokens)}")
             except Exception as e:
                 logger.error(f"Failed to load bot state: {e}")
 
@@ -62,7 +71,8 @@ class PortfolioManager:
         try:
             data = {
                 "cumulative_spend": self.cumulative_spend,
-                "managed_tokens": list(self.managed_tokens)
+                "managed_tokens": list(self.managed_tokens),
+                "crypto_tokens": list(self.crypto_tokens)
             }
             os.makedirs(os.path.dirname(self.state_file), exist_ok=True)
             with open(self.state_file, 'w') as f:
@@ -95,6 +105,23 @@ class PortfolioManager:
         self.ai_min_confidence = min_confidence
         status = "ENABLED" if enabled else "DISABLED"
         logger.info(f"🤖 AI Analysis: {status} (block_on_negative={block_on_negative}, min_confidence={min_confidence:.0%})")
+
+    def update_crypto_rules(
+        self, 
+        enabled: bool, 
+        stop_loss_pct: float = 0.20, 
+        take_profit_pct: float = 0.45,
+        tp_hold_min_price: float = 0.75,
+        sl_hold_min_price: float = 0.75
+    ):
+        """Updates crypto-specific SL/TP configuration."""
+        self.crypto_rules_enabled = enabled
+        self.crypto_stop_loss_pct = stop_loss_pct
+        self.crypto_take_profit_pct = take_profit_pct
+        self.crypto_tp_hold_min_price = tp_hold_min_price
+        self.crypto_sl_hold_min_price = sl_hold_min_price
+        status = "ENABLED" if enabled else "DISABLED"
+        logger.info(f"₿ Crypto Rules: {status} (SL={stop_loss_pct*100:.1f}%, TP={take_profit_pct*100:.1f}%, TP_Hold>={tp_hold_min_price:.2f}, SL_Hold>={sl_hold_min_price:.2f})")
 
     async def start(self):
         self._running = True
@@ -208,6 +235,7 @@ class PortfolioManager:
         ai_analysis = None
         ai_from_cache = False
         ai_manual_override = False
+        is_crypto_market = False
         
         # 0. AI Analysis Gate
         if self.ai_service and self.ai_enabled:
@@ -246,6 +274,22 @@ class PortfolioManager:
             except Exception as e:
                 logger.error(f"  🛑 AI analysis failed: {e} - BLOCKING trade for safety")
                 return  # Block trade when AI fails
+
+        # 0.5. Crypto Market Detection (for special SL/TP rules)
+        if self.ai_service and self.crypto_rules_enabled:
+            try:
+                is_crypto, crypto_reason = await self.ai_service.check_crypto_market(
+                    token_id=event.token_id,
+                    market_metadata=metadata
+                )
+                if is_crypto:
+                    is_crypto_market = True
+                    self.crypto_tokens.add(event.token_id)
+                    logger.info(f"  ₿ Crypto Market Detected: {crypto_reason}")
+                    logger.info(f"     Custom SL/TP: SL={self.crypto_stop_loss_pct*100:.1f}%, TP={self.crypto_take_profit_pct*100:.1f}%")
+            except Exception as e:
+                logger.warning(f"  Crypto detection failed: {e} - using default SL/TP")
+
 
         # 1. Budget Check (Wallet Balance)
         balance = await self.exchange.get_balance()
@@ -388,6 +432,21 @@ class PortfolioManager:
             market_label = f"{meta.question}"
             market_context = f"[{meta.category or 'Uncategorized'} | {meta.status or 'Unknown'}]"
             
+            # Determine if this is a crypto market and select appropriate SL/TP thresholds
+            is_crypto = pos.token_id in self.crypto_tokens
+            if is_crypto and self.crypto_rules_enabled:
+                stop_loss_pct = self.crypto_stop_loss_pct
+                take_profit_pct = self.crypto_take_profit_pct
+                tp_hold_min = self.crypto_tp_hold_min_price
+                sl_hold_min = self.crypto_sl_hold_min_price
+                market_type_tag = "₿"
+            else:
+                stop_loss_pct = self.stop_loss_pct
+                take_profit_pct = self.take_profit_pct
+                tp_hold_min = self.take_profit_hold_min_price
+                sl_hold_min = self.stop_loss_hold_min_price
+                market_type_tag = ""
+            
             # Get current price from Gamma API (more accurate than order book)
             # Falls back to order book if metadata is unavailable
             market_price = 0.0
@@ -403,34 +462,35 @@ class PortfolioManager:
 
             roi = (market_price - pos.average_entry_price) / pos.average_entry_price
             
-            logger.debug(f"  Risk Check: {market_label} ROI: {roi*100:.1f}%")
+            logger.debug(f"  Risk Check: {market_type_tag}{market_label} ROI: {roi*100:.1f}%")
 
             # STOP LOSS
-            if roi < -self.stop_loss_pct:
+            if roi < -stop_loss_pct:
                 pnl_emoji = "📉"
                 managed_tag = "🤖" if pos.token_id in self.managed_tokens else "📌"
+                crypto_tag = " ₿" if is_crypto else ""
                 outcome_label = f" ({meta.queried_outcome})" if meta.queried_outcome else ""
                 
                 # Check if we should hold due to high price
-                if self.stop_loss_hold_min_price > 0 and market_price >= self.stop_loss_hold_min_price:
+                if sl_hold_min > 0 and market_price >= sl_hold_min:
                     logger.info(f"{'='*60}")
-                    logger.info(f"🛑 STOP LOSS TRIGGERED - BUT HOLDING (price >= {self.stop_loss_hold_min_price:.2f})")
+                    logger.info(f"🛑{crypto_tag} STOP LOSS TRIGGERED - BUT HOLDING (price >= {sl_hold_min:.2f})")
                     logger.info(f"   Q: {market_label}")
                     logger.info(f"   {market_context}")
                     logger.info(f"   {managed_tag} Position{outcome_label}: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
-                    logger.info(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: -{self.stop_loss_pct*100:.1f}%)")
-                    logger.info(f"   💎 HOLDING: Current price {market_price:.3f} >= hold threshold {self.stop_loss_hold_min_price:.2f}")
+                    logger.info(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: -{stop_loss_pct*100:.1f}%)")
+                    logger.info(f"   💎 HOLDING: Current price {market_price:.3f} >= hold threshold {sl_hold_min:.2f}")
                     logger.info(f"{'='*60}")
                     return  # Don't exit, continue holding
                 
                 logger.warning(f"{'='*60}")
-                logger.warning(f"🛑 STOP LOSS TRIGGERED")
+                logger.warning(f"🛑{crypto_tag} STOP LOSS TRIGGERED")
                 logger.warning(f"   Q: {market_label}")
                 logger.warning(f"   {market_context}")
                 if meta.volume:
                     logger.warning(f"   Volume: ${meta.volume:,.2f} | Ends: {meta.end_date or 'N/A'}")
                 logger.warning(f"   {managed_tag} Position{outcome_label}: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
-                logger.warning(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: -{self.stop_loss_pct*100:.1f}%)")
+                logger.warning(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: -{stop_loss_pct*100:.1f}%)")
                 logger.warning(f"{'='*60}")
                 
                 await self.executor.exit_position(
@@ -444,47 +504,49 @@ class PortfolioManager:
                 self.trade_logger.log_sell(
                     token_id=pos.token_id,
                     market_label=market_label,
-                    trigger_reason="stop_loss",
+                    trigger_reason="stop_loss" + (" (crypto)" if is_crypto else ""),
                     size=pos.size,
                     price=market_price,
                     entry_price=pos.average_entry_price,
                     roi_percent=roi * 100,
                     market_metadata=meta,
                     strategy_params={
-                        'stop_loss_pct': self.stop_loss_pct,
-                        'take_profit_pct': self.take_profit_pct,
+                        'stop_loss_pct': stop_loss_pct,
+                        'take_profit_pct': take_profit_pct,
                         'min_share_price': self.min_share_price,
                         'max_budget': self.max_budget,
                         'cumulative_spend': self.cumulative_spend,
+                        'is_crypto_market': is_crypto,
                     }
                 )
             
             # TAKE PROFIT
-            elif roi > self.take_profit_pct:
+            elif roi > take_profit_pct:
                 pnl_emoji = "📈"
                 managed_tag = "🤖" if pos.token_id in self.managed_tokens else "📌"
+                crypto_tag = " ₿" if is_crypto else ""
                 outcome_label = f" ({meta.queried_outcome})" if meta.queried_outcome else ""
                 
                 # Check if we should hold due to high price
-                if self.take_profit_hold_min_price > 0 and market_price >= self.take_profit_hold_min_price:
+                if tp_hold_min > 0 and market_price >= tp_hold_min:
                     logger.info(f"{'='*60}")
-                    logger.info(f"💰 TAKE PROFIT TRIGGERED - BUT HOLDING (price >= {self.take_profit_hold_min_price:.2f})")
+                    logger.info(f"💰{crypto_tag} TAKE PROFIT TRIGGERED - BUT HOLDING (price >= {tp_hold_min:.2f})")
                     logger.info(f"   Q: {market_label}")
                     logger.info(f"   {market_context}")
                     logger.info(f"   {managed_tag} Position{outcome_label}: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
-                    logger.info(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: +{self.take_profit_pct*100:.1f}%)")
-                    logger.info(f"   💎 HOLDING: Current price {market_price:.3f} >= hold threshold {self.take_profit_hold_min_price:.2f}")
+                    logger.info(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: +{take_profit_pct*100:.1f}%)")
+                    logger.info(f"   💎 HOLDING: Current price {market_price:.3f} >= hold threshold {tp_hold_min:.2f}")
                     logger.info(f"{'='*60}")
                     return  # Don't exit, continue holding
                 
                 logger.info(f"{'='*60}")
-                logger.info(f"💰 TAKE PROFIT TRIGGERED")
+                logger.info(f"💰{crypto_tag} TAKE PROFIT TRIGGERED")
                 logger.info(f"   Q: {market_label}")
                 logger.info(f"   {market_context}")
                 if meta.volume:
                     logger.info(f"   Volume: ${meta.volume:,.2f} | Ends: {meta.end_date or 'N/A'}")
                 logger.info(f"   {managed_tag} Position{outcome_label}: {pos.size:.4f} shares @ Entry: {pos.average_entry_price:.3f} | Now: {market_price:.3f}")
-                logger.info(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: +{self.take_profit_pct*100:.1f}%)")
+                logger.info(f"   {pnl_emoji} ROI: {roi*100:.1f}% (Threshold: +{take_profit_pct*100:.1f}%)")
                 logger.info(f"{'='*60}")
                 
                 # Trailing stop logic could go here, but for now hard exit
@@ -500,18 +562,19 @@ class PortfolioManager:
                 self.trade_logger.log_sell(
                     token_id=pos.token_id,
                     market_label=market_label,
-                    trigger_reason="take_profit",
+                    trigger_reason="take_profit" + (" (crypto)" if is_crypto else ""),
                     size=sell_size,
                     price=market_price,
                     entry_price=pos.average_entry_price,
                     roi_percent=roi * 100,
                     market_metadata=meta,
                     strategy_params={
-                        'stop_loss_pct': self.stop_loss_pct,
-                        'take_profit_pct': self.take_profit_pct,
+                        'stop_loss_pct': stop_loss_pct,
+                        'take_profit_pct': take_profit_pct,
                         'min_share_price': self.min_share_price,
                         'max_budget': self.max_budget,
                         'cumulative_spend': self.cumulative_spend,
+                        'is_crypto_market': is_crypto,
                     }
                 )
                 

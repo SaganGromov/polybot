@@ -18,7 +18,7 @@ import json
 import os
 from typing import Optional, Dict, Any
 from polybot.core.interfaces import AIAnalysisProvider, ExchangeProvider
-from polybot.core.models import TradeAnalysis, MarketMetadata, MarketDepth
+from polybot.core.models import TradeAnalysis, MarketMetadata, MarketDepth, SportsSelectivityResult, MarketType
 from polybot.core.events import TradeEvent
 from polybot.services.rate_limiter import AIRateLimiter
 
@@ -70,6 +70,12 @@ class AIAnalysisService:
         
         # Sports filter configuration (set via update_sports_filter_config)
         self.sports_filter_enabled = False
+        self.sports_allow_selective = False
+        self.sports_max_days_to_resolution = 4.0
+        self.sports_min_favorite_odds = 0.70
+        
+        # Crypto market rules configuration (set via update_crypto_market_config)
+        self.crypto_rules_enabled = False
         
         # Circuit breaker state
         self._circuit_breaker_threshold = circuit_breaker_threshold
@@ -88,6 +94,7 @@ class AIAnalysisService:
         # Load cache and state
         self._cache: dict = {}
         self._sports_cache: dict = {}  # Cache for sports classification
+        self._crypto_cache: dict = {}  # Cache for crypto market classification
         self._request_count: int = 0
         self._load_cache()
         self._load_state()
@@ -191,11 +198,57 @@ class AIAnalysisService:
             self._circuit_breaker_cooldown = cooldown
         logger.info(f"⚡ Circuit breaker config updated: threshold={self._circuit_breaker_threshold}, cooldown={self._circuit_breaker_cooldown}s")
     
-    def update_sports_filter_config(self, enabled: bool):
+    def update_sports_filter_config(
+        self, 
+        enabled: bool, 
+        allow_selective: bool = False,
+        max_days_to_resolution: float = 4.0,
+        min_favorite_odds: float = 0.70
+    ):
         """Update sports filter configuration."""
         self.sports_filter_enabled = enabled
+        self.sports_allow_selective = allow_selective
+        self.sports_max_days_to_resolution = max_days_to_resolution
+        self.sports_min_favorite_odds = min_favorite_odds
+        
         status = "ENABLED" if enabled else "DISABLED"
-        logger.info(f"🏈 Sports Filter: {status}")
+        selective_status = f" (selective: max {max_days_to_resolution} days, min {min_favorite_odds:.0%} odds)" if allow_selective else ""
+        logger.info(f"🏈 Sports Filter: {status}{selective_status}")
+    
+    def update_crypto_market_config(self, enabled: bool):
+        """Update crypto market rules configuration."""
+        self.crypto_rules_enabled = enabled
+        status = "ENABLED" if enabled else "DISABLED"
+        logger.info(f"₿ Crypto Market Rules: {status}")
+    
+    async def check_crypto_market(
+        self,
+        token_id: str,
+        market_metadata: MarketMetadata
+    ) -> tuple[bool, str]:
+        """
+        Check if a market is a crypto price prediction bet.
+        
+        Returns:
+            (is_crypto, reason) - True if market is crypto price prediction
+        """
+        if not self.crypto_rules_enabled:
+            return False, "Crypto rules disabled"
+        
+        # Check cache first
+        if token_id in self._crypto_cache:
+            cached = self._crypto_cache[token_id]
+            return cached["is_crypto"], f"(cached) {cached['reason']}"
+        
+        # Delegate to analyzer - pure AI classification
+        is_crypto, reason = await self.analyzer.is_crypto_price_market(
+            market_metadata=market_metadata
+        )
+        
+        # Cache result
+        self._crypto_cache[token_id] = {"is_crypto": is_crypto, "reason": reason}
+        
+        return is_crypto, reason
     
     async def check_sports_filter(
         self,
@@ -206,26 +259,52 @@ class AIAnalysisService:
         Check if a market should be blocked due to sports filter.
         Uses Gemini AI for classification.
         
+        If selective mode is enabled, qualifies sports trades that meet criteria.
+        
         Returns:
             (should_block, reason) - True if market is sports and should be blocked
         """
         if not self.sports_filter_enabled:
             return False, "Sports filter disabled"
         
-        # Check cache first
+        # Check cache first for sports classification
         if token_id in self._sports_cache:
             cached = self._sports_cache[token_id]
-            return cached["is_sports"], f"(cached) {cached['reason']}"
+            is_sports = cached["is_sports"]
+            cached_reason = cached["reason"]
+        else:
+            # Delegate to analyzer - pure AI classification
+            is_sports, cached_reason = await self.analyzer.is_sports_market(
+                market_metadata=market_metadata
+            )
+            # Cache result
+            self._sports_cache[token_id] = {"is_sports": is_sports, "reason": cached_reason}
         
-        # Delegate to analyzer - pure AI classification
-        is_sports, reason = await self.analyzer.is_sports_market(
-            market_metadata=market_metadata
-        )
+        # If not sports, allow
+        if not is_sports:
+            return False, cached_reason
         
-        # Cache result
-        self._sports_cache[token_id] = {"is_sports": is_sports, "reason": reason}
+        # It's a sports market - check if selective mode allows it
+        if self.sports_allow_selective:
+            selectivity_result = await self.analyzer.evaluate_sports_selectivity(
+                market_metadata=market_metadata,
+                max_days_to_resolution=self.sports_max_days_to_resolution,
+                min_favorite_odds=self.sports_min_favorite_odds
+            )
+            
+            if selectivity_result.qualifies:
+                logger.info(f"🏆 Sports trade QUALIFIED for selective exception:")
+                logger.info(f"   Favorite: {selectivity_result.favorite_entity} @ {selectivity_result.favorite_odds:.0%}")
+                if selectivity_result.hours_to_resolution:
+                    logger.info(f"   Resolution: {selectivity_result.hours_to_resolution:.1f} hours")
+                logger.info(f"   Reason: {selectivity_result.justification}")
+                return False, f"Sports trade qualified: {selectivity_result.justification}"
+            else:
+                logger.info(f"🏈 Sports trade did NOT qualify for exception: {selectivity_result.justification}")
+                return True, f"Sports market (not qualified): {selectivity_result.justification}"
         
-        return is_sports, reason
+        # Sports filter enabled, selective mode disabled - block all sports
+        return True, cached_reason
     
     def get_cached_analysis(self, token_id: str) -> Optional[TradeAnalysis]:
         """Get cached analysis for a token if it exists."""

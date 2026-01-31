@@ -17,6 +17,11 @@ class StrategyType(str, Enum):
     MIRROR = "MIRROR"
     INVERSE = "INVERSE"
 
+class MarketType(str, Enum):
+    CRYPTO = "CRYPTO"
+    SPORTS = "SPORTS"
+    OTHER = "OTHER"
+
 class Position(BaseModel):
     token_id: str
     size: float
@@ -73,3 +78,14 @@ class TradeAnalysis(BaseModel):
     opportunity_factors: list[str]  # Identified opportunity factors
     estimated_resolution_time: str | None = None  # e.g., "2 days", "6 hours"
     subjectivity_score: float | None = None  # 0.0 (objective) to 1.0 (subjective)
+
+
+class SportsSelectivityResult(BaseModel):
+    """Result of AI evaluation for sports trade selectivity."""
+    qualifies: bool  # Whether this sports trade qualifies for exception
+    confidence: float  # 0.0 to 1.0 confidence in the assessment
+    favorite_odds: float  # The leading outcome's probability (0.0 to 1.0)
+    hours_to_resolution: float | None = None  # Estimated hours until resolution
+    favorite_entity: str | None = None  # Team, player, or club name being bet on
+    justification: str  # Reasoning for the decision
+

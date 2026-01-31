@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import List
-from .models import Position, Order, MarketDepth, MarketMetadata, TradeAnalysis
+from typing import List, Optional
+from .models import Position, Order, MarketDepth, MarketMetadata, TradeAnalysis, SportsSelectivityResult
 
 class ExchangeProvider(ABC):
     
@@ -70,3 +70,42 @@ class AIAnalysisProvider(ABC):
             TradeAnalysis with recommendation and justification
         """
         pass
+
+    @abstractmethod
+    async def is_crypto_price_market(
+        self,
+        market_metadata: MarketMetadata
+    ) -> tuple[bool, str]:
+        """
+        Detect if a market is a crypto price prediction bet.
+        
+        Examples: "Will BTC hit $100K?", "ETH above $4000 by March?"
+        
+        Args:
+            market_metadata: Market details with title, question, category
+            
+        Returns:
+            (is_crypto, reason) - True if market is crypto price prediction
+        """
+        pass
+
+    @abstractmethod
+    async def evaluate_sports_selectivity(
+        self,
+        market_metadata: MarketMetadata,
+        max_days_to_resolution: float,
+        min_favorite_odds: float
+    ) -> SportsSelectivityResult:
+        """
+        Evaluate if a sports market qualifies for selective trading.
+        
+        Args:
+            market_metadata: Market details with title, question, outcomes, end_date
+            max_days_to_resolution: Maximum allowed days until resolution
+            min_favorite_odds: Minimum odds required for the favorite (0.0 to 1.0)
+            
+        Returns:
+            SportsSelectivityResult with qualification decision and details
+        """
+        pass
+

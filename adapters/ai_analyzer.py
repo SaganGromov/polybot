@@ -10,7 +10,7 @@ import json
 import asyncio
 import httpx
 from polybot.core.interfaces import AIAnalysisProvider
-from polybot.core.models import TradeAnalysis, MarketMetadata, MarketDepth
+from polybot.core.models import TradeAnalysis, MarketMetadata, MarketDepth, SportsSelectivityResult
 from polybot.config.settings import settings
 
 logger = logging.getLogger(__name__)
@@ -311,3 +311,219 @@ Respond with ONLY a JSON object in this format (no markdown, no code blocks):
         except Exception as e:
             logger.warning(f"Sports AI classification error: {e}")
             return True, f"AI classification error - blocking trade for safety"
+
+    async def is_crypto_price_market(
+        self,
+        market_metadata: MarketMetadata
+    ) -> tuple[bool, str]:
+        """
+        Detect if a market is a crypto price prediction bet using Gemini AI.
+        
+        Examples: "Will BTC hit $100K?", "ETH above $4000 by March?"
+        
+        Args:
+            market_metadata: Market details with title, question, category
+            
+        Returns:
+            (is_crypto, reason) - True if market is crypto price prediction
+        """
+        if not self.api_key:
+            logger.warning("No Gemini API key - cannot classify crypto markets")
+            return False, "No API key - cannot classify"
+        
+        title = market_metadata.title or ""
+        question = market_metadata.question or ""
+        category = market_metadata.category or "Unknown"
+        
+        prompt = f"""Analyze this prediction market and determine if it is a CRYPTO PRICE PREDICTION bet.
+
+Market Title: {title}
+Market Question: {question}
+Category: {category}
+
+A market is a "crypto price prediction" if it involves:
+- Predicting whether a cryptocurrency will go UP or DOWN
+- Predicting whether a crypto will hit a specific price target
+- Predicting crypto price movements within a specific timeframe
+- Examples: "Will Bitcoin hit $100K?", "Will ETH be above $4000 by March?", "Will SOL go up in 24 hours?"
+
+This does NOT include:
+- General crypto news/events (e.g., "Will Coinbase launch X?")
+- Crypto regulation questions
+- NFT-related questions
+- Questions about crypto companies
+
+Respond with ONLY a JSON object in this format (no markdown, no code blocks):
+{{"is_crypto_price": true or false, "reason": "brief explanation"}}"""
+
+        try:
+            async with httpx.AsyncClient(timeout=15.0) as client:
+                response = await client.post(
+                    f"{self.base_url}/models/{self.model}:generateContent",
+                    params={"key": self.api_key},
+                    json={
+                        "contents": [{"parts": [{"text": prompt}]}],
+                        "generationConfig": {
+                            "temperature": 0.1,
+                            "maxOutputTokens": 256
+                        }
+                    }
+                )
+                
+                if response.status_code != 200:
+                    logger.warning(f"Crypto classification API error: {response.status_code}")
+                    return False, f"AI classification failed (HTTP {response.status_code})"
+                
+                data = response.json()
+                candidates = data.get("candidates", [])
+                if not candidates:
+                    return False, "AI returned no classification"
+                
+                text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                text = text.strip()
+                
+                # Parse JSON response
+                if text.startswith("```"):
+                    lines = text.split("\n")
+                    text = "\n".join(lines[1:-1] if lines[-1] == "```" else lines[1:])
+                
+                result = json.loads(text)
+                is_crypto = bool(result.get("is_crypto_price", False))
+                reason = result.get("reason", "AI classification")
+                
+                return is_crypto, reason
+                    
+        except Exception as e:
+            logger.warning(f"Crypto AI classification error: {e}")
+            return False, f"AI classification error"
+
+    async def evaluate_sports_selectivity(
+        self,
+        market_metadata: MarketMetadata,
+        max_days_to_resolution: float,
+        min_favorite_odds: float
+    ) -> SportsSelectivityResult:
+        """
+        Evaluate if a sports market qualifies for selective trading.
+        
+        Args:
+            market_metadata: Market details with title, question, outcomes, end_date
+            max_days_to_resolution: Maximum allowed days until resolution
+            min_favorite_odds: Minimum odds required for the favorite (0.0 to 1.0)
+            
+        Returns:
+            SportsSelectivityResult with qualification decision and details
+        """
+        if not self.api_key:
+            logger.warning("No Gemini API key - cannot evaluate sports selectivity")
+            return SportsSelectivityResult(
+                qualifies=False,
+                confidence=0.0,
+                favorite_odds=0.0,
+                justification="No API key - cannot evaluate"
+            )
+        
+        title = market_metadata.title or ""
+        question = market_metadata.question or ""
+        category = market_metadata.category or "Unknown"
+        end_date = market_metadata.end_date or "Unknown"
+        outcomes_str = "Unknown"
+        if market_metadata.outcomes:
+            outcomes_str = ", ".join(
+                f"{outcome}: {price:.1%}" 
+                for outcome, price in market_metadata.outcomes.items()
+            )
+        
+        from datetime import datetime
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M UTC")
+        
+        prompt = f"""Evaluate this sports prediction market for selective trading qualification.
+
+**Current Time**: {current_time}
+**Market Title**: {title}
+**Market Question**: {question}
+**Category**: {category}
+**End Date**: {end_date}
+**Current Outcome Prices**: {outcomes_str}
+
+**Qualification Criteria**:
+1. Time to Resolution: Market must resolve within {max_days_to_resolution} days from now
+2. Favorite Odds: The leading outcome must have at least {min_favorite_odds:.0%} odds
+3. Clear Favorite: There must be a clear favorite (team, club, or player)
+
+**Analysis Required**:
+1. Calculate hours until resolution from current time ({current_time}) to end date
+2. Identify the favorite entity (team, club, or player name)
+3. Determine if this is a high-confidence sports trade worth making
+
+Respond with ONLY a JSON object in this format (no markdown, no code blocks):
+{{
+    "qualifies": true or false,
+    "confidence": 0.0 to 1.0,
+    "favorite_odds": 0.0 to 1.0 (the actual odds of the favorite),
+    "hours_to_resolution": number or null,
+    "favorite_entity": "Team/Player name" or null,
+    "justification": "brief explanation of qualification decision"
+}}"""
+
+        try:
+            async with httpx.AsyncClient(timeout=15.0) as client:
+                response = await client.post(
+                    f"{self.base_url}/models/{self.model}:generateContent",
+                    params={"key": self.api_key},
+                    json={
+                        "contents": [{"parts": [{"text": prompt}]}],
+                        "generationConfig": {
+                            "temperature": 0.2,
+                            "maxOutputTokens": 512
+                        }
+                    }
+                )
+                
+                if response.status_code != 200:
+                    logger.warning(f"Sports selectivity API error: {response.status_code}")
+                    return SportsSelectivityResult(
+                        qualifies=False,
+                        confidence=0.0,
+                        favorite_odds=0.0,
+                        justification=f"AI evaluation failed (HTTP {response.status_code})"
+                    )
+                
+                data = response.json()
+                candidates = data.get("candidates", [])
+                if not candidates:
+                    return SportsSelectivityResult(
+                        qualifies=False,
+                        confidence=0.0,
+                        favorite_odds=0.0,
+                        justification="AI returned no evaluation"
+                    )
+                
+                text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                text = text.strip()
+                
+                # Parse JSON response
+                if text.startswith("```"):
+                    lines = text.split("\n")
+                    text = "\n".join(lines[1:-1] if lines[-1] == "```" else lines[1:])
+                
+                result = json.loads(text)
+                
+                return SportsSelectivityResult(
+                    qualifies=bool(result.get("qualifies", False)),
+                    confidence=float(result.get("confidence", 0.0)),
+                    favorite_odds=float(result.get("favorite_odds", 0.0)),
+                    hours_to_resolution=result.get("hours_to_resolution"),
+                    favorite_entity=result.get("favorite_entity"),
+                    justification=result.get("justification", "AI evaluation")
+                )
+                    
+        except Exception as e:
+            logger.warning(f"Sports selectivity AI evaluation error: {e}")
+            return SportsSelectivityResult(
+                qualifies=False,
+                confidence=0.0,
+                favorite_odds=0.0,
+                justification=f"AI evaluation error: {e}"
+            )
+

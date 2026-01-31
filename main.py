@@ -88,11 +88,29 @@ async def watch_config(whale_watcher: WhaleMonitor, manager: PortfolioManager):
                             queue_timeout=ai_config.get("queue_timeout")
                         )
                 
-                # Update Sports Filter config
+                # Update Crypto Market Rules config
+                crypto_config = data.get("crypto_market_rules", {})
+                manager.update_crypto_rules(
+                    enabled=crypto_config.get("enabled", False),
+                    stop_loss_pct=crypto_config.get("stop_loss_pct", 0.20),
+                    take_profit_pct=crypto_config.get("take_profit_pct", 0.45),
+                    tp_hold_min_price=crypto_config.get("take_profit_hold_min_price", 0.75),
+                    sl_hold_min_price=crypto_config.get("stop_loss_hold_min_price", 0.75)
+                )
+                if manager.ai_service:
+                    manager.ai_service.update_crypto_market_config(
+                        enabled=crypto_config.get("enabled", False)
+                    )
+                
+                # Update Sports Filter config (with selective trading)
                 sports_config = data.get("sports_filter", {})
+                selective_criteria = sports_config.get("selective_criteria", {})
                 if manager.ai_service:
                     manager.ai_service.update_sports_filter_config(
-                        enabled=sports_config.get("enabled", False)
+                        enabled=sports_config.get("enabled", False),
+                        allow_selective=sports_config.get("allow_selective_trades", False),
+                        max_days_to_resolution=selective_criteria.get("max_days_to_resolution", 4.0),
+                        min_favorite_odds=selective_criteria.get("min_favorite_odds", 0.70)
                     )
                 
                 # Update Whale Monitor scaling config
@@ -103,6 +121,7 @@ async def watch_config(whale_watcher: WhaleMonitor, manager: PortfolioManager):
                         batch_delay_ms=whale_config.get("batch_delay_ms"),
                         max_concurrent=whale_config.get("max_concurrent")
                     )
+
 
         except Exception as e:
             logger.error(f"Error re-loading config: {e}")
@@ -162,9 +181,21 @@ async def main():
             start_ai_confidence = ai_config.get("min_confidence_threshold", 0.6)
             start_ai_max_requests = ai_config.get("max_requests", 100)
             
-            # Load Sports Filter config
+            # Load Crypto Market Rules config
+            crypto_config = data.get("crypto_market_rules", {})
+            start_crypto_enabled = crypto_config.get("enabled", False)
+            start_crypto_sl = crypto_config.get("stop_loss_pct", 0.20)
+            start_crypto_tp = crypto_config.get("take_profit_pct", 0.45)
+            start_crypto_tp_hold = crypto_config.get("take_profit_hold_min_price", 0.75)
+            start_crypto_sl_hold = crypto_config.get("stop_loss_hold_min_price", 0.75)
+            
+            # Load Sports Filter config (with selective trading)
             sports_config = data.get("sports_filter", {})
             start_sports_enabled = sports_config.get("enabled", False)
+            start_sports_selective = sports_config.get("allow_selective_trades", False)
+            selective_criteria = sports_config.get("selective_criteria", {})
+            start_sports_max_days = selective_criteria.get("max_days_to_resolution", 4.0)
+            start_sports_min_odds = selective_criteria.get("min_favorite_odds", 0.70)
                 
         except Exception as e:
             logger.error(f"Failed to load initial strategies.json: {e}")
@@ -173,6 +204,14 @@ async def main():
             start_ai_confidence = 0.6
             start_ai_max_requests = 100
             start_sports_enabled = False
+            start_sports_selective = False
+            start_sports_max_days = 4.0
+            start_sports_min_odds = 0.70
+            start_crypto_enabled = False
+            start_crypto_sl = 0.20
+            start_crypto_tp = 0.45
+            start_crypto_tp_hold = 0.75
+            start_crypto_sl_hold = 0.75
 
 
     # 1. Dependency Injection: Exchange Provider
@@ -235,10 +274,24 @@ async def main():
             block_on_negative=start_ai_block,
             min_confidence=start_ai_confidence
         )
-        # Apply initial Sports Filter config
+        # Apply initial Sports Filter config (with selective trading)
         ai_service.update_sports_filter_config(
-            enabled=start_sports_enabled
+            enabled=start_sports_enabled,
+            allow_selective=start_sports_selective,
+            max_days_to_resolution=start_sports_max_days,
+            min_favorite_odds=start_sports_min_odds
         )
+        # Apply initial Crypto Market Rules config
+        ai_service.update_crypto_market_config(enabled=start_crypto_enabled)
+    
+    # Apply crypto rules to portfolio manager
+    manager.update_crypto_rules(
+        enabled=start_crypto_enabled,
+        stop_loss_pct=start_crypto_sl,
+        take_profit_pct=start_crypto_tp,
+        tp_hold_min_price=start_crypto_tp_hold,
+        sl_hold_min_price=start_crypto_sl_hold
+    )
 
     # 4. Setup Whale Watcher Targets
     # Load whale scaling config
